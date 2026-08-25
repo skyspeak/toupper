@@ -6,7 +6,7 @@
 window.TOUPPER_DOMAINS = [
   /* ---------------------------------------------------------------- MONEY */
   {
-    slug: "product-assortment",
+    slug: "product-assortment", chip: "Packaging",
     name: "Product Assortment & Packaging",
     group: "Money",
     short: "Editions, tiers, and what goes in which box.",
@@ -31,7 +31,7 @@ window.TOUPPER_DOMAINS = [
     related: ["pricing-packaging", "billing-revops", "rbac"]
   },
   {
-    slug: "pricing-packaging",
+    slug: "pricing-packaging", chip: "Pricing",
     name: "Pricing & Monetization",
     group: "Money",
     short: "Metrics, discounting guardrails, and the move off per-seat.",
@@ -56,7 +56,7 @@ window.TOUPPER_DOMAINS = [
     related: ["product-assortment", "billing-revops", "reporting"]
   },
   {
-    slug: "billing-revops",
+    slug: "billing-revops", chip: "Billing",
     name: "Billing & Revenue Operations",
     group: "Money",
     short: "Contracts, invoicing, proration, revenue recognition, dunning.",
@@ -81,7 +81,7 @@ window.TOUPPER_DOMAINS = [
     related: ["pricing-packaging", "product-assortment", "procurement"]
   },
   {
-    slug: "procurement",
+    slug: "procurement", chip: "Procurement",
     name: "Procurement & Deal Enablement",
     group: "Money",
     short: "Security questionnaires, MSAs, RFPs, vendor onboarding.",
@@ -108,7 +108,7 @@ window.TOUPPER_DOMAINS = [
 
   /* ------------------------------------------------------- IDENTITY & ACCESS */
   {
-    slug: "sso",
+    slug: "sso", chip: "SSO",
     name: "Single Sign-On & Identity",
     group: "Identity & Access",
     short: "SAML, OIDC, IdP-initiated flows, and the migration to federated identity.",
@@ -133,7 +133,7 @@ window.TOUPPER_DOMAINS = [
     related: ["scim", "rbac", "team-management"]
   },
   {
-    slug: "scim",
+    slug: "scim", chip: "Provisioning",
     name: "Provisioning & Directory Sync",
     group: "Identity & Access",
     short: "SCIM, JIT provisioning, deprovisioning, and group mapping.",
@@ -158,7 +158,7 @@ window.TOUPPER_DOMAINS = [
     related: ["sso", "rbac", "audit-logs"]
   },
   {
-    slug: "rbac",
+    slug: "rbac", chip: "Permissions",
     name: "Roles, Permissions & Entitlements",
     group: "Identity & Access",
     short: "From three hardcoded roles to a permission model that scales.",
@@ -183,7 +183,7 @@ window.TOUPPER_DOMAINS = [
     related: ["sso", "scim", "audit-logs", "admin-console"]
   },
   {
-    slug: "team-management",
+    slug: "team-management", chip: "Multi-tenancy",
     name: "Teams, Orgs & Multi-Tenancy",
     group: "Identity & Access",
     short: "Workspaces, business units, parent-child accounts, and tenant isolation.",
@@ -210,7 +210,7 @@ window.TOUPPER_DOMAINS = [
 
   /* ------------------------------------------------------ TRUST & COMPLIANCE */
   {
-    slug: "audit-logs",
+    slug: "audit-logs", chip: "Audit logs",
     name: "Audit Logs & Activity Trails",
     group: "Trust & Compliance",
     short: "Immutable, exportable, queryable records of who did what.",
@@ -235,7 +235,7 @@ window.TOUPPER_DOMAINS = [
     related: ["security", "compliance", "rbac"]
   },
   {
-    slug: "security",
+    slug: "security", chip: "Security",
     name: "Product Security Posture",
     group: "Trust & Compliance",
     short: "Threat modeling, vuln management, secrets, and the security review.",
@@ -260,7 +260,7 @@ window.TOUPPER_DOMAINS = [
     related: ["compliance", "privacy", "audit-logs", "procurement"]
   },
   {
-    slug: "compliance",
+    slug: "compliance", chip: "Compliance",
     name: "Compliance & Certifications",
     group: "Trust & Compliance",
     short: "SOC 2, ISO 27001, HIPAA, FedRAMP — sequencing and scope.",
@@ -285,7 +285,7 @@ window.TOUPPER_DOMAINS = [
     related: ["security", "privacy", "audit-logs", "procurement"]
   },
   {
-    slug: "privacy",
+    slug: "privacy", chip: "Privacy & residency",
     name: "Data Privacy & Residency",
     group: "Trust & Compliance",
     short: "GDPR, DPAs, subprocessors, deletion, and regional data boundaries.",
@@ -312,7 +312,7 @@ window.TOUPPER_DOMAINS = [
 
   /* ----------------------------------------------------- OPERATIONS & SCALE */
   {
-    slug: "deployment",
+    slug: "deployment", chip: "Deployment",
     name: "Deployment Options",
     group: "Operations & Scale",
     short: "Multi-tenant SaaS, single-tenant, VPC, on-prem, air-gapped.",
@@ -337,7 +337,7 @@ window.TOUPPER_DOMAINS = [
     related: ["security", "privacy", "team-management", "sla-support"]
   },
   {
-    slug: "admin-console",
+    slug: "admin-console", chip: "Admin console",
     name: "Admin Console & Change Management",
     group: "Operations & Scale",
     short: "Self-service administration, feature flags per tenant, and rollout control.",
@@ -362,7 +362,7 @@ window.TOUPPER_DOMAINS = [
     related: ["rbac", "team-management", "integrations-api"]
   },
   {
-    slug: "integrations-api",
+    slug: "integrations-api", chip: "API & integrations",
     name: "Integrations & API Platform",
     group: "Operations & Scale",
     short: "Public API, webhooks, marketplace, and the partner story.",
@@ -387,7 +387,7 @@ window.TOUPPER_DOMAINS = [
     related: ["admin-console", "reporting", "rbac"]
   },
   {
-    slug: "reporting",
+    slug: "reporting", chip: "Reporting",
     name: "Reporting & Analytics",
     group: "Operations & Scale",
     short: "Proving value at renewal — dashboards, exports, and warehouse sync.",
@@ -414,7 +414,7 @@ window.TOUPPER_DOMAINS = [
 
   /* ------------------------------------------------------ SERVICE & ADOPTION */
   {
-    slug: "sla-support",
+    slug: "sla-support", chip: "SLA & support",
     name: "SLA, Support & Success",
     group: "Service & Adoption",
     short: "Uptime commitments, severity tiers, escalation, and premium support.",
@@ -439,7 +439,7 @@ window.TOUPPER_DOMAINS = [
     related: ["deployment", "procurement", "onboarding"]
   },
   {
-    slug: "onboarding",
+    slug: "onboarding", chip: "Onboarding",
     name: "Onboarding, Migration & Implementation",
     group: "Service & Adoption",
     short: "Getting from signed contract to production rollout at scale.",
