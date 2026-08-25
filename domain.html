@@ -20,74 +20,59 @@
   var main = document.getElementById('main');
 
   if (!d) {
-    main.innerHTML = '<section class="section"><div class="wrap-narrow empty">' +
-      '<h1 class="h2">No such practice area</h1>' +
-      '<p class="body" style="margin:12px 0 20px">That link does not match anything on the map.</p>' +
-      '<a class="btn" href="domains.html">Back to the readiness map</a></div></section>';
+    main.innerHTML = '<section class="section"><div class="narrow">' +
+      '<h1 class="h1">No such practice area</h1>' +
+      '<p class="body" style="margin:14px 0 22px">That link does not match anything.</p>' +
+      '<a class="btn" href="domains.html">All practice areas</a></div></section>';
     return;
   }
 
   document.title = d.name + ' — ToUpper';
   var xs = T.expertsFor(d.slug);
-  var group = window.TOUPPER_GROUPS.filter(function (g) { return g.name === d.group; })[0] || {};
-
   var li = function (a) { return a.map(function (t) { return '<li>' + T.esc(t) + '</li>'; }).join(''); };
 
   main.innerHTML =
-  '<section style="padding:44px 0 8px"><div class="wrap">' +
-    '<div class="row small muted" style="gap:8px;margin-bottom:20px">' +
-      '<a href="domains.html" style="text-decoration:none">Readiness map</a><span>/</span>' +
-      '<span>' + T.esc(d.group) + '</span>' +
-    '</div>' +
-    '<div class="split">' +
+  '<section class="section"><div class="wrap">' +
+    '<div class="grid split" style="grid-template-columns:1.35fr .65fr;gap:56px;align-items:start">' +
       '<div>' +
-        '<span class="eyebrow">' + T.esc(d.group) + ' — ' + T.esc(group.tag || '') + '</span>' +
-        '<h1 class="h1" style="margin:14px 0 18px">' + T.esc(d.name) + '</h1>' +
+        '<span class="eyebrow">' + T.esc(d.group) + '</span>' +
+        '<h1 class="h1" style="margin:12px 0 18px">' + T.esc(d.name) + '</h1>' +
         '<p class="lede">' + T.esc(d.blurb) + '</p>' +
-      '</div>' +
-      '<div class="card">' +
-        '<span class="eyebrow">On this bench</span>' +
-        '<div class="h1" style="font-family:var(--mono);margin:10px 0 4px">' + xs.length + '</div>' +
-        '<p class="small muted" style="margin-bottom:16px">independent operators list this as a practice area</p>' +
-        '<a class="btn btn-accent" style="width:100%" href="directory.html?d=' + d.slug + '">See them</a>' +
-        '<a class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px" href="brief.html?d=' + d.slug + '">Post a brief in this area</a>' +
-      '</div>' +
-    '</div>' +
-  '</div></section>' +
 
-  '<section class="section-sm"><div class="wrap grid g2" style="gap:16px;align-items:stretch">' +
-    '<div class="card" style="padding:28px">' +
-      '<span class="eyebrow">What good looks like</span>' +
-      '<ul class="checklist" style="margin-top:16px">' + li(d.good) + '</ul>' +
-    '</div>' +
-    '<div class="card" style="padding:28px">' +
-      '<span class="eyebrow">Signals you need help</span>' +
-      '<ul class="signals" style="margin-top:16px">' + li(d.signals) + '</ul>' +
-      '<div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line)">' +
-        '<span class="eyebrow">Typical engagements</span>' +
-        '<div class="pills" style="margin-top:12px">' +
-          d.engagements.map(function (e) { return '<span class="pill">' + T.esc(e) + '</span>'; }).join('') +
+        '<h2 class="h3" style="margin:40px 0 12px">What good looks like</h2>' +
+        '<ul class="list">' + li(d.good) + '</ul>' +
+
+        '<h2 class="h3" style="margin:32px 0 12px">Signals you need help</h2>' +
+        '<ul class="list">' + li(d.signals) + '</ul>' +
+
+        '<h2 class="h3" style="margin:32px 0 12px">Typical engagements</h2>' +
+        '<ul class="list">' + li(d.engagements) + '</ul>' +
+      '</div>' +
+
+      '<div>' +
+        '<div class="card">' +
+          '<span class="eyebrow">On this bench</span>' +
+          '<div class="h1 mono" style="margin:8px 0 6px">' + xs.length + '</div>' +
+          '<p class="small muted" style="margin-bottom:18px">independent operators work in this area</p>' +
+          '<a class="btn btn-accent btn-sm" style="width:100%" href="directory.html?d=' + d.slug + '">See them</a>' +
+        '</div>' +
+        '<div style="margin-top:26px">' +
+          '<span class="eyebrow">Usually comes with</span>' +
+          '<div class="rows" style="margin-top:8px">' + d.related.map(function (r) {
+            var rd = T.domain(r);
+            return '<a href="domain.html?d=' + rd.slug + '"><div class="rt" style="font-size:14.5px">' +
+              T.esc(rd.name) + '</div></a>';
+          }).join('') + '</div>' +
         '</div>' +
       '</div>' +
     '</div>' +
   '</div></section>' +
 
   '<section class="section-sm"><div class="wrap">' +
-    '<div class="section-head"><span class="eyebrow">The bench</span>' +
-      '<h2 class="h2" style="margin-top:12px">Experts in ' + T.esc(d.name.toLowerCase()) + '</h2></div>' +
-    '<div class="grid g3">' + xs.map(function (x) {
-        return T.expertCard(x, { highlight: [d.slug] });
+    '<span class="eyebrow">Experts</span>' +
+    '<div style="margin-top:14px">' + xs.map(function (x) {
+        return T.person(x, { lead: d.slug });
       }).join('') + '</div>' +
-  '</div></section>' +
-
-  '<section class="section-sm"><div class="wrap">' +
-    '<hr class="rule" style="margin-bottom:26px">' +
-    '<span class="eyebrow">Usually comes with</span>' +
-    '<div class="map-items" style="margin-top:16px">' + d.related.map(function (r) {
-      var rd = T.domain(r);
-      return '<a class="map-item" href="domain.html?d=' + rd.slug + '"><b>' + T.esc(rd.name) +
-        '</b><span>' + T.esc(rd.short) + '</span></a>';
-    }).join('') + '</div>' +
   '</div></section>';
 })();
 </script>

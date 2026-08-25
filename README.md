@@ -19,9 +19,9 @@ expertise unusually portable — and worth finding quickly when a deal is on the
 | `index.html` | Landing page — thesis, the readiness map, featured experts |
 | `domains.html` | The full readiness map: 18 practice areas in 5 groups |
 | `domain.html?d=<slug>` | One practice area: what good looks like, signals you need help, typical engagements, the bench |
-| `directory.html` | Filterable expert directory (practice area, engagement type, rate band, availability, free-text search) |
+| `directory.html` | Filterable expert directory (practice area, availability, free-text search) |
 | `expert.html?id=<id>` | Expert profile: track record, practice areas, rate band, shortlist toggle |
-| `assessment.html` | **Readiness scorecard** — 18 questions, one per practice area, in 5 steps. Produces a score, a per-area breakdown, the three widest gaps, and matched experts |
+| `assessment.html` | **Readiness scorecard** — 18 questions, one per practice area, in 5 steps. Produces a score, the three widest gaps, matched experts, and a per-area breakdown behind a disclosure |
 | `brief.html` | Post a brief. Carries over scorecard gaps and your saved shortlist |
 | `apply.html` | For practitioners: vetting, fees, and an application form |
 
@@ -40,6 +40,16 @@ specialists rather than generalists:
 
 Splitting billing out of "product assortment", and provisioning out of "single sign-on",
 is the main departure from the source: those are where people actually specialise.
+
+## Design
+
+One page, one job. The site leans on whitespace and hairline rules rather than
+boxes, badges and colour: practice areas and experts are rule-separated list
+rows, not cards. There is a single accent (blue) plus one highlight in the hero,
+and each page carries three or four blocks at most. Detail that only some
+readers want — the full eighteen-area breakdown on the scorecard, the per-option
+wording in the quiz — is one disclosure or tooltip away rather than always on
+screen.
 
 ## Assumptions made
 

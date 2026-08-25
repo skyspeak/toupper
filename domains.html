@@ -3,24 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The readiness map — ToUpper</title>
-<meta name="description" content="Eighteen practice areas that make up enterprise readiness, from single sign-on and provisioning to billing, compliance and deployment options.">
+<title>Practice areas — ToUpper</title>
+<meta name="description" content="The eighteen practice areas that make up enterprise readiness, from single sign-on and provisioning to billing, compliance and deployment.">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
 <div id="site-header"></div>
 
-<section class="section-sm" style="padding-top:56px">
+<section class="section">
   <div class="wrap">
-    <span class="eyebrow">The readiness map</span>
-    <h1 class="h1" style="margin:14px 0 16px;max-width:20ch">Everything that breaks when you sell to a large company</h1>
-    <p class="lede" style="max-width:66ch">Eighteen practice areas, grouped five ways. The taxonomy starts from the twelve chapters of <a href="https://www.enterpriseready.io/" rel="noopener">enterpriseready.io</a> — Replicated's study of fifty leading SaaS applications — and splits further where a genuine speciality has emerged: billing and revenue operations, directory provisioning, procurement enablement.</p>
-    <p class="body" style="max-width:66ch;margin-top:14px">You will not need all of these. Most companies moving upmarket are blocked by four or five, and the order is set by which deals are on the table. If you are not sure which, <a href="assessment.html">the scorecard</a> takes about four minutes.</p>
+    <div class="head">
+      <span class="eyebrow">Practice areas</span>
+      <h1 class="h1">Everything that breaks when you sell to a large company</h1>
+      <p class="body">Eighteen areas in five groups, adapted from the twelve chapters of <a class="link" href="https://www.enterpriseready.io/" rel="noopener">enterpriseready.io</a> and split further where real specialists exist. Most companies are blocked by four or five — <a class="link" href="assessment.html">the scorecard</a> tells you which.</p>
+    </div>
+    <div id="groups"></div>
   </div>
-</section>
-
-<section style="padding-bottom:40px">
-  <div class="wrap" id="map"></div>
 </section>
 
 <div id="site-footer"></div>
@@ -28,26 +26,20 @@
 <script src="data/experts.js"></script>
 <script src="assets/js/core.js"></script>
 <script>
-document.getElementById('map').innerHTML = window.TOUPPER_GROUPS.map(function (g) {
+document.getElementById('groups').innerHTML = window.TOUPPER_GROUPS.map(function (g) {
   var ds = T.domains.filter(function (d) { return d.group === g.name; });
-  var items = ds.map(function (d) {
-    var xs = T.expertsFor(d.slug);
-    var faces = xs.slice(0, 4).map(function (x) {
-      return '<span style="margin-left:-8px;display:inline-block">' +
-        T.avatar(x, { size: 30, ring: true }) + '</span>';
-    }).join('');
-    return '<a class="card" href="domain.html?d=' + d.slug + '" style="display:flex;flex-direction:column;gap:10px">' +
-      '<h3 class="h3">' + T.esc(d.name) + '</h3>' +
-      '<p class="small body" style="flex:1">' + T.esc(d.short) + '</p>' +
-      '<div class="row" style="margin-top:6px;padding-top:12px;border-top:1px solid var(--line)">' +
-        '<div style="display:flex;padding-left:8px">' + faces + '</div>' +
-        '<span class="tiny muted" style="margin-left:auto">' + xs.length + ' expert' + (xs.length === 1 ? '' : 's') + '</span>' +
+  return '<div style="margin-bottom:40px">' +
+    '<div class="spread" style="margin-bottom:6px">' +
+      '<span class="eyebrow">' + T.esc(g.name) + '</span>' +
+      '<span class="tiny muted">' + T.esc(g.tag) + '</span>' +
+    '</div>' +
+    '<div class="rows">' + ds.map(function (d) {
+      var n = T.expertsFor(d.slug).length;
+      return '<a href="domain.html?d=' + d.slug + '"><div class="row-split">' +
+        '<div><div class="rt">' + T.esc(d.name) + '</div><div class="rd">' + T.esc(d.short) + '</div></div>' +
+        '<span class="rmeta">' + n + ' expert' + (n === 1 ? '' : 's') + '</span>' +
       '</div></a>';
-  }).join('');
-  return '<div class="map-group"><div class="map-head"><h3>' + T.esc(g.name) + '</h3>' +
-    '<span class="small muted">' + T.esc(g.tag) + '</span>' +
-    '<span class="tiny mono muted" style="margin-left:auto">' + ds.length + ' areas</span></div>' +
-    '<div class="grid g4">' + items + '</div></div>';
+    }).join('') + '</div></div>';
 }).join('');
 </script>
 </body>

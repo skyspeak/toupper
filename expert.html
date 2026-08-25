@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Expert profile — ToUpper</title>
+<title>Expert — ToUpper</title>
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
@@ -20,88 +20,60 @@
   var main = document.getElementById('main');
 
   if (!x) {
-    main.innerHTML = '<section class="section"><div class="wrap-narrow empty">' +
-      '<h1 class="h2">Profile not found</h1>' +
-      '<p class="body" style="margin:12px 0 20px">That profile link does not resolve.</p>' +
-      '<a class="btn" href="directory.html">Back to the directory</a></div></section>';
+    main.innerHTML = '<section class="section"><div class="narrow">' +
+      '<h1 class="h1">Profile not found</h1>' +
+      '<p class="body" style="margin:14px 0 22px">That profile link does not resolve.</p>' +
+      '<a class="btn" href="directory.html">All experts</a></div></section>';
     return;
   }
 
-  document.title = x.name + ' — ' + x.headline + ' — ToUpper';
+  document.title = x.name + ' — ToUpper';
   var saved = T.shortlist().indexOf(x.id) > -1;
 
-  var domCards = x.domains.map(function (s) {
-    var d = T.domain(s);
-    return '<a class="map-item" href="domain.html?d=' + d.slug + '"><b>' + T.esc(d.name) +
-      '</b><span>' + T.esc(d.short) + '</span></a>';
-  }).join('');
-
-  /* others who share the most practice areas */
-  var also = T.experts.filter(function (o) { return o.id !== x.id; }).map(function (o) {
-    return { o: o, n: o.domains.filter(function (d) { return x.domains.indexOf(d) > -1; }).length };
-  }).filter(function (r) { return r.n > 0; })
-    .sort(function (a, b) { return b.n - a.n || b.o.engagements - a.o.engagements; })
-    .slice(0, 3);
-
   main.innerHTML =
-  '<section style="padding:40px 0 0"><div class="wrap">' +
-    '<div class="row small muted" style="gap:8px;margin-bottom:24px">' +
-      '<a href="directory.html" style="text-decoration:none">Directory</a><span>/</span><span>' + T.esc(x.name) + '</span>' +
-    '</div>' +
-    '<div class="split">' +
-
+  '<section class="section"><div class="wrap">' +
+    '<div class="grid split" style="grid-template-columns:1.35fr .65fr;gap:56px;align-items:start">' +
       '<div>' +
-        '<div class="row" style="align-items:flex-start;gap:18px;margin-bottom:22px">' + T.avatar(x, true) +
-          '<div>' +
-            '<h1 class="h1" style="font-size:34px">' + T.esc(x.name) + '</h1>' +
-            '<p class="lede" style="margin-top:8px;color:var(--muted)">' + T.esc(x.headline) + '</p>' +
-          '</div>' +
+        '<div class="row" style="align-items:flex-start;gap:16px;margin-bottom:22px">' + T.avatar(x, true) +
+          '<div><h1 class="h1">' + T.esc(x.name) + '</h1>' +
+          '<p class="lede muted" style="margin-top:4px">' + T.esc(x.headline) + '</p></div>' +
         '</div>' +
-        '<p class="serif" style="font-size:21px;line-height:1.45;font-style:italic;border-left:3px solid var(--lime);padding-left:16px;margin-bottom:26px">' +
-          T.esc(x.quote) + '</p>' +
-        '<div class="prose" style="max-width:64ch"><p>' + T.esc(x.bio) + '</p></div>' +
+        '<p class="quote" style="margin-bottom:24px">“' + T.esc(x.quote) + '”</p>' +
+        '<div class="prose" style="max-width:62ch"><p>' + T.esc(x.bio) + '</p></div>' +
 
-        '<div style="margin-top:34px">' +
-          '<span class="eyebrow">Track record</span>' +
-          '<ul class="checklist" style="margin-top:16px;max-width:70ch">' +
-            x.proof.map(function (p) { return '<li>' + T.esc(p) + '</li>'; }).join('') +
-          '</ul>' +
-          '<p class="tiny muted" style="margin-top:14px">Sample data — company names and outcomes are illustrative. On a live directory each claim carries a reference we have checked.</p>' +
-        '</div>' +
+        '<h2 class="h3" style="margin:36px 0 12px">Track record</h2>' +
+        '<ul class="list" style="max-width:66ch">' +
+          x.proof.map(function (p) { return '<li>' + T.esc(p) + '</li>'; }).join('') +
+        '</ul>' +
+        '<p class="tiny muted" style="margin-top:14px">Sample data — names and outcomes are illustrative.</p>' +
 
-        '<div style="margin-top:38px">' +
-          '<span class="eyebrow">Practice areas</span>' +
-          '<div class="map-items" style="margin-top:14px;grid-template-columns:repeat(2,1fr)">' + domCards + '</div>' +
-        '</div>' +
+        '<h2 class="h3" style="margin:36px 0 10px">Practice areas</h2>' +
+        '<div class="rows">' + x.domains.map(function (s) {
+          var d = T.domain(s);
+          return '<a href="domain.html?d=' + d.slug + '"><div class="row-split">' +
+            '<div class="rt" style="font-size:15px">' + T.esc(d.name) + '</div>' +
+            '<span class="rmeta">' + T.expertsFor(d.slug).length + ' experts</span></div></a>';
+        }).join('') + '</div>' +
       '</div>' +
 
-      '<div class="card" style="position:sticky;top:90px">' +
-        '<span class="pill ' + T.availTone(x.avail) + '" style="margin-bottom:16px">' + T.esc(x.avail) + '</span>' +
+      '<div class="card">' +
         '<dl class="kv" style="margin-bottom:20px">' +
+          '<dt>Available</dt><dd>' + T.esc(x.avail) + '</dd>' +
           '<dt>Focus</dt><dd>' + T.esc(x.focus) + '</dd>' +
-          '<dt>Based</dt><dd>' + T.esc(x.location) + ' <span class="muted mono tiny">' + T.esc(x.tz) + '</span></dd>' +
-          '<dt>Experience</dt><dd>' + x.years + ' years · ' + x.engagements + ' engagements</dd>' +
+          '<dt>Based</dt><dd>' + T.esc(x.location) + '</dd>' +
+          '<dt>Experience</dt><dd>' + x.years + ' years</dd>' +
           '<dt>Works as</dt><dd>' + x.modes.join(', ') + '</dd>' +
-          '<dt>Rate band</dt><dd><span class="mono">' + T.rateLabel(x.rate) + '</span> — ' + T.esc(T.rateRange(x.rate)) + '</dd>' +
+          '<dt>Rate</dt><dd>' + T.esc(T.rateRange(x.rate)) + '</dd>' +
         '</dl>' +
-        '<a class="btn btn-accent" style="width:100%" href="brief.html?expert=' + encodeURIComponent(x.id) + '">Request an intro</a>' +
+        '<a class="btn btn-accent btn-sm" style="width:100%" href="brief.html?expert=' + encodeURIComponent(x.id) + '">Request an intro</a>' +
         '<button class="btn btn-ghost btn-sm" id="save" style="width:100%;margin-top:8px">' +
-          (saved ? 'Saved to shortlist ✓' : 'Add to shortlist') + '</button>' +
-        '<p class="tiny muted" style="margin-top:14px">Intros go out within two business days. First call is free and scoped — bring the deal, not just the ticket.</p>' +
+          (saved ? 'Saved ✓' : 'Save for later') + '</button>' +
       '</div>' +
     '</div>' +
-  '</div></section>' +
-
-  (also.length ? '<section class="section-sm" style="margin-top:40px"><div class="wrap">' +
-    '<hr class="rule" style="margin-bottom:26px">' +
-    '<span class="eyebrow">Others in the same practice areas</span>' +
-    '<div class="grid g3" style="margin-top:18px">' +
-      also.map(function (r) { return T.expertCard(r.o, { highlight: x.domains }); }).join('') +
-    '</div></div></section>' : '');
+  '</div></section>';
 
   document.getElementById('save').addEventListener('click', function () {
-    var on = T.toggleShortlist(x.id);
-    this.textContent = on ? 'Saved to shortlist ✓' : 'Add to shortlist';
+    this.textContent = T.toggleShortlist(x.id) ? 'Saved ✓' : 'Save for later';
   });
 })();
 </script>

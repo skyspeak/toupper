@@ -3,35 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Enterprise readiness scorecard — ToUpper</title>
-<meta name="description" content="Eighteen questions, one per practice area. Get a ranked list of the gaps blocking your enterprise deals — and the people who fix them.">
+<title>Readiness scorecard — ToUpper</title>
+<meta name="description" content="Eighteen questions, one per practice area. Get a ranked list of the gaps blocking your enterprise deals.">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
 <div id="site-header"></div>
 
-<section style="padding:44px 0 0">
-  <div class="wrap-narrow" id="intro">
-    <span class="eyebrow">Readiness scorecard</span>
-    <h1 class="h1" style="margin:14px 0 16px">Where are you actually blocked?</h1>
-    <p class="lede">Eighteen questions, one for each practice area on the readiness map. Answer honestly — the useful output is the ranked list of gaps, not the number. Nothing is sent anywhere; results stay in this browser.</p>
-  </div>
-</section>
+<section class="section">
+  <div class="narrow">
+    <div id="intro" class="head" style="margin-bottom:36px">
+      <span class="eyebrow">Scorecard</span>
+      <h1 class="h1">Where are you actually blocked?</h1>
+      <p class="body">Eighteen questions, one per practice area. Answer honestly — the useful output is the ranked list of gaps, not the number. Nothing leaves this browser.</p>
+    </div>
 
-<section class="section-sm">
-  <div class="wrap-narrow">
     <div id="quiz">
-      <div class="steps" id="steps"></div>
-      <div class="card" style="padding:30px">
-        <div id="stepHead" style="margin-bottom:6px"></div>
-        <div id="qs"></div>
-        <div class="spread" style="margin-top:26px;padding-top:20px;border-top:1px solid var(--line)">
-          <button class="btn btn-ghost" id="back">Back</button>
-          <span class="small muted" id="progress"></span>
-          <button class="btn btn-accent" id="next">Continue</button>
-        </div>
+      <div class="progress">
+        <span class="eyebrow" id="stepLabel"></span>
+        <span class="tiny muted" id="answered"></span>
+      </div>
+      <div class="track"><i id="trackFill" style="width:0"></i></div>
+      <h2 class="h2" id="groupName" style="margin-bottom:4px"></h2>
+      <p class="small muted" id="groupTag" style="margin-bottom:18px"></p>
+      <div id="qs"></div>
+      <div class="spread" style="margin-top:26px">
+        <button class="btn btn-ghost btn-sm" id="back">Back</button>
+        <button class="btn btn-accent" id="next">Continue</button>
       </div>
     </div>
+
     <div id="results" class="hide"></div>
   </div>
 </section>
@@ -45,33 +46,28 @@
 (function () {
   var Q = window.TOUPPER_QUESTIONS;
   var GROUPS = window.TOUPPER_GROUPS;
-  var answers = {};
-  var step = 0;
+  var LABELS = ['Not yet', 'Partly', 'Solid'];
+  var answers = {}, step = 0;
 
   var prev = T.loadScores();
   if (prev && prev.answers) answers = prev.answers;
 
-  var el = {
-    quiz: document.getElementById('quiz'), results: document.getElementById('results'),
-    steps: document.getElementById('steps'), qs: document.getElementById('qs'),
-    head: document.getElementById('stepHead'), back: document.getElementById('back'),
-    next: document.getElementById('next'), progress: document.getElementById('progress'),
-    intro: document.getElementById('intro')
-  };
+  var el = {};
+  ['quiz','results','qs','back','next','intro','stepLabel','answered','trackFill','groupName','groupTag']
+    .forEach(function (id) { el[id] = document.getElementById(id); });
 
   function groupDomains(i) {
     return T.domains.filter(function (d) { return d.group === GROUPS[i].name; });
   }
+  function countAnswered() { return Object.keys(answers).length; }
 
   function render() {
-    el.steps.innerHTML = GROUPS.map(function (g, i) {
-      return '<div class="step-dot ' + (i < step ? 'done' : i === step ? 'on' : '') + '" title="' + T.esc(g.name) + '"></div>';
-    }).join('');
-
     var g = GROUPS[step], ds = groupDomains(step);
-    el.head.innerHTML = '<span class="eyebrow">Step ' + (step + 1) + ' of ' + GROUPS.length + '</span>' +
-      '<h2 class="h2" style="margin:10px 0 4px">' + T.esc(g.name) + '</h2>' +
-      '<p class="small muted" style="margin-bottom:8px">' + T.esc(g.tag) + '</p>';
+    el.stepLabel.textContent = 'Step ' + (step + 1) + ' of ' + GROUPS.length;
+    el.answered.textContent = countAnswered() + ' of ' + T.domains.length + ' answered';
+    el.trackFill.style.width = (countAnswered() / T.domains.length * 100) + '%';
+    el.groupName.textContent = g.name;
+    el.groupTag.textContent = g.tag;
 
     el.qs.innerHTML = ds.map(function (d) {
       var q = Q[d.slug];
@@ -79,14 +75,11 @@
         '<div class="qt">' + T.esc(q.q) + '</div>' +
         '<div class="qs">' + T.esc(q.s) + '</div>' +
         '<div class="opts">' + q.a.map(function (a, i) {
-          var on = answers[d.slug] === i ? ' on' : '';
-          return '<button class="opt' + on + '" data-v="' + i + '"><b>' +
-            ['Not yet', 'Partly', 'Solid'][i] + '</b>' + T.esc(a) + '</button>';
+          return '<button class="opt' + (answers[d.slug] === i ? ' on' : '') + '" data-v="' + i +
+            '" title="' + T.esc(a) + '">' + LABELS[i] + '</button>';
         }).join('') + '</div></div>';
     }).join('');
 
-    var done = Object.keys(answers).length;
-    el.progress.textContent = done + ' of ' + T.domains.length + ' answered';
     el.back.style.visibility = step === 0 ? 'hidden' : 'visible';
     el.next.textContent = step === GROUPS.length - 1 ? 'See my scorecard' : 'Continue';
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -94,19 +87,18 @@
 
   el.qs.addEventListener('click', function (e) {
     var b = e.target.closest('.opt'); if (!b) return;
-    var slug = b.closest('.q').getAttribute('data-d');
-    answers[slug] = Number(b.getAttribute('data-v'));
+    answers[b.closest('.q').getAttribute('data-d')] = Number(b.getAttribute('data-v'));
     Array.prototype.forEach.call(b.parentNode.children, function (c) { c.classList.remove('on'); });
     b.classList.add('on');
-    el.progress.textContent = Object.keys(answers).length + ' of ' + T.domains.length + ' answered';
+    el.answered.textContent = countAnswered() + ' of ' + T.domains.length + ' answered';
+    el.trackFill.style.width = (countAnswered() / T.domains.length * 100) + '%';
   });
 
   el.back.addEventListener('click', function () { if (step > 0) { step--; render(); } });
   el.next.addEventListener('click', function () {
     var missing = groupDomains(step).filter(function (d) { return answers[d.slug] === undefined; });
     if (missing.length) {
-      el.progress.innerHTML = '<span style="color:var(--warn)">' + missing.length +
-        ' unanswered on this step</span>';
+      el.answered.innerHTML = '<span style="color:var(--warn)">' + missing.length + ' unanswered</span>';
       var first = el.qs.querySelector('.q[data-d="' + missing[0].slug + '"]');
       if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
@@ -114,111 +106,88 @@
     if (step < GROUPS.length - 1) { step++; render(); } else finish();
   });
 
-  /* ------------------------------------------------------------ results */
   function finish() {
     T.saveScores({ answers: answers, at: Date.now() });
 
     var scored = T.domains.map(function (d) {
       var v = answers[d.slug] || 0;
-      return { d: d, v: v, pct: Math.round((v / 2) * 100), gap: 2 - v };
+      return { d: d, v: v, pct: Math.round(v / 2 * 100) };
     });
-    var total = scored.reduce(function (a, s) { return a + s.v; }, 0);
-    var pct = Math.round((total / (T.domains.length * 2)) * 100);
+    var pct = Math.round(scored.reduce(function (a, s) { return a + s.v; }, 0) / (T.domains.length * 2) * 100);
 
-    var band = pct >= 80 ? ['Enterprise-ready', 'You are past the structural blockers. What is left is depth — the areas below are where a specialist buys you speed, not survival.']
-             : pct >= 55 ? ['Deal-capable, with gaps', 'You can win enterprise deals, but a few of these will surface in every security review and slow the cycle. Fix the top three before the next pursuit.']
-             : pct >= 30 ? ['Upmarket in progress', 'The pattern here is familiar: a product that works for teams, meeting buyers who expect a platform. The list below is roughly the order to take it in.']
-             : ['Early', 'Almost everything here is ahead of you — which is fine, and cheaper to sequence deliberately than to build under a deal deadline. Start with what the deals on your table actually require.'];
+    var band = pct >= 80 ? ['Enterprise-ready', 'Past the structural blockers. What is left is depth.']
+             : pct >= 55 ? ['Deal-capable, with gaps', 'You can win these deals, but a few of these surface in every security review.']
+             : pct >= 30 ? ['Upmarket in progress', 'A product that works for teams, meeting buyers who expect a platform.']
+             : ['Early', 'Most of this is ahead of you — cheaper to sequence deliberately than to build under a deadline.'];
 
     var gaps = {};
-    scored.forEach(function (s) { if (s.gap > 0) gaps[s.d.slug] = s.gap; });
-    var ranked = T.rank(gaps).slice(0, 6);
-    var worst = scored.slice().sort(function (a, b) { return a.v - b.v || a.d.name.localeCompare(b.d.name); });
-    var top3 = worst.filter(function (s) { return s.v < 2; }).slice(0, 3);
+    scored.forEach(function (s) { if (s.v < 2) gaps[s.d.slug] = 2 - s.v; });
+    var ranked = T.rank(gaps).slice(0, 3);
+    var top3 = scored.slice().sort(function (a, b) { return a.v - b.v; })
+      .filter(function (s) { return s.v < 2; }).slice(0, 3);
 
-    var C = 2 * Math.PI * 72;
-    var dash = C * (pct / 100);
-
-    var byGroup = GROUPS.map(function (g) {
-      var rows = scored.filter(function (s) { return s.d.group === g.name; })
-        .sort(function (a, b) { return a.v - b.v; }).map(function (s) {
-          return '<div class="bar-row lvl-' + (s.v === 0 ? 0 : s.v === 1 ? 1 : 3) + '">' +
-            '<a href="domain.html?d=' + s.d.slug + '">' + T.esc(s.d.name) + '</a>' +
-            '<div class="bar"><i style="width:' + Math.max(s.pct, 3) + '%"></i></div>' +
-            '<span class="n">' + ['gap', 'partial', 'solid'][s.v] + '</span></div>';
-        }).join('');
-      var gsum = scored.filter(function (s) { return s.d.group === g.name; });
-      var gp = Math.round(gsum.reduce(function (a, s) { return a + s.v; }, 0) / (gsum.length * 2) * 100);
-      return '<div class="map-group"><div class="map-head"><h3>' + T.esc(g.name) +
-        '</h3><span class="mono small muted" style="margin-left:auto">' + gp + '%</span></div>' + rows + '</div>';
-    }).join('');
+    var C = 2 * Math.PI * 52, dash = C * pct / 100;
 
     el.results.innerHTML =
-      '<div class="card" style="padding:34px;margin-bottom:16px">' +
-        '<div class="score-hero">' +
-          '<div class="dial"><svg width="168" height="168">' +
-            '<circle cx="84" cy="84" r="72" fill="none" stroke="var(--bg-2)" stroke-width="14"/>' +
-            '<circle cx="84" cy="84" r="72" fill="none" stroke="var(--accent)" stroke-width="14" stroke-linecap="round" ' +
-              'stroke-dasharray="' + dash + ' ' + (C - dash) + '"/></svg>' +
-            '<div class="val"><b>' + pct + '</b><span>readiness</span></div></div>' +
-          '<div><span class="eyebrow">Your result</span>' +
-            '<h2 class="h1" style="margin:10px 0 12px">' + band[0] + '</h2>' +
-            '<p class="body">' + band[1] + '</p></div>' +
-        '</div>' +
+      '<div class="score">' +
+        '<div class="dial"><svg width="120" height="120">' +
+          '<circle cx="60" cy="60" r="52" fill="none" stroke="var(--line)" stroke-width="8"/>' +
+          '<circle cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="8" ' +
+            'stroke-linecap="round" stroke-dasharray="' + dash + ' ' + (C - dash) + '"/></svg>' +
+          '<div class="val"><b>' + pct + '</b></div></div>' +
+        '<div><span class="eyebrow">Your result</span>' +
+          '<h1 class="h1" style="margin:8px 0 8px">' + band[0] + '</h1>' +
+          '<p class="body">' + band[1] + '</p></div>' +
       '</div>' +
 
-      (top3.length ? '<div class="card" style="padding:30px;margin-bottom:16px">' +
-        '<span class="eyebrow">Start here</span>' +
-        '<h3 class="h2" style="margin:12px 0 18px">Your three widest gaps</h3>' +
-        '<div class="grid g3">' + top3.map(function (s) {
-          return '<a class="card" href="domain.html?d=' + s.d.slug + '" style="background:var(--bg);border-color:var(--line-2)">' +
-            '<span class="pill ' + (s.v === 0 ? 'pill-warn' : '') + '">' + (s.v === 0 ? 'Gap' : 'Partial') + '</span>' +
-            '<h4 class="h3" style="margin:12px 0 8px">' + T.esc(s.d.name) + '</h4>' +
-            '<p class="small body">' + T.esc(s.d.signals[0]) + '</p>' +
-            '<p class="tiny mono" style="margin-top:12px;color:var(--accent)">' + T.expertsFor(s.d.slug).length + ' experts →</p></a>';
-        }).join('') + '</div></div>' : '') +
+      (top3.length ?
+        '<h2 class="h3" style="margin:44px 0 4px">Start here</h2>' +
+        '<p class="small muted" style="margin-bottom:10px">Your widest gaps, in order.</p>' +
+        '<div class="rows">' + top3.map(function (s) {
+          return '<a href="domain.html?d=' + s.d.slug + '"><div class="row-split">' +
+            '<div><div class="rt">' + T.esc(s.d.name) + '</div>' +
+            '<div class="rd">' + T.esc(s.d.signals[0]) + '</div></div>' +
+            '<span class="rmeta">' + (s.v === 0 ? 'gap' : 'partial') + '</span></div></a>';
+        }).join('') + '</div>' : '') +
 
-      '<div class="card" style="padding:30px;margin-bottom:16px">' +
-        '<span class="eyebrow">Full scorecard</span>' +
-        '<h3 class="h2" style="margin:12px 0 6px">All eighteen areas</h3>' +
-        byGroup +
-      '</div>' +
+      '<details style="margin-top:14px"><summary>All eighteen areas</summary><div>' +
+        GROUPS.map(function (g) {
+          var rows = scored.filter(function (s) { return s.d.group === g.name; })
+            .sort(function (a, b) { return a.v - b.v; }).map(function (s) {
+              return '<div class="bar-row lvl-' + s.v + '">' +
+                '<a href="domain.html?d=' + s.d.slug + '">' + T.esc(s.d.name) + '</a>' +
+                '<div class="bar"><i style="width:' + Math.max(s.pct, 4) + '%"></i></div>' +
+                '<span class="n">' + ['gap', 'partial', 'solid'][s.v] + '</span></div>';
+            }).join('');
+          return '<div style="margin-top:18px"><span class="eyebrow">' + T.esc(g.name) + '</span>' + rows + '</div>';
+        }).join('') +
+      '</div></details>' +
 
-      (ranked.length ? '<div style="margin:36px 0 16px">' +
-        '<span class="eyebrow">Matched to your gaps</span>' +
-        '<h3 class="h2" style="margin:12px 0 6px">Who works on this</h3>' +
-        '<p class="body small" style="margin-bottom:20px;max-width:60ch">Ranked by overlap with your widest gaps, weighted toward specialists and current availability.</p>' +
-        '<div class="grid g2">' + ranked.map(function (r) {
-          var hit = r.hits.filter(function (h) { return gaps[h] === 2; });
-          return T.expertCard(r.expert, {
-            highlight: Object.keys(gaps),
-            badge: (hit.length ? hit.length : r.hits.length) + ' match' + ((hit.length || r.hits.length) === 1 ? '' : 'es')
-          });
-        }).join('') + '</div></div>' : '') +
+      (ranked.length ?
+        '<h2 class="h3" style="margin:44px 0 10px">Who works on this</h2>' +
+        ranked.map(function (r) { return T.person(r.expert, { lead: r.hits[0] }); }).join('') : '') +
 
-      '<div class="card" style="padding:30px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:space-between">' +
-        '<div style="max-width:46ch"><h3 class="h3">Turn this into a brief</h3>' +
-        '<p class="body small" style="margin-top:8px">We will carry your top gaps over. Add the deal you are trying to close and we will come back with two or three names.</p></div>' +
-        '<div class="row" style="gap:8px">' +
-          '<button class="btn btn-ghost" id="redo">Retake</button>' +
-          '<a class="btn btn-accent" href="brief.html?from=scorecard">Post a brief</a>' +
-        '</div>' +
+      '<div class="spread" style="margin-top:40px;align-items:center">' +
+        '<a class="btn btn-accent" href="brief.html?from=scorecard">Turn this into a brief</a>' +
+        '<button class="link small" id="redo" style="background:none;border:0;cursor:pointer">Retake</button>' +
       '</div>';
 
     el.quiz.classList.add('hide');
     el.intro.classList.add('hide');
     el.results.classList.remove('hide');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
     document.getElementById('redo').addEventListener('click', function () {
       answers = {}; step = 0;
-      el.results.classList.add('hide'); el.quiz.classList.remove('hide'); el.intro.classList.remove('hide');
       T.saveScores({ answers: {}, at: Date.now() });
+      el.results.classList.add('hide');
+      el.quiz.classList.remove('hide');
+      el.intro.classList.remove('hide');
       render();
     });
   }
 
-  /* Returning visitor with a complete set: show results straight away. */
-  if (Object.keys(answers).length === T.domains.length) finish(); else render();
+  if (countAnswered() === T.domains.length) finish(); else render();
 })();
 </script>
 </body>
