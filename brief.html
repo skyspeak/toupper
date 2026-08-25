@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Post a brief — ToUpper</title>
+<meta name="description" content="Describe the enterprise deal you are trying to close and the constraint in your way. We come back with two or three names.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section style="padding:44px 0 0">
+  <div class="wrap" style="max-width:960px">
+    <span class="eyebrow">Post a brief</span>
+    <h1 class="h1" style="margin:14px 0 16px;max-width:22ch">Tell us the deal, not just the ticket</h1>
+    <p class="lede" style="max-width:62ch">The best briefs describe a commercial situation — a contract in flight, a review that stalled, a renewal at risk. That is what lets us pick between someone who has done the migration and someone who has only read about it.</p>
+  </div>
+</section>
+
+<section class="section-sm">
+  <div class="wrap" style="max-width:960px">
+    <div class="split-form">
+      <form class="card" style="padding:30px" id="briefForm" novalidate>
+        <div id="carried"></div>
+
+        <label class="field"><span>What are you trying to do?</span>
+          <span class="hint">One or two sentences. The situation, not the feature list.</span>
+          <textarea class="input" id="what" placeholder="We have a signed LOI with a 12,000-seat customer. Their IT team requires SAML plus SCIM deprovisioning before go-live in November, and our accounts are all email-and-password today."></textarea>
+        </label>
+
+        <label class="field"><span>Practice areas</span>
+          <span class="hint">Pick everything that is genuinely in scope.</span>
+          <div class="choice-grid" id="domainPick"></div>
+        </label>
+
+        <div class="grid g2" style="gap:16px">
+          <label class="field"><span>Engagement shape</span>
+            <select class="input" id="shape">
+              <option>Not sure yet — help me scope it</option>
+              <option>Short assessment (1–3 weeks)</option>
+              <option>Scoped project (1–3 months)</option>
+              <option>Fractional, ongoing</option>
+              <option>Advisory / a few hours a month</option>
+            </select>
+          </label>
+          <label class="field"><span>When does this need to move?</span>
+            <select class="input" id="when">
+              <option>This month — there is a deadline</option>
+              <option>This quarter</option>
+              <option>Next quarter</option>
+              <option>Exploring</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid g2" style="gap:16px">
+          <label class="field"><span>Budget range</span>
+            <select class="input" id="budget">
+              <option>Not set yet</option>
+              <option>Under $15k</option>
+              <option>$15k–40k</option>
+              <option>$40k–100k</option>
+              <option>Over $100k</option>
+            </select>
+          </label>
+          <label class="field"><span>Company stage</span>
+            <select class="input" id="stage">
+              <option>Seed</option><option>Series A</option><option>Series B</option>
+              <option>Series C+</option><option>Bootstrapped / profitable</option><option>Public or PE-owned</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid g2" style="gap:16px">
+          <label class="field"><span>Your name</span><input class="input" id="name" autocomplete="name"></label>
+          <label class="field"><span>Work email</span><input class="input" id="email" type="email" autocomplete="email"></label>
+        </div>
+
+        <div class="notice notice-warn" style="margin-bottom:18px">
+          Demo build — this form does not submit anywhere. Nothing you type leaves the browser, and no email is sent.
+        </div>
+        <button class="btn btn-accent btn-lg" type="submit" style="width:100%">Preview my brief</button>
+      </form>
+
+      <aside>
+        <div class="card" style="margin-bottom:16px">
+          <span class="eyebrow">What happens next</span>
+          <ul class="numlist" style="margin-top:16px">
+            <li style="padding-left:38px"><b style="font-size:14.5px">We read it</b><span class="small body">A person, not a keyword match.</span></li>
+            <li style="padding-left:38px"><b style="font-size:14.5px">Two or three names</b><span class="small body">With why each one, inside two business days.</span></li>
+            <li style="padding-left:38px;margin-bottom:0"><b style="font-size:14.5px">A scoped first call</b><span class="small body">Free, and specific. You will know within 30 minutes.</span></li>
+          </ul>
+        </div>
+        <div class="card" id="shortlistCard"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="data/domains.js"></script>
+<script src="data/experts.js"></script>
+<script src="assets/js/core.js"></script>
+<script>
+(function () {
+  var pre = [];
+  var dparam = T.param('d');
+  if (dparam && T.domain(dparam)) pre.push(dparam);
+
+  var expert = T.expert(T.param('expert'));
+  if (expert) pre = pre.concat(expert.domains.slice(0, 2));
+
+  var scores = T.loadScores();
+  var carried = [];
+  if (T.param('from') === 'scorecard' && scores && scores.answers) {
+    carried = T.domains.filter(function (d) { return (scores.answers[d.slug] || 0) < 2; })
+      .sort(function (a, b) { return (scores.answers[a.slug] || 0) - (scores.answers[b.slug] || 0); })
+      .slice(0, 3).map(function (d) { return d.slug; });
+    pre = pre.concat(carried);
+  }
+  pre = pre.filter(function (v, i, a) { return a.indexOf(v) === i; });
+
+  /* carried-over context */
+  var bits = [];
+  if (expert) bits.push('<div class="notice" style="margin-bottom:18px">Requesting an introduction to <b>' +
+    T.esc(expert.name) + '</b> — ' + T.esc(expert.headline.toLowerCase()) + '. Add the context below and we will pass it on.</div>');
+  if (carried.length) bits.push('<div class="notice" style="margin-bottom:18px">Carried over from your scorecard: your widest gaps are <b>' +
+    carried.map(T.domainName).map(T.esc).join('</b>, <b>') + '</b>. Adjust if that is not where you want to start.</div>');
+  document.getElementById('carried').innerHTML = bits.join('');
+
+  /* practice area picker, grouped */
+  document.getElementById('domainPick').innerHTML = T.domains.map(function (d) {
+    var on = pre.indexOf(d.slug) > -1;
+    return '<label class="choice' + (on ? ' on' : '') + '"><input type="checkbox" value="' + d.slug + '"' +
+      (on ? ' checked' : '') + '><span>' + T.esc(d.name) + '</span></label>';
+  }).join('');
+  document.getElementById('domainPick').addEventListener('change', function (e) {
+    e.target.closest('.choice').classList.toggle('on', e.target.checked);
+  });
+
+  /* shortlist panel */
+  function paintShortlist() {
+    var ids = T.shortlist();
+    var c = document.getElementById('shortlistCard');
+    if (!ids.length) {
+      c.innerHTML = '<span class="eyebrow">Your shortlist</span>' +
+        '<p class="small body" style="margin-top:12px">Empty. Save people from their profiles and they will appear here, attached to your brief.</p>' +
+        '<a class="btn btn-ghost btn-sm" style="margin-top:14px;width:100%" href="directory.html">Browse the directory</a>';
+      return;
+    }
+    c.innerHTML = '<span class="eyebrow">Your shortlist</span>' +
+      '<div class="stack" style="--gap:10px;margin-top:14px">' + ids.map(function (id) {
+        var x = T.expert(id); if (!x) return '';
+        return '<div class="row" style="gap:10px">' + T.avatar(x, { size: 32 }) +
+          '<div style="min-width:0"><a href="expert.html?id=' + x.id + '" style="font-size:14px;font-weight:500;text-decoration:none">' +
+          T.esc(x.name) + '</a><div class="tiny muted clamp" title="' + T.esc(x.focus) + '">' + T.esc(x.focus) + '</div></div>' +
+          '<button class="pill" data-rm="' + x.id + '" style="margin-left:auto;cursor:pointer">✕</button></div>';
+      }).join('') + '</div>' +
+      '<p class="tiny muted" style="margin-top:14px">These names go out with your brief.</p>';
+  }
+  document.getElementById('shortlistCard').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-rm]'); if (!b) return;
+    T.toggleShortlist(b.getAttribute('data-rm'));
+    paintShortlist();
+  });
+  paintShortlist();
+
+  /* submit → local preview, nothing sent */
+  document.getElementById('briefForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var picked = Array.prototype.slice.call(document.querySelectorAll('#domainPick input:checked'))
+      .map(function (i) { return i.value; });
+    var what = document.getElementById('what').value.trim();
+
+    if (!what || !picked.length) {
+      alert('Add a sentence about the situation and pick at least one practice area.');
+      return;
+    }
+
+    var gaps = {};
+    picked.forEach(function (p) { gaps[p] = 2; });
+    var ranked = T.rank(gaps).slice(0, 3);
+
+    this.outerHTML =
+      '<div class="card" style="padding:30px">' +
+        '<span class="pill pill-good">Brief preview</span>' +
+        '<h2 class="h2" style="margin:16px 0 12px">This is what we would receive</h2>' +
+        '<p class="body small" style="margin-bottom:22px">In the demo it stops here — nothing is transmitted. On the live site this is the point where a human reads it and comes back within two business days.</p>' +
+        '<dl class="kv" style="margin-bottom:24px">' +
+          '<dt>Situation</dt><dd>' + T.esc(what) + '</dd>' +
+          '<dt>Practice areas</dt><dd>' + picked.map(T.domainName).map(T.esc).join(' · ') + '</dd>' +
+          '<dt>Shape</dt><dd>' + T.esc(document.getElementById('shape').value) + '</dd>' +
+          '<dt>Timing</dt><dd>' + T.esc(document.getElementById('when').value) + '</dd>' +
+          '<dt>Budget</dt><dd>' + T.esc(document.getElementById('budget').value) + '</dd>' +
+          '<dt>Stage</dt><dd>' + T.esc(document.getElementById('stage').value) + '</dd>' +
+          '<dt>Shortlisted</dt><dd>' + (T.shortlist().map(function (i) { return (T.expert(i) || {}).name; })
+            .filter(Boolean).map(T.esc).join(', ') || '<span class="muted">none</span>') + '</dd>' +
+        '</dl>' +
+        '<hr class="rule" style="margin-bottom:22px">' +
+        '<span class="eyebrow">Who we would put in front of you</span>' +
+        '<div class="stack" style="--gap:12px;margin-top:16px">' + ranked.map(function (r) {
+          return '<a class="card" href="expert.html?id=' + r.expert.id + '" style="display:flex;gap:14px;align-items:flex-start;background:var(--bg)">' +
+            T.avatar(r.expert) + '<div><b style="font-size:15px">' + T.esc(r.expert.name) + '</b>' +
+            '<div class="small muted">' + T.esc(r.expert.headline) + '</div>' +
+            '<div class="tiny mono" style="margin-top:6px;color:var(--accent)">matches on ' +
+            r.hits.map(T.domainName).map(T.esc).join(', ') + '</div></div></a>';
+        }).join('') + '</div></div>';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>

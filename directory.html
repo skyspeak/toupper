@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Find an expert — ToUpper</title>
+<meta name="description" content="Browse independent enterprise-readiness experts by practice area, engagement type, rate and availability.">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<section style="padding:44px 0 8px">
+  <div class="wrap">
+    <span class="eyebrow">The directory</span>
+    <h1 class="h1" style="margin:14px 0 14px">Find an expert</h1>
+    <p class="lede" style="max-width:60ch">Filter by the part of the enterprise layer you are missing. Everyone here has shipped it inside a company before selling it as a service.</p>
+  </div>
+</section>
+
+<section style="padding:28px 0 40px">
+  <div class="wrap dir-layout">
+    <aside class="filters">
+      <div class="filter-block">
+        <h4>Practice area</h4>
+        <div id="fDomains"></div>
+      </div>
+      <div class="filter-block">
+        <h4>Engagement</h4>
+        <div id="fModes"></div>
+      </div>
+      <div class="filter-block">
+        <h4>Rate band</h4>
+        <div id="fRates"></div>
+      </div>
+      <div class="filter-block">
+        <h4>Availability</h4>
+        <label class="check"><input type="checkbox" id="fOpen"><span>Available now</span></label>
+      </div>
+      <div class="filter-block" style="border-bottom:0">
+        <button class="btn btn-ghost btn-sm" id="clear" style="width:100%">Clear all filters</button>
+      </div>
+    </aside>
+
+    <div>
+      <input class="search-box" id="q" type="search" placeholder="Search by name, speciality, or keyword — try “SCIM” or “invoice”" aria-label="Search experts">
+      <div class="sortbar">
+        <span class="small muted" id="count"></span>
+        <div class="pills" id="active" style="flex:1"></div>
+        <label class="small muted" for="sort">Sort</label>
+        <select class="sel" id="sort">
+          <option value="relevance">Best match</option>
+          <option value="years">Most experience</option>
+          <option value="avail">Available soonest</option>
+          <option value="rate">Rate: low to high</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+      <div class="grid g2" id="results"></div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+<script src="data/domains.js"></script>
+<script src="data/experts.js"></script>
+<script src="assets/js/core.js"></script>
+<script>
+(function () {
+  var state = { domains: [], modes: [], rates: [], open: false, q: '', sort: 'relevance' };
+  var pre = T.param('d');
+  if (pre && T.domain(pre)) state.domains.push(pre);
+
+  var MODES = ['Fractional', 'Project', 'Advisory', 'Embedded'];
+
+  /* ---- build filter UI ---- */
+  document.getElementById('fDomains').innerHTML = window.TOUPPER_GROUPS.map(function (g) {
+    var rows = T.domains.filter(function (d) { return d.group === g.name; }).map(function (d) {
+      var n = T.expertsFor(d.slug).length;
+      return '<label class="check"><input type="checkbox" data-f="domains" value="' + d.slug + '"' +
+        (state.domains.indexOf(d.slug) > -1 ? ' checked' : '') + '><span>' + T.esc(d.name) +
+        '</span><span class="ct">' + n + '</span></label>';
+    }).join('');
+    return '<div style="margin-bottom:14px"><div class="tiny mono muted" style="margin-bottom:4px">' +
+      T.esc(g.name) + '</div>' + rows + '</div>';
+  }).join('');
+
+  document.getElementById('fModes').innerHTML = MODES.map(function (m) {
+    var n = T.experts.filter(function (x) { return x.modes.indexOf(m) > -1; }).length;
+    return '<label class="check"><input type="checkbox" data-f="modes" value="' + m + '"><span>' + m +
+      '</span><span class="ct">' + n + '</span></label>';
+  }).join('');
+
+  document.getElementById('fRates').innerHTML = Object.keys(T.rates).map(function (r) {
+    return '<label class="check"><input type="checkbox" data-f="rates" value="' + r + '">' +
+      '<span class="mono">' + T.rates[r].label + '</span>' +
+      '<span class="ct" style="margin-left:8px;text-align:right;flex:1">' + T.esc(T.rates[r].range.split(' · ')[0]) + '</span></label>';
+  }).join('');
+
+  /* ---- filtering ---- */
+  function haystack(x) {
+    return [x.name, x.headline, x.focus, x.bio, x.quote, x.location, x.modes.join(' '),
+            x.proof.join(' '), x.domains.map(T.domainName).join(' ')].join(' ').toLowerCase();
+  }
+  function availRank(a) { return /available now/i.test(a) ? 0 : /booked/i.test(a) ? 2 : 1; }
+
+  function apply() {
+    var q = state.q.trim().toLowerCase();
+    var list = T.experts.filter(function (x) {
+      if (state.domains.length && !state.domains.some(function (d) { return x.domains.indexOf(d) > -1; })) return false;
+      if (state.modes.length && !state.modes.some(function (m) { return x.modes.indexOf(m) > -1; })) return false;
+      if (state.rates.length && state.rates.indexOf(String(x.rate)) === -1) return false;
+      if (state.open && !/available now/i.test(x.avail)) return false;
+      if (q && haystack(x).indexOf(q) === -1) return false;
+      return true;
+    });
+
+    var s = state.sort;
+    list.sort(function (a, b) {
+      if (s === 'years') return b.years - a.years;
+      if (s === 'name') return a.name.localeCompare(b.name);
+      if (s === 'rate') return a.rate - b.rate || b.years - a.years;
+      if (s === 'avail') return availRank(a.avail) - availRank(b.avail) || b.years - a.years;
+      /* relevance: domain overlap, then availability, then track record */
+      var oa = state.domains.filter(function (d) { return a.domains.indexOf(d) > -1; }).length;
+      var ob = state.domains.filter(function (d) { return b.domains.indexOf(d) > -1; }).length;
+      return ob - oa || availRank(a.avail) - availRank(b.avail) || b.engagements - a.engagements;
+    });
+
+    document.getElementById('count').textContent =
+      list.length + (list.length === 1 ? ' expert' : ' experts');
+
+    var chips = state.domains.map(function (d) {
+      return '<button class="pill pill-accent" data-drop="domains" data-v="' + d + '">' + T.esc(T.domainName(d)) + ' ✕</button>';
+    }).concat(state.modes.map(function (m) {
+      return '<button class="pill" data-drop="modes" data-v="' + m + '">' + m + ' ✕</button>';
+    })).join('');
+    document.getElementById('active').innerHTML = chips;
+
+    document.getElementById('results').innerHTML = list.length
+      ? list.map(function (x) { return T.expertCard(x, { highlight: state.domains }); }).join('')
+      : '<div class="empty" style="grid-column:1/-1">' +
+          '<h3 class="h3">Nobody matches that combination</h3>' +
+          '<p class="body small" style="margin:10px 0 18px">Try loosening a filter, or describe the problem in a brief and we will go looking.</p>' +
+          '<a class="btn btn-accent btn-sm" href="brief.html">Post a brief</a></div>';
+  }
+
+  /* ---- events ---- */
+  document.addEventListener('change', function (e) {
+    var f = e.target.getAttribute && e.target.getAttribute('data-f');
+    if (f) {
+      var v = e.target.value, i = state[f].indexOf(v);
+      if (e.target.checked && i === -1) state[f].push(v);
+      if (!e.target.checked && i > -1) state[f].splice(i, 1);
+      apply();
+    }
+    if (e.target.id === 'fOpen') { state.open = e.target.checked; apply(); }
+    if (e.target.id === 'sort') { state.sort = e.target.value; apply(); }
+  });
+  document.getElementById('q').addEventListener('input', function (e) { state.q = e.target.value; apply(); });
+  document.getElementById('active').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-drop]'); if (!b) return;
+    var f = b.getAttribute('data-drop'), v = b.getAttribute('data-v');
+    state[f].splice(state[f].indexOf(v), 1);
+    var cb = document.querySelector('input[data-f="' + f + '"][value="' + v + '"]');
+    if (cb) cb.checked = false;
+    apply();
+  });
+  document.getElementById('clear').addEventListener('click', function () {
+    state = { domains: [], modes: [], rates: [], open: false, q: '', sort: state.sort };
+    Array.prototype.forEach.call(document.querySelectorAll('.filters input[type=checkbox]'), function (c) { c.checked = false; });
+    document.getElementById('q').value = '';
+    apply();
+  });
+
+  apply();
+})();
+</script>
+</body>
+</html>
