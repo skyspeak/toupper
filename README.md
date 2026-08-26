@@ -14,12 +14,19 @@ expertise portable — and worth finding fast when a deal is on the line.
 
 ## How the page works
 
-One screen, two steps, no navigation.
+One screen, no navigation. It opens on the situation it exists for — a startup
+that just signed its first enterprise contract and started getting questions
+nobody on the team has answered before.
 
-1. **Pick what is blocking you.** Eighteen practice areas as chips. Selecting any
-   number narrows the list below (an expert matching *any* selected area is
-   shown, ranked by how many they cover, then by who is free).
-2. **Read and reach out.** Any expert expands in place — bio, track record,
+1. **The ten weeks after you sign.** Five beats of the same deal: the IT team
+   asking about SCIM, the security questionnaire, the DPA, procurement rewriting
+   the order form, the 12,000-user rollout. Each beat is clickable and selects
+   the practice areas that week is actually about — the story is the input
+   mechanism, not decoration.
+2. **Or pick your own.** Eighteen practice areas as chips. Selecting any number
+   narrows the list below (an expert matching *any* selected area is shown,
+   ranked by how many they cover, then by who is free).
+3. **Read and reach out.** Any expert expands in place — bio, track record,
    practice areas, rate band. "Request an intro" carries their name and your
    selected areas into the brief form at the bottom.
 

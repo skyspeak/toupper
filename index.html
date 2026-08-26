@@ -20,12 +20,20 @@
 <main class="wrap">
 
   <section class="hero">
-    <h1>The people who have already built<br><span class="mark">your enterprise layer.</span></h1>
-    <p>SSO, provisioning, custom roles, audit logs, contract billing, SOC 2, VPC deployment. Eighteen specialisms, twenty-four independent operators who shipped this inside a company before selling it as a service.</p>
+    <h1>You just landed your first enterprise deal.<br><span class="mark">Then the questions started.</span></h1>
+    <p>SAML and SCIM. Audit log export into their SIEM. A DPA with EU residency. A three-year ramp with quarterly true-ups. A 99.9% SLA with credits attached. None of it was on the roadmap, all of it is now between you and go-live — and nobody on your team has shipped it before.</p>
+    <p style="margin-top:14px">Twenty-four people here have. Most of them three times.</p>
   </section>
 
   <section class="section">
-    <span class="eyebrow">Step one</span>
+    <span class="eyebrow">How it goes</span>
+    <h2 style="font-size:20px">The ten weeks after you sign</h2>
+    <p class="body small" style="margin:8px 0 20px;max-width:58ch">It runs roughly the same way at every company. Pick the week you are living in — it selects the areas that week is really about.</p>
+    <div class="beats" id="beats"></div>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Or pick your own</span>
     <h2 style="font-size:20px">What is blocking you?</h2>
     <div class="chips" id="chips"></div>
   </section>
@@ -39,7 +47,7 @@
   </section>
 
   <section class="section" id="contact">
-    <span class="eyebrow">Step two</span>
+    <span class="eyebrow">Then</span>
     <h2 style="font-size:20px">Tell us the deal</h2>
     <p class="body small" style="margin:8px 0 22px;max-width:56ch">Not the ticket — the commercial situation. A contract in flight, a review that stalled, a renewal at risk. Two or three names come back inside two business days.</p>
     <form id="form" novalidate>
@@ -81,6 +89,52 @@
   function initials(n) { return n.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase(); }
   function openNow(a) { return /available now/i.test(a); }
 
+  /* ------------------------------------------------------------- story */
+  /* Each beat is the same deal at a different week, and a shortcut into
+     the areas that week is actually about. */
+  var BEATS = [
+    { w: 'Week 1',  t: '<b>Their IT team asks how SSO works</b>, and whether you support SCIM. Your accounts are all email-and-password.',
+      a: ['sso', 'scim'] },
+    { w: 'Week 2',  t: '<b>A 300-line security questionnaire lands</b>, followed by a request for your SOC 2 report and last pen test.',
+      a: ['procurement', 'security', 'compliance'] },
+    { w: 'Week 4',  t: '<b>Legal wants a DPA</b> with EU residency. Their admin wants audit log export into Splunk, and custom roles for three regions.',
+      a: ['privacy', 'audit-logs', 'rbac'] },
+    { w: 'Week 6',  t: '<b>Procurement rewrites the order form</b>: three-year ramp, quarterly true-up, net 60, 99.9% uptime with credits.',
+      a: ['billing-revops', 'pricing-packaging', 'sla-support'] },
+    { w: 'Week 10', t: '<b>Signed.</b> Now roll out to 12,000 people across four business units who have never seen your product.',
+      a: ['onboarding', 'team-management', 'admin-console'] }
+  ];
+
+  $('beats').innerHTML = BEATS.map(function (b, i) {
+    return '<button class="beat" data-i="' + i + '">' +
+      '<span class="bw">' + b.w + '</span>' +
+      '<span class="bt">' + b.t +
+        '<span class="ba">' + b.a.map(function (s) { return domain(s).chip; }).join('  ·  ') + '</span>' +
+      '</span></button>';
+  }).join('');
+
+  $('beats').addEventListener('click', function (e) {
+    var b = e.target.closest('.beat'); if (!b) return;
+    var i = Number(b.getAttribute('data-i'));
+    var same = picked.length === BEATS[i].a.length &&
+      BEATS[i].a.every(function (s) { return picked.indexOf(s) > -1; });
+    picked = same ? [] : BEATS[i].a.slice();
+    syncChips();
+    render();
+    if (!same) $('count').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  function syncChips() {
+    Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) {
+      c.classList.toggle('on', picked.indexOf(c.getAttribute('data-s')) > -1);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.beat'), function (el) {
+      var a = BEATS[Number(el.getAttribute('data-i'))].a;
+      el.classList.toggle('on', picked.length === a.length &&
+        a.every(function (s) { return picked.indexOf(s) > -1; }));
+    });
+  }
+
   /* ------------------------------------------------------------- chips */
   $('chips').innerHTML = D.map(function (d) {
     return '<button class="chip" data-s="' + d.slug + '" title="' + esc(d.short) + '">' + esc(d.chip) + '</button>';
@@ -90,12 +144,12 @@
     var b = e.target.closest('.chip'); if (!b) return;
     var s = b.getAttribute('data-s'), i = picked.indexOf(s);
     if (i > -1) picked.splice(i, 1); else picked.push(s);
-    b.classList.toggle('on', picked.indexOf(s) > -1);
+    syncChips();
     render();
   });
   $('clear').addEventListener('click', function () {
     picked = [];
-    Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) { c.classList.remove('on'); });
+    syncChips();
     render();
   });
 
