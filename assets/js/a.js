@@ -1,10 +1,9 @@
-/* Variant A — story-led. The narrative doubles as the filter. */
+/* Variant A — story-led. The narrative doubles as the selector. */
 (function () {
   'use strict';
-  var esc = TU.esc, picked = [], open = null, asked = null;
+  var esc = TU.esc;
   var $ = function (id) { return document.getElementById(id); };
 
-  /* Five beats of the same deal; each selects the areas that week is about. */
   var BEATS = [
     { w: 'Week 1',  t: '<b>Their IT team asks how SSO works</b>, and whether you support SCIM. Your accounts are all email-and-password.',
       a: ['sso', 'scim'] },
@@ -18,28 +17,35 @@
       a: ['onboarding', 'team-management', 'admin-console'] }
   ];
 
-  function sameSet(a) {
+  var bench = TU.bench({ onSelect: sync });
+
+  function sameSet(a, picked) {
     return picked.length === a.length && a.every(function (s) { return picked.indexOf(s) > -1; });
   }
 
-  /* ------------------------------------------------------------- story */
   $('beats').innerHTML = BEATS.map(function (b, i) {
+    var who = agentsForAreas(b.a).map(function (x) { return x.code; }).join(' · ');
     return '<button class="beat" data-i="' + i + '">' +
       '<span class="bw">' + esc(b.w) + '</span>' +
-      '<span class="bt">' + b.t +
-        '<span class="ba">' + b.a.map(function (s) { return esc(TU.chip(s)); }).join('  ·  ') + '</span>' +
-      '</span></button>';
+      '<span class="bt">' + b.t + '<span class="ba">' + esc(who) + '</span></span>' +
+    '</button>';
   }).join('');
+
+  function agentsForAreas(areas) {
+    return TU.agents.filter(function (x) {
+      return x.areas.some(function (s) { return areas.indexOf(s) > -1; });
+    });
+  }
 
   $('beats').addEventListener('click', function (e) {
     var b = e.target.closest('.beat'); if (!b) return;
     var a = BEATS[Number(b.getAttribute('data-i'))].a;
-    select(sameSet(a) ? [] : a.slice(), !sameSet(a));
+    var same = sameSet(a, bench.state.picked);
+    bench.select(same ? [] : a.slice(), !same);
   });
 
-  /* --------------------------------------------- compliance & revenue */
   $('tracks').innerHTML = TU.tracks.map(function (t) {
-    var n = TU.trackExperts(t).length;
+    var who = TU.trackAgents(t).map(function (x) { return x.code; }).join(' · ');
     return '<div class="track" id="track-' + esc(t.id) + '">' +
       '<span class="eyebrow">' + esc(t.eyebrow) + '</span>' +
       '<h3>' + esc(t.title) + '</h3>' +
@@ -48,19 +54,17 @@
         return '<div class="trow"><div class="tk">' + esc(r.k) + '</div>' +
           '<div class="tv">' + esc(r.v) + '</div></div>';
       }).join('') +
-      '<div class="cta">' +
-        '<button class="btn btn-sm" data-track="' + esc(t.id) + '">Show the ' + n + ' experts</button>' +
-        '<span class="tiny muted">' + esc(TU.trackAreas(t).map(TU.chip).join(' · ')) + '</span>' +
-      '</div></div>';
+      '<div class="cta"><button class="btn btn-sm" data-track="' + esc(t.id) + '">Show the agents</button>' +
+        '<span class="tiny muted mono">' + esc(who) + '</span></div>' +
+    '</div>';
   }).join('');
 
   $('tracks').addEventListener('click', function (e) {
     var b = e.target.closest('[data-track]'); if (!b) return;
     var t = TU.tracks.filter(function (x) { return x.id === b.getAttribute('data-track'); })[0];
-    if (t) select(TU.trackAreas(t), true);
+    if (t) bench.select(TU.trackAreas(t), true);
   });
 
-  /* ------------------------------------------------------------- chips */
   $('chips').innerHTML = TU.domains.map(function (d) {
     return '<button class="chip" data-s="' + esc(d.slug) + '" title="' + esc(d.short) + '">' +
       esc(d.chip) + '</button>';
@@ -68,83 +72,19 @@
 
   $('chips').addEventListener('click', function (e) {
     var b = e.target.closest('.chip'); if (!b) return;
-    var s = b.getAttribute('data-s'), i = picked.indexOf(s);
+    var s = b.getAttribute('data-s'), picked = bench.state.picked.slice(), i = picked.indexOf(s);
     if (i > -1) picked.splice(i, 1); else picked.push(s);
-    select(picked.slice(), false);
+    bench.select(picked, false);
   });
-  $('clear').addEventListener('click', function () { select([], false); });
 
-  function select(next, scroll) {
-    picked = next;
-    sync();
-    render();
-    if (scroll) $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function sync() {
+  function sync(picked) {
     Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) {
       c.classList.toggle('on', picked.indexOf(c.getAttribute('data-s')) > -1);
     });
     Array.prototype.forEach.call(document.querySelectorAll('.beat'), function (el) {
-      el.classList.toggle('on', sameSet(BEATS[Number(el.getAttribute('data-i'))].a));
+      el.classList.toggle('on', sameSet(BEATS[Number(el.getAttribute('data-i'))].a, picked));
     });
   }
 
-  /* ----------------------------------------------------------- experts */
-  function render() {
-    var list = TU.filter(picked);
-    $('count').textContent = TU.summary(picked, list.length);
-    $('clear').classList.toggle('hide', !picked.length);
-    $('people').innerHTML = list.length
-      ? list.map(function (x) { return TU.personRow(x, picked, open === x.id); }).join('')
-      : '<div class="empty">No experts listed for that yet. Describe it below and we will go looking.</div>';
-    TU.paintAvatars($('people'));
-  }
-
-  $('people').addEventListener('click', function (e) {
-    var intro = e.target.closest('[data-intro]');
-    if (intro) { askFor(intro.getAttribute('data-intro')); return; }
-    var head = e.target.closest('.phead'); if (!head) return;
-    var id = head.getAttribute('data-id');
-    open = open === id ? null : id;
-    render();
-  });
-
-  /* ----------------------------------------------------------- contact */
-  function askFor(id) {
-    asked = id;
-    paintContext();
-    $('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    $('what').focus({ preventScroll: true });
-  }
-  function paintContext() {
-    var bits = [];
-    if (asked) {
-      var x = TU.experts.filter(function (e) { return e.id === asked; })[0];
-      if (x) bits.push('Intro requested with <b>' + esc(x.name) + '</b>.');
-    }
-    if (picked.length) bits.push('Areas: <b>' + picked.map(TU.name).map(esc).join('</b>, <b>') + '</b>.');
-    $('context').innerHTML = bits.length ? '<p class="note">' + bits.join(' ') + '</p>' : '';
-  }
-
-  $('form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var what = $('what').value.trim();
-    if (!what) { $('what').focus(); return; }
-
-    var names = TU.filter(picked).slice(0, 3).map(function (x) { return x.name; });
-    if (asked) {
-      var who = TU.experts.filter(function (x) { return x.id === asked; })[0];
-      if (who) names = [who.name].concat(names.filter(function (n) { return n !== who.name; })).slice(0, 3);
-    }
-
-    this.outerHTML =
-      '<p class="note accent">Nothing was sent — this is a demo. On the live site a person reads this and replies inside two business days.</p>' +
-      '<div class="facts mt-2">' + esc(what) + '</div>' +
-      (picked.length || asked
-        ? '<p class="body small">We would come back with: <b>' + names.map(esc).join('</b>, <b>') + '</b>.</p>'
-        : '');
-  });
-
-  render();
+  bench.render();
 })();

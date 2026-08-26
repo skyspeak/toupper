@@ -2,15 +2,21 @@
 
 > `smb.toUpper() → enterprise`
 
-A one-page directory for finding independent experts in the **enterprise layer** —
-the product work a company has to ship before a large customer will sign: SSO,
+A one-page bench of **nine specialist agents** for the enterprise layer — the
+product work a company has to ship before a large customer will sign: SSO,
 directory provisioning, custom roles, audit logs, contract billing, SOC 2, VPC
 deployment, an SLA someone can actually staff.
 
-The thesis: a generation of product and platform leaders spent years shipping
-exactly this inside scaling companies, and many now work independently. The
-problems repeat almost identically from company to company, which makes that
-expertise portable — and worth finding fast when a deal is on the line.
+The thesis: these problems repeat almost identically from company to company.
+That is exactly what makes them a good fit for a narrow agent — one that carries
+the specs, the vendor quirks and the post-mortems for a single area, asks the
+question a practitioner would ask first, and says plainly where it stops.
+
+**This is a concept demo.** The nine agents are a design fiction. They are
+archetypes assembled from bodies of public practice — specs, RFCs, audit
+frameworks, published post-mortems — not portraits of, or claims about, any
+real practitioner. Every transcript in `data/agents.js` is written by hand;
+nothing is generated at runtime.
 
 ## Three variants
 
@@ -25,6 +31,29 @@ at the top of any page.
 
 All three share `data/*.js` and `assets/js/lib.js` (filtering, ranking, row
 rendering); each has its own thin controller in `assets/js/{a,b,c}.js`.
+
+## The nine agents
+
+| Agent | Covers | Mandate |
+|---|---|---|
+| `FEDERATOR` | SSO, provisioning | Email-and-password to federated identity without stranding a user |
+| `WARDEN` | Permissions, multi-tenancy | Three hardcoded roles into a model that survives the org chart |
+| `LEDGER` | Billing, pricing, packaging | Contracts as data, so invoices reconcile |
+| `ATTESTOR` | Compliance, procurement | Certification sequencing, and the questionnaire machine |
+| `BULWARK` | Security, privacy & residency | The posture that survives someone else's review |
+| `SCRIBE` | Audit logs, reporting | Everything that happened, provable months later |
+| `SHIPWRIGHT` | Deployment, admin console | Software into environments you do not operate |
+| `CONDUIT` | API & integrations | A public contract you can stand behind |
+| `PILOT` | Onboarding, SLA & support | Signature to activation, and promises you can staff |
+
+Nine agents cover all eighteen practice areas. Each one publishes the same
+five things, which is what makes the claim inspectable rather than decorative:
+
+- **Grounded in** — the body of practice it encodes
+- **Gives you back** — four concrete artifacts, not "advice"
+- **Opens with** — the diagnostic question it always asks first
+- **Hands to a human** — the honest limit, stated up front
+- **A session, roughly** — a written transcript showing the shape of the work
 
 ## Compliance and revenue
 
@@ -42,12 +71,15 @@ Every line links to the practice areas it depends on, and each section has a
 ## Interaction model
 
 Common to all three variants: selecting any number of practice areas narrows the
-expert list (an expert matching *any* selected area is shown, ranked by how many
-they cover, then by who is free). Any expert expands in place — bio, track
-record, areas, rate band. "Request an intro" carries their name and your
-selected areas into the form at the bottom, which renders a preview of what
-would be sent, including the names we would come back with. Nothing is
-transmitted.
+bench (an agent covering *any* selected area is shown, ranked by overlap; with
+nothing selected the bench keeps its authored order, which follows the deal).
+Any agent expands in place to its full spec. "Brief AGENT" carries its name and
+your selected areas into the form at the bottom, which routes the brief and
+shows the question that agent would open with. Nothing is transmitted.
+
+All three share `data/*.js` and `assets/js/lib.js` — including `TU.bench()`, one
+controller handling list rendering, expansion, briefing and the form, so each
+variant only wires its own way of choosing areas.
 
 ## The practice areas
 
@@ -64,11 +96,18 @@ the market has produced genuine specialists rather than generalists:
 Splitting billing out of packaging, and provisioning out of SSO, is the main
 departure from the source: those are where people actually specialise.
 
-## Data is fictional
+## What is real and what is not
 
-Every expert, company, engagement and outcome in `data/experts.js` is invented to
-demonstrate the interface, and the page says so. Replace with real, consented
-profiles before showing this to buyers.
+Real: the taxonomy, the compliance and revenue content, and the substance of
+what each agent claims to know — those reflect how this work actually goes.
+
+Not real: the agents themselves. There is no model behind them, no retrieval,
+no session. The transcripts are hand-written illustrations of the *shape* a
+session would take. Every page says so, in the header and under each transcript.
+
+If this were built, the honest version of the claim would be: a narrow agent per
+area, grounded in a curated corpus, that produces the four named artifacts and
+escalates at the stated boundary.
 
 ## Running it
 
@@ -90,7 +129,7 @@ toupper/
 │       └── a.js b.js c.js   per-variant controllers
 ├── data/
 │   ├── domains.js      18 practice areas in 5 groups
-│   ├── experts.js      24 sample profiles (fictional)
+│   ├── agents.js       9 agent specs, incl. written transcripts
 │   └── tracks.js       compliance and revenue content
 ├── vercel.json         static deploy config, no build
 └── serve.js            zero-dependency local server
@@ -135,12 +174,14 @@ root as static files. Either import the repo at
 1. Real vetted profiles and an intake queue behind the form.
 2. Track which chips get selected — the demand distribution across practice areas
    is the most valuable thing this page could learn.
-3. Add engagement outcomes to ranking (today it is area overlap and availability).
-4. Let experts publish written teardowns per area; for a directory like this the
-   writing generates the demand, not the listings.
+3. Make one agent real end to end — FEDERATOR is the best candidate, because
+   its output (an IdP matrix, a migration plan) is checkable by an expert.
+4. Publish the corpus behind each agent. For a claim like this, showing the
+   grounding is the marketing.
 
 ## History
 
 Earlier revisions in git history include a multi-page version (separate
 directory, per-area pages, expert profiles, and an eighteen-question readiness
-scorecard) at commit `a2c89e9`, should any of it be worth reviving.
+scorecard) at commit `a2c89e9`, and the human-expert directory that preceded the
+agent bench at `d073005`, should any of it be worth reviving.

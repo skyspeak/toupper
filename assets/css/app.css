@@ -88,30 +88,70 @@ a{color:var(--accent)}
 .chip.on{background:var(--accent); border-color:var(--accent); color:#fff}
 .clear{border:0; background:none; color:var(--accent); font-size:14px; padding:6px 4px}
 
-/* --------------------------------------------------------------- experts */
-.count{display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin:26px 0 2px}
-.person{border-top:1px solid var(--line)}
-.person:last-child{border-bottom:1px solid var(--line)}
-.phead{
+/* ---------------------------------------------------------------- agents */
+.mark-sq{
+  width:34px; height:34px; border-radius:8px; flex:none; display:grid; place-items:center;
+  font-family:var(--mono); font-size:11px; font-weight:500; color:#fff; letter-spacing:.02em;
+}
+.agent{border-top:1px solid var(--line)}
+.agent:last-child{border-bottom:1px solid var(--line)}
+.agent.open{background:var(--paper)}
+.ahead{
   display:flex; gap:14px; align-items:flex-start; width:100%;
-  background:none; border:0; padding:16px 0; text-align:left;
+  background:none; border:0; padding:15px 0; text-align:left;
 }
-.phead:hover .pn{color:var(--accent)}
-.avatar{
-  width:36px; height:36px; border-radius:50%; flex:none; display:grid; place-items:center;
-  font-family:var(--mono); font-size:11.5px; color:#fff;
+.agent.open .ahead{padding-left:14px; padding-right:14px}
+.ahead:hover .acode{color:var(--accent)}
+.ab{flex:1; min-width:0; display:block}
+.ac-row{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+.acode{font-family:var(--mono); font-size:14px; font-weight:500; letter-spacing:.04em}
+.atitle{font-size:13px; color:var(--muted)}
+.amandate{display:block; font-size:14.5px; color:var(--ink-2); margin-top:3px; line-height:1.5}
+.axs{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+.ax{font-family:var(--mono); font-size:11px; color:var(--muted); border:1px solid var(--line);
+  border-radius:100px; padding:2px 8px}
+.ax.on{border-color:var(--accent); color:var(--accent)}
+.agent.open .caret{color:var(--accent)}
+
+.adetail{padding:0 14px 24px 62px}
+.aopinion{
+  font-size:16px; line-height:1.5; color:var(--ink); border-left:2px solid var(--lime);
+  padding-left:14px; margin-bottom:22px; max-width:56ch;
 }
-.pb{flex:1; min-width:0}
-.pn{font-size:16px; font-weight:500; letter-spacing:-.012em}
-.ph{font-size:14.5px; color:var(--ink-2); margin-top:1px}
-.pm{font-family:var(--mono); font-size:12px; color:var(--muted); margin-top:6px}
-.pm b{font-weight:400; color:var(--accent)}
-.caret{color:var(--muted); font-family:var(--mono); font-size:13px; padding-top:2px}
-.pdetail{padding:2px 0 24px 50px}
-.pdetail p{color:var(--ink-2); margin-bottom:14px}
-.list li{position:relative; padding-left:16px; margin-bottom:8px; color:var(--ink-2); font-size:15px}
-.list li:before{content:''; position:absolute; left:0; top:10px; width:4px; height:4px; border-radius:50%; background:var(--line-2)}
-.facts{font-family:var(--mono); font-size:12px; color:var(--muted); margin:16px 0 16px}
+.acols{display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-bottom:22px}
+.acols .eyebrow{margin-bottom:9px}
+.aqa{display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-bottom:24px}
+.aq,.ah{font-size:14.5px; color:var(--ink-2); margin-top:2px}
+.aq{font-weight:500; color:var(--ink)}
+
+.transcript{border:1px solid var(--line); border-radius:10px; padding:16px 18px; background:var(--bg); margin-bottom:20px}
+.turns{margin:12px 0 10px}
+.agent.open .turn{animation:rise .34s cubic-bezier(.2,.7,.3,1) both}
+.agent.open .turn:nth-child(2){animation-delay:.13s}
+@keyframes rise{from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:none}}
+.turn{display:grid; grid-template-columns:58px 1fr; gap:14px; padding:10px 0}
+.turn + .turn{border-top:1px solid var(--line)}
+.who{font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:3px; letter-spacing:.04em}
+.turn.bot .who{color:var(--accent)}
+.said p{font-size:14.5px; line-height:1.6; color:var(--ink-2)}
+.said p + p{margin-top:8px}
+.turn.you .said p{color:var(--ink); font-weight:500}
+
+@media (max-width:760px){
+  .adetail{padding-left:14px}
+  .acols,.aqa{grid-template-columns:1fr; gap:18px}
+  .turn{grid-template-columns:1fr; gap:4px}
+}
+
+/* rules the agent cards depend on */
+.caret{color:var(--muted); font-family:var(--mono); font-size:14px; padding-top:8px; flex:none}
+.list li{position:relative; padding-left:18px; margin-bottom:11px; color:var(--ink-2);
+  line-height:1.55; font-size:14.5px}
+.list li:last-child{margin-bottom:0}
+.list li:before{content:''; position:absolute; left:1px; top:8px; width:5px; height:5px;
+  border-radius:50%; background:var(--accent); opacity:.45}
+.facts{font-family:var(--mono); font-size:12.5px; line-height:1.7; color:var(--muted);
+  border-left:2px solid var(--line-2); padding-left:12px; margin:16px 0}
 .empty{padding:32px 0; color:var(--muted)}
 
 /* ----------------------------------------------------------------- forms */
@@ -141,12 +181,12 @@ textarea.input{min-height:96px; resize:vertical; line-height:1.6}
 @media (max-width:640px){
   .hero{padding:40px 0 32px}
   .two{grid-template-columns:1fr}
-  .pdetail{padding-left:0}
+  .adetail{padding-left:14px}
   .beat{flex-direction:column; gap:4px}
   .bw{width:auto; padding-top:0}
   .topbar .tiny{display:none}
 }
-@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important; animation-duration:.01ms !important; animation-delay:0s !important}}
 
 /* ========================================================== utilities ==== */
 /* Named classes rather than style="" so the CSP can refuse
@@ -164,7 +204,7 @@ textarea.input{min-height:96px; resize:vertical; line-height:1.6}
 .switch{display:flex; gap:2px; margin-left:auto; align-items:center}
 .switch a{
   font-family:var(--mono); font-size:11.5px; text-decoration:none; color:var(--muted);
-  padding:4px 8px; border-radius:100px; border:1px solid transparent;
+  padding:4px 8px; border-radius:100px; border:1px solid transparent; white-space:nowrap;
 }
 .switch a:hover{color:var(--ink)}
 .switch a.on{color:var(--ink); border-color:var(--line-2); background:var(--paper)}
@@ -238,5 +278,3 @@ body.vc .wrap{max-width:900px}
 }
 
 .note.accent{border-color:var(--accent)}
-.person .pb,.person .pn,.person .ph,.person .pm{display:block}
-.phead .avatar{display:inline-grid}
