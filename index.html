@@ -4,17 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ToUpper — experts who build the enterprise layer</title>
-<meta name="description" content="Independent operators who have already built enterprise SSO, provisioning, permissions, billing, audit logs, compliance and deployment. Pick what is blocking you.">
+<meta name="description" content="You just landed your first enterprise deal. Independent operators who have already shipped SSO, provisioning, compliance, contract billing and deployment — matched to what is blocking you.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111418'/><text y='70' x='50' text-anchor='middle' font-size='60' font-family='monospace' fill='%23DDF56A'>&#8593;</text></svg>">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
-<body>
+<body class="va">
 
 <div class="wrap">
   <div class="topbar">
     <a class="logo" href="./">ToUpper<span>()</span></a>
-    <span class="tiny muted">Demo — every profile is fictional sample data</span>
+    <nav class="switch" aria-label="Design variants">
+      <a class="on" href="./">A · Story</a>
+      <a href="variant-b.html">B · Triage</a>
+      <a href="variant-c.html">C · Index</a>
+    </nav>
   </div>
+  <p class="tiny muted demo mt-1">Demo — every expert profile is fictional sample data.</p>
 </div>
 
 <main class="wrap">
@@ -22,23 +27,30 @@
   <section class="hero">
     <h1>You just landed your first enterprise deal.<br><span class="mark">Then the questions started.</span></h1>
     <p>SAML and SCIM. Audit log export into their SIEM. A DPA with EU residency. A three-year ramp with quarterly true-ups. A 99.9% SLA with credits attached. None of it was on the roadmap, all of it is now between you and go-live — and nobody on your team has shipped it before.</p>
-    <p style="margin-top:14px">Twenty-four people here have. Most of them three times.</p>
+    <p class="mt-1">Twenty-four people here have. Most of them three times.</p>
   </section>
 
   <section class="section">
     <span class="eyebrow">How it goes</span>
-    <h2 style="font-size:20px">The ten weeks after you sign</h2>
-    <p class="body small" style="margin:8px 0 20px;max-width:58ch">It runs roughly the same way at every company. Pick the week you are living in — it selects the areas that week is really about.</p>
+    <h2 class="h-sm">The ten weeks after you sign</h2>
+    <p class="body small lead-gap measure">It runs roughly the same way at every company. Pick the week you are living in — it selects the areas that week is really about.</p>
     <div class="beats" id="beats"></div>
   </section>
 
   <section class="section">
+    <span class="eyebrow">The two that kill deals</span>
+    <h2 class="h-sm">Compliance and revenue</h2>
+    <p class="body small lead-gap measure">Most enterprise deals stall in one of these two places. Neither is a feature you can ship in a sprint, and both are somebody's full-time speciality.</p>
+    <div id="tracks"></div>
+  </section>
+
+  <section class="section">
     <span class="eyebrow">Or pick your own</span>
-    <h2 style="font-size:20px">What is blocking you?</h2>
+    <h2 class="h-sm">What is blocking you?</h2>
     <div class="chips" id="chips"></div>
   </section>
 
-  <section class="section" style="border-top:0;padding-top:0">
+  <section class="section" id="results">
     <div class="count">
       <span class="small muted" id="count"></span>
       <button class="clear hide" id="clear">Clear</button>
@@ -48,8 +60,8 @@
 
   <section class="section" id="contact">
     <span class="eyebrow">Then</span>
-    <h2 style="font-size:20px">Tell us the deal</h2>
-    <p class="body small" style="margin:8px 0 22px;max-width:56ch">Not the ticket — the commercial situation. A contract in flight, a review that stalled, a renewal at risk. Two or three names come back inside two business days.</p>
+    <h2 class="h-sm">Tell us the deal</h2>
+    <p class="body small lead-gap measure">Not the ticket — the commercial situation. A contract in flight, a review that stalled, a renewal at risk. Two or three names come back inside two business days.</p>
     <form id="form" novalidate>
       <div id="context"></div>
       <label class="field"><span>What are you trying to do?</span>
@@ -60,217 +72,20 @@
         <label class="field"><span>Work email</span><input class="input" id="email" type="email" autocomplete="email"></label>
       </div>
       <p class="note">Demo — this form does not submit anywhere. Nothing you type leaves the browser.</p>
-      <button class="btn" type="submit" style="width:100%">Send the brief</button>
+      <button class="btn full" type="submit">Send the brief</button>
     </form>
   </section>
 
   <div class="foot">
     ToUpper() — a demo concept, sample data throughout.
-    Practice areas adapted from <a href="https://www.enterpriseready.io/" rel="noopener">enterpriseready.io</a>.
+    Practice areas adapted from <a href="https://www.enterpriseready.io/" rel="noopener noreferrer">enterpriseready.io</a>.
   </div>
 </main>
 
 <script src="data/domains.js"></script>
 <script src="data/experts.js"></script>
-<script>
-(function () {
-  var D = window.TOUPPER_DOMAINS, E = window.TOUPPER_EXPERTS, R = window.TOUPPER_RATES;
-  var picked = [], open = null;
-  var $ = function (id) { return document.getElementById(id); };
-
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  function domain(slug) { return D.filter(function (d) { return d.slug === slug; })[0]; }
-  function name(slug) { var d = domain(slug); return d ? d.name : slug; }
-  function hue(id) { var h = 0; for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) % 360; return h; }
-  function initials(n) { return n.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase(); }
-  function openNow(a) { return /available now/i.test(a); }
-
-  /* ------------------------------------------------------------- story */
-  /* Each beat is the same deal at a different week, and a shortcut into
-     the areas that week is actually about. */
-  var BEATS = [
-    { w: 'Week 1',  t: '<b>Their IT team asks how SSO works</b>, and whether you support SCIM. Your accounts are all email-and-password.',
-      a: ['sso', 'scim'] },
-    { w: 'Week 2',  t: '<b>A 300-line security questionnaire lands</b>, followed by a request for your SOC 2 report and last pen test.',
-      a: ['procurement', 'security', 'compliance'] },
-    { w: 'Week 4',  t: '<b>Legal wants a DPA</b> with EU residency. Their admin wants audit log export into Splunk, and custom roles for three regions.',
-      a: ['privacy', 'audit-logs', 'rbac'] },
-    { w: 'Week 6',  t: '<b>Procurement rewrites the order form</b>: three-year ramp, quarterly true-up, net 60, 99.9% uptime with credits.',
-      a: ['billing-revops', 'pricing-packaging', 'sla-support'] },
-    { w: 'Week 10', t: '<b>Signed.</b> Now roll out to 12,000 people across four business units who have never seen your product.',
-      a: ['onboarding', 'team-management', 'admin-console'] }
-  ];
-
-  $('beats').innerHTML = BEATS.map(function (b, i) {
-    return '<button class="beat" data-i="' + i + '">' +
-      '<span class="bw">' + b.w + '</span>' +
-      '<span class="bt">' + b.t +
-        '<span class="ba">' + b.a.map(function (s) { return domain(s).chip; }).join('  ·  ') + '</span>' +
-      '</span></button>';
-  }).join('');
-
-  $('beats').addEventListener('click', function (e) {
-    var b = e.target.closest('.beat'); if (!b) return;
-    var i = Number(b.getAttribute('data-i'));
-    var same = picked.length === BEATS[i].a.length &&
-      BEATS[i].a.every(function (s) { return picked.indexOf(s) > -1; });
-    picked = same ? [] : BEATS[i].a.slice();
-    syncChips();
-    render();
-    if (!same) $('count').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
-
-  function syncChips() {
-    Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (c) {
-      c.classList.toggle('on', picked.indexOf(c.getAttribute('data-s')) > -1);
-    });
-    Array.prototype.forEach.call(document.querySelectorAll('.beat'), function (el) {
-      var a = BEATS[Number(el.getAttribute('data-i'))].a;
-      el.classList.toggle('on', picked.length === a.length &&
-        a.every(function (s) { return picked.indexOf(s) > -1; }));
-    });
-  }
-
-  /* ------------------------------------------------------------- chips */
-  $('chips').innerHTML = D.map(function (d) {
-    return '<button class="chip" data-s="' + d.slug + '" title="' + esc(d.short) + '">' + esc(d.chip) + '</button>';
-  }).join('');
-
-  $('chips').addEventListener('click', function (e) {
-    var b = e.target.closest('.chip'); if (!b) return;
-    var s = b.getAttribute('data-s'), i = picked.indexOf(s);
-    if (i > -1) picked.splice(i, 1); else picked.push(s);
-    syncChips();
-    render();
-  });
-  $('clear').addEventListener('click', function () {
-    picked = [];
-    syncChips();
-    render();
-  });
-
-  /* ----------------------------------------------------------- experts */
-  function matches(x) {
-    return picked.filter(function (s) { return x.domains.indexOf(s) > -1; });
-  }
-
-  function render() {
-    var list = E.filter(function (x) { return !picked.length || matches(x).length; });
-
-    list.sort(function (a, b) {
-      var d = matches(b).length - matches(a).length;
-      if (d) return d;
-      if (openNow(a.avail) !== openNow(b.avail)) return openNow(a.avail) ? -1 : 1;
-      return b.engagements - a.engagements;
-    });
-
-    var labels = picked.map(function (s) { return domain(s).chip.toLowerCase(); });
-    var said = labels.length > 3
-      ? labels.slice(0, 3).join(', ') + ' and ' + (labels.length - 3) + ' more'
-      : labels.join(', ');
-    $('count').textContent = picked.length
-      ? list.length + (list.length === 1 ? ' expert works' : ' experts work') + ' on ' + said
-      : 'All ' + list.length + ' experts — pick an area above to narrow it down';
-    $('clear').classList.toggle('hide', !picked.length);
-
-    $('people').innerHTML = list.length ? list.map(function (x) {
-      var lead = matches(x)[0] || x.domains[0];
-      var more = x.domains.length > 1 ? ' <span class="muted">+' + (x.domains.length - 1) + ' more</span>' : '';
-      var isOpen = open === x.id;
-      return '<div class="person">' +
-        '<button class="phead" data-id="' + x.id + '" aria-expanded="' + isOpen + '">' +
-          '<div class="avatar" style="background:hsl(' + hue(x.id) + ' 34% 42%)">' + esc(initials(x.name)) + '</div>' +
-          '<div class="pb">' +
-            '<div class="pn">' + esc(x.name) + '</div>' +
-            '<div class="ph">' + esc(x.headline) + '</div>' +
-            '<div class="pm">' + esc(name(lead)) + more + ' &nbsp;·&nbsp; ' + esc(x.location) +
-              ' &nbsp;·&nbsp; ' + (openNow(x.avail) ? '<b>Available now</b>' : esc(x.avail)) + '</div>' +
-          '</div>' +
-          '<span class="caret">' + (isOpen ? '–' : '+') + '</span>' +
-        '</button>' +
-        (isOpen ? detail(x) : '') +
-      '</div>';
-    }).join('')
-      : '<div class="empty">No experts listed for that yet. Describe it below and we will go looking.</div>';
-  }
-
-  function detail(x) {
-    return '<div class="pdetail">' +
-      '<p>' + esc(x.bio) + '</p>' +
-      '<ul class="list">' + x.proof.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' +
-      '<div class="facts">' +
-        esc(x.domains.map(name).join(' · ')) + '<br>' +
-        x.years + ' years · ' + x.modes.join(', ') + ' · ' + esc((R[x.rate] || {}).range || '') +
-      '</div>' +
-      '<button class="btn btn-sm" data-intro="' + x.id + '">Request an intro</button>' +
-    '</div>';
-  }
-
-  $('people').addEventListener('click', function (e) {
-    var intro = e.target.closest('[data-intro]');
-    if (intro) {
-      askFor(intro.getAttribute('data-intro'));
-      return;
-    }
-    var head = e.target.closest('.phead'); if (!head) return;
-    var id = head.getAttribute('data-id');
-    open = open === id ? null : id;
-    render();
-  });
-
-  /* ----------------------------------------------------------- contact */
-  var asked = null;
-  function askFor(id) {
-    asked = id;
-    paintContext();
-    $('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    $('what').focus({ preventScroll: true });
-  }
-  function paintContext() {
-    var bits = [];
-    if (asked) {
-      var x = E.filter(function (e) { return e.id === asked; })[0];
-      if (x) bits.push('Intro requested with <b>' + esc(x.name) + '</b>.');
-    }
-    if (picked.length) bits.push('Areas: <b>' + picked.map(name).map(esc).join('</b>, <b>') + '</b>.');
-    $('context').innerHTML = bits.length ? '<p class="note">' + bits.join(' ') + '</p>' : '';
-  }
-
-  $('form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var what = $('what').value.trim();
-    if (!what) { $('what').focus(); return; }
-
-    var gaps = {};
-    (picked.length ? picked : []).forEach(function (p) { gaps[p] = 1; });
-    var suggested = Object.keys(gaps).length
-      ? E.map(function (x) {
-          var n = x.domains.filter(function (d) { return gaps[d]; }).length;
-          return n ? { x: x, n: n } : null;
-        }).filter(Boolean)
-         .sort(function (a, b) { return b.n - a.n || (openNow(b.x.avail) ? 1 : 0) - (openNow(a.x.avail) ? 1 : 0); })
-         .slice(0, 3).map(function (r) { return r.x.name; })
-      : [];
-
-    /* Someone they asked for by name leads the list. */
-    if (asked) {
-      var who = E.filter(function (e) { return e.id === asked; })[0];
-      if (who) suggested = [who.name].concat(suggested.filter(function (n) { return n !== who.name; })).slice(0, 3);
-    }
-
-    this.outerHTML =
-      '<p class="note" style="border-color:var(--accent)">Nothing was sent — this is a demo. On the live site a person reads this and replies inside two business days.</p>' +
-      '<div class="facts" style="margin-top:18px">' + esc(what) + '</div>' +
-      (suggested.length ? '<p class="body small">We would come back with: <b>' +
-        suggested.map(esc).join('</b>, <b>') + '</b>.</p>' : '');
-  });
-
-  render();
-})();
-</script>
+<script src="data/tracks.js"></script>
+<script src="assets/js/lib.js"></script>
+<script src="assets/js/a.js"></script>
 </body>
 </html>

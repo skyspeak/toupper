@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ToUpper — which part of the deal is stuck?</title>
+<meta name="description" content="Enterprise deal triage: name the blocker, see the operators who have shipped it before.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111418'/><text y='70' x='50' text-anchor='middle' font-size='60' font-family='monospace' fill='%23DDF56A'>&#8593;</text></svg>">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="vb">
+
+<div class="wrap">
+  <div class="topbar">
+    <a class="logo" href="./">ToUpper<span>()</span></a>
+    <nav class="switch" aria-label="Design variants"><a href="./">A · Story</a><a class="on" href="variant-b.html">B · Triage</a><a href="variant-c.html">C · Index</a></nav>
+  </div>
+</div>
+
+<div class="slab">
+  <div class="wrap">
+    <span class="eyebrow">Enterprise deal triage</span>
+    <h1 class="mt-1">Which part of the deal is stuck?</h1>
+    <p>Enterprise contracts stall in predictable places — a security review, an identity requirement, an order form nobody can invoice against. Name the blocker and we will name the two or three people who have cleared it before.</p>
+    <div class="stat">
+      <div><b>18</b><span>practice areas</span></div>
+      <div><b>24</b><span>independent operators</span></div>
+      <div><b>2 days</b><span>to an introduction</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="section">
+    <span class="eyebrow">Step one</span>
+    <h2 class="h-sm">Name the blocker</h2>
+    <div class="chips mt-1" id="chips"></div>
+  </section>
+
+  <section class="section" id="results">
+    <div class="count">
+      <span class="small muted" id="count"></span>
+      <button class="clear hide" id="clear">Clear</button>
+    </div>
+    <div id="people"></div>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Where deals actually die</span>
+    <h2 class="h-sm mb-2">Compliance and revenue</h2>
+    <div class="twocol" id="tracks"></div>
+  </section>
+
+  <section class="section" id="contact">
+    <span class="eyebrow">Step two</span>
+    <h2 class="h-sm">Send the situation</h2>
+    <p class="body small lead-gap measure">The commercial situation, not the ticket. What is signed, what is blocking it, and when it has to move.</p>
+    <form id="form" novalidate>
+      <div id="context"></div>
+      <label class="field"><span>What is blocking the deal?</span>
+        <textarea class="input" id="what" placeholder="Signed LOI with a 12,000-seat customer. Their IT team requires SAML and SCIM deprovisioning before go-live in November, and our accounts are all email-and-password today."></textarea>
+      </label>
+      <div class="two">
+        <label class="field"><span>Name</span><input class="input" id="name" autocomplete="name"></label>
+        <label class="field"><span>Work email</span><input class="input" id="email" type="email" autocomplete="email"></label>
+      </div>
+      <p class="note">Demo — this form does not submit anywhere. Nothing you type leaves the browser.</p>
+      <button class="btn full" type="submit">Send it</button>
+    </form>
+  </section>
+
+  <div class="foot">
+    ToUpper() — a demo concept, every profile is fictional sample data.
+    Practice areas adapted from <a href="https://www.enterpriseready.io/" rel="noopener noreferrer">enterpriseready.io</a>.
+  </div>
+</main>
+
+<script src="data/domains.js"></script>
+<script src="data/experts.js"></script>
+<script src="data/tracks.js"></script>
+<script src="assets/js/lib.js"></script>
+<script src="assets/js/b.js"></script>
+</body>
+</html>

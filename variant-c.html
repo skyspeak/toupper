@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ToUpper — the enterprise readiness index</title>
+<meta name="description" content="Eighteen enterprise practice areas and the independent operators who work in each. A reference index for teams who already know what is blocking them.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111418'/><text y='70' x='50' text-anchor='middle' font-size='60' font-family='monospace' fill='%23DDF56A'>&#8593;</text></svg>">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="vc">
+
+<div class="wrap">
+  <div class="topbar">
+    <a class="logo" href="./">ToUpper<span>()</span></a>
+    <nav class="switch" aria-label="Design variants"><a href="./">A · Story</a><a href="variant-b.html">B · Triage</a><a class="on" href="variant-c.html">C · Index</a></nav>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="section">
+    <span class="eyebrow">The enterprise readiness index</span>
+    <h1 class="h-sm mt-1">Eighteen areas, twenty-four operators</h1>
+    <p class="body small lead-gap measure">For teams who already know what is blocking them. Select any number of areas; the bench below narrows. Every profile is fictional sample data.</p>
+
+    <div class="groupbar" id="groups"></div>
+    <div class="grid-head"><span>Practice area</span><span>Group</span><span>Experts</span></div>
+    <div id="areas"></div>
+  </section>
+
+  <section class="section">
+    <span class="eyebrow">Reference</span>
+    <h2 class="h-sm mb-2">Compliance and revenue</h2>
+    <div id="tracks"></div>
+  </section>
+
+  <section class="section" id="results">
+    <div class="count">
+      <span class="small muted" id="count"></span>
+      <button class="clear hide" id="clear">Clear</button>
+    </div>
+    <div id="people"></div>
+  </section>
+
+  <section class="section" id="contact">
+    <span class="eyebrow">Enquiry</span>
+    <h2 class="h-sm">Request an introduction</h2>
+    <form id="form" novalidate>
+      <div id="context"></div>
+      <label class="field"><span>Situation</span>
+        <textarea class="input" id="what" placeholder="Signed LOI with a 12,000-seat customer. SAML and SCIM deprovisioning required before go-live in November."></textarea>
+      </label>
+      <div class="two">
+        <label class="field"><span>Name</span><input class="input" id="name" autocomplete="name"></label>
+        <label class="field"><span>Work email</span><input class="input" id="email" type="email" autocomplete="email"></label>
+      </div>
+      <p class="note">Demo — this form does not submit anywhere. Nothing you type leaves the browser.</p>
+      <button class="btn full" type="submit">Send</button>
+    </form>
+  </section>
+
+  <div class="foot">
+    ToUpper() — a demo concept, sample data throughout.
+    Practice areas adapted from <a href="https://www.enterpriseready.io/" rel="noopener noreferrer">enterpriseready.io</a>.
+  </div>
+</main>
+
+<script src="data/domains.js"></script>
+<script src="data/experts.js"></script>
+<script src="data/tracks.js"></script>
+<script src="assets/js/lib.js"></script>
+<script src="assets/js/c.js"></script>
+</body>
+</html>

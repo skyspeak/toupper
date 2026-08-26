@@ -147,3 +147,96 @@ textarea.input{min-height:96px; resize:vertical; line-height:1.6}
   .topbar .tiny{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+
+/* ========================================================== utilities ==== */
+/* Named classes rather than style="" so the CSP can refuse
+   style-src 'unsafe-inline'. */
+.mt-1{margin-top:14px}
+.mt-2{margin-top:22px}
+.mb-2{margin-bottom:22px}
+.lead-gap{margin:8px 0 20px}
+.measure{max-width:58ch}
+.h-sm{font-size:20px}
+.full{width:100%}
+.nowrap{white-space:nowrap}
+
+/* -------------------------------------------------------- variant switch */
+.switch{display:flex; gap:2px; margin-left:auto; align-items:center}
+.switch a{
+  font-family:var(--mono); font-size:11.5px; text-decoration:none; color:var(--muted);
+  padding:4px 8px; border-radius:100px; border:1px solid transparent;
+}
+.switch a:hover{color:var(--ink)}
+.switch a.on{color:var(--ink); border-color:var(--line-2); background:var(--paper)}
+.topbar .tiny.demo{margin-left:0}
+
+/* --------------------------------------------------------------- tracks */
+.track{border-top:1px solid var(--line); padding-top:26px; margin-top:34px}
+.track h3{font-size:22px; letter-spacing:-.024em; max-width:22ch}
+.track .tb{color:var(--ink-2); margin:12px 0 18px; max-width:58ch; font-size:15.5px}
+.trow{
+  display:grid; grid-template-columns:172px 1fr; gap:16px;
+  padding:11px 0; border-top:1px solid var(--line); align-items:baseline;
+}
+.trow:last-of-type{border-bottom:1px solid var(--line)}
+.tk{font-size:14.5px; font-weight:500}
+.tv{font-size:14.5px; color:var(--ink-2); line-height:1.55}
+.track .cta{margin-top:18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+/* ================================================= variant B — triage ==== */
+body.vb{background:var(--bg)}
+.vb .slab{background:var(--ink); color:#EDEEF1; margin-bottom:0; padding:52px 0 44px}
+.vb .slab h1{font-size:clamp(28px,4vw,40px); line-height:1.14; letter-spacing:-.03em; max-width:20ch}
+.vb .slab p{color:#B3B8C2; margin-top:16px; max-width:52ch; font-size:17px}
+.vb .slab .eyebrow{color:#8B93A1}
+.vb .slab .stat{display:flex; gap:34px; margin-top:30px; flex-wrap:wrap}
+.vb .slab .stat b{display:block; font-family:var(--mono); font-size:24px; font-weight:500; color:#fff}
+.vb .slab .stat span{font-size:12.5px; color:#8B93A1}
+.vb .twocol{display:grid; grid-template-columns:1fr 1fr; gap:34px}
+.vb .twocol .track{margin-top:0}
+.vb .trow{grid-template-columns:1fr; gap:2px; padding:10px 0}
+
+/* ================================================== variant C — index ==== */
+body.vc .wrap{max-width:900px}
+.vc .grid-head{
+  display:grid; grid-template-columns:1fr 118px 68px; gap:12px; padding:8px 0;
+  border-bottom:1px solid var(--line-2); font-family:var(--mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+}
+.vc .arow{
+  display:grid; grid-template-columns:1fr 118px 68px; gap:12px; width:100%;
+  padding:10px 0; border-bottom:1px solid var(--line); background:none; border-left:0;
+  border-right:0; border-top:0; text-align:left; align-items:baseline;
+}
+.vc .arow:hover .an{color:var(--accent)}
+.vc .arow.on{background:var(--accent-wash)}
+.vc .an,.vc .ad{display:block}
+.vc .an{font-size:15px; font-weight:500}
+.vc .ad{font-size:13.5px; color:var(--muted); margin-top:2px}
+.vc .ag,.vc .ac{font-family:var(--mono); font-size:12px; color:var(--muted)}
+.vc .ac{text-align:right}
+.vc .groupbar{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px}
+.vc details{border-top:1px solid var(--line)}
+.vc details:last-of-type{border-bottom:1px solid var(--line)}
+.vc summary{
+  padding:14px 0; cursor:pointer; list-style:none; font-size:16px; font-weight:500;
+  display:flex; gap:12px; align-items:baseline;
+}
+.vc summary::-webkit-details-marker{display:none}
+.vc summary:before{content:'+'; font-family:var(--mono); color:var(--muted)}
+.vc details[open] summary:before{content:'–'}
+.vc summary .sd{font-size:14px; font-weight:400; color:var(--muted)}
+.vc .dbody{padding:0 0 20px 24px}
+
+@media (max-width:760px){
+  .vb .twocol{grid-template-columns:1fr; gap:26px}
+  .trow{grid-template-columns:1fr; gap:2px}
+  .vc .grid-head{display:none}
+  .vc .arow{grid-template-columns:1fr auto; gap:4px 12px}
+  .vc .ag{display:none}
+  .switch{width:100%; margin:8px 0 0}
+}
+
+.note.accent{border-color:var(--accent)}
+.person .pb,.person .pn,.person .ph,.person .pm{display:block}
+.phead .avatar{display:inline-grid}
