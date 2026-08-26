@@ -56,7 +56,7 @@
 
     mark: function (a) {
       return '<span class="mark-sq" aria-hidden="true" data-hue="' + TU.hue(a.id) + '">' +
-        esc(a.code.slice(0, 2)) + '</span>';
+        esc(a.initials) + '</span>';
     },
 
     /* One agent, collapsed to a scannable row. */
@@ -69,7 +69,7 @@
         '<button class="ahead" data-id="' + esc(a.id) + '" aria-expanded="' + (open ? 'true' : 'false') + '">' +
           TU.mark(a) +
           '<span class="ab">' +
-            '<span class="ac-row"><span class="acode">' + esc(a.code) + '</span>' +
+            '<span class="ac-row"><span class="acode">' + esc(a.name) + '</span>' +
               '<span class="atitle">' + esc(a.title) + '</span></span>' +
             '<span class="amandate">' + esc(a.mandate) + '</span>' +
             '<span class="axs">' + areas + '</span>' +
@@ -86,7 +86,7 @@
           ? t.text.map(function (l) { return '<p>' + esc(l) + '</p>'; }).join('')
           : '<p>' + esc(t.text) + '</p>';
         return '<div class="turn ' + (t.role === 'you' ? 'you' : 'bot') + '">' +
-          '<span class="who">' + (t.role === 'you' ? 'You' : esc(a.code)) + '</span>' +
+          '<span class="who">' + (t.role === 'you' ? 'You' : esc(a.short)) + '</span>' +
           '<div class="said">' + body + '</div></div>';
       }).join('');
 
@@ -113,7 +113,7 @@
           '<p class="tiny muted">Written by hand to show the shape of a session. Nothing is generated here.</p>' +
         '</div>' +
 
-        '<button class="btn btn-sm" data-brief="' + esc(a.id) + '">Brief ' + esc(a.code) + '</button>' +
+        '<button class="btn btn-sm" data-brief="' + esc(a.id) + '">Brief ' + esc(a.short) + '</button>' +
       '</div>';
     },
 
@@ -196,7 +196,7 @@
       var bits = [];
       if (state.briefed) {
         var a = TU.agent(state.briefed);
-        if (a) bits.push('Briefing <b>' + esc(a.code) + '</b> — ' + esc(a.title.toLowerCase()) + '.');
+        if (a) bits.push('Briefing <b>' + esc(a.name) + '</b> — ' + esc(a.title.toLowerCase()) + '.');
       }
       if (state.picked.length) {
         bits.push('Areas: <b>' + state.picked.map(TU.name).map(esc).join('</b>, <b>') + '</b>.');
@@ -222,7 +222,7 @@
         '<div class="facts mt-2">' + esc(what) + '</div>' +
         (picks.length
           ? '<p class="body small mt-1">Routed to <b>' +
-            picks.map(function (x) { return esc(x.code); }).join('</b>, <b>') +
+            picks.map(function (x) { return esc(x.name); }).join('</b>, <b>') +
             '</b>, opening with: <em>' + esc(picks[0].opens) + '</em></p>'
           : '');
     });

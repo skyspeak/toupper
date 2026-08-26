@@ -36,18 +36,24 @@ rendering); each has its own thin controller in `assets/js/{a,b,c}.js`.
 
 | Agent | Covers | Mandate |
 |---|---|---|
-| `FEDERATOR` | SSO, provisioning | Email-and-password to federated identity without stranding a user |
-| `WARDEN` | Permissions, multi-tenancy | Three hardcoded roles into a model that survives the org chart |
-| `LEDGER` | Billing, pricing, packaging | Contracts as data, so invoices reconcile |
-| `ATTESTOR` | Compliance, procurement | Certification sequencing, and the questionnaire machine |
-| `BULWARK` | Security, privacy & residency | The posture that survives someone else's review |
-| `SCRIBE` | Audit logs, reporting | Everything that happened, provable months later |
-| `SHIPWRIGHT` | Deployment, admin console | Software into environments you do not operate |
-| `CONDUIT` | API & integrations | A public contract you can stand behind |
-| `PILOT` | Onboarding, SLA & support | Signature to activation, and promises you can staff |
+| **Sam L. Assertion** | SSO, provisioning | Email-and-password to federated identity without stranding a user |
+| **Perry Mission** | Permissions, multi-tenancy | Three hardcoded roles into a model that survives the org chart |
+| **Bill Prorata** | Billing, pricing, packaging | Contracts as data, so invoices reconcile |
+| **Sarah Baines-Oxley** | Compliance, procurement | Certification sequencing, and the questionnaire machine |
+| **Rick Assessment** | Security, privacy & residency | The posture that survives someone else's review |
+| **Audrey Trail** | Audit logs, reporting | Everything that happened, provable months later |
+| **Terry Form** | Deployment, admin console | Software into environments you do not operate |
+| **Paige Nation** | API & integrations | A public contract you can stand behind |
+| **Nina Nines** | Onboarding, SLA & support | Signature to activation, and promises you can staff |
 
-Nine agents cover all eighteen practice areas. Each one publishes the same
-five things, which is what makes the claim inspectable rather than decorative:
+Yes, the names are puns — SAML assertion, permission, pro rata, Sarbanes-Oxley,
+risk assessment, audit trail, Terraform, pagination, nine nines. The joke is
+load-bearing: the names are the most memorable thing about a bench of nine, and
+the contrast with a completely straight spec underneath is the tone the whole
+page is going for.
+
+Nine agents cover all eighteen practice areas. Each publishes the same five
+things, which is what makes the claim inspectable rather than decorative:
 
 - **Grounded in** — the body of practice it encodes
 - **Gives you back** — four concrete artifacts, not "advice"
@@ -174,8 +180,9 @@ root as static files. Either import the repo at
 1. Real vetted profiles and an intake queue behind the form.
 2. Track which chips get selected — the demand distribution across practice areas
    is the most valuable thing this page could learn.
-3. Make one agent real end to end — FEDERATOR is the best candidate, because
-   its output (an IdP matrix, a migration plan) is checkable by an expert.
+3. Make one agent real end to end — Sam L. Assertion is the best candidate,
+   because the output (an IdP matrix, a migration plan) is checkable by a human
+   expert who knows the domain.
 4. Publish the corpus behind each agent. For a claim like this, showing the
    grounding is the marketing.
 

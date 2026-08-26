@@ -17,7 +17,7 @@
     $('areas').innerHTML = TU.domains
       .filter(function (d) { return !group || d.group === group; })
       .map(function (d) {
-        var who = TU.agentsFor(d.slug).map(function (a) { return a.code; }).join(' ');
+        var who = TU.agentsFor(d.slug).map(function (a) { return a.short; }).join(' ');
         return '<button class="arow' + (picked.indexOf(d.slug) > -1 ? ' on' : '') +
           '" data-s="' + esc(d.slug) + '">' +
           '<span><span class="an">' + esc(d.name) + '</span>' +
@@ -43,7 +43,7 @@
   });
 
   $('tracks').innerHTML = TU.tracks.map(function (t) {
-    var who = TU.trackAgents(t).map(function (x) { return x.code; }).join(' · ');
+    var who = TU.trackAgents(t).map(function (x) { return x.short; }).join(' · ');
     return '<details><summary>' + esc(t.eyebrow) +
       '<span class="sd">' + esc(t.title) + '</span></summary>' +
       '<div class="dbody"><p class="tb">' + esc(t.blurb) + '</p>' +

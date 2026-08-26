@@ -24,7 +24,7 @@
   }
 
   $('beats').innerHTML = BEATS.map(function (b, i) {
-    var who = agentsForAreas(b.a).map(function (x) { return x.code; }).join(' · ');
+    var who = agentsForAreas(b.a).map(function (x) { return x.short; }).join(' · ');
     return '<button class="beat" data-i="' + i + '">' +
       '<span class="bw">' + esc(b.w) + '</span>' +
       '<span class="bt">' + b.t + '<span class="ba">' + esc(who) + '</span></span>' +
@@ -45,7 +45,7 @@
   });
 
   $('tracks').innerHTML = TU.tracks.map(function (t) {
-    var who = TU.trackAgents(t).map(function (x) { return x.code; }).join(' · ');
+    var who = TU.trackAgents(t).map(function (x) { return x.short; }).join(' · ');
     return '<div class="track" id="track-' + esc(t.id) + '">' +
       '<span class="eyebrow">' + esc(t.eyebrow) + '</span>' +
       '<h3>' + esc(t.title) + '</h3>' +

@@ -104,8 +104,9 @@ a{color:var(--accent)}
 .ahead:hover .acode{color:var(--accent)}
 .ab{flex:1; min-width:0; display:block}
 .ac-row{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
-.acode{font-family:var(--mono); font-size:14px; font-weight:500; letter-spacing:.04em}
-.atitle{font-size:13px; color:var(--muted)}
+.acode{font-size:15.5px; font-weight:600; letter-spacing:-.012em}
+.atitle{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.06em;
+  text-transform:uppercase}
 .amandate{display:block; font-size:14.5px; color:var(--ink-2); margin-top:3px; line-height:1.5}
 .axs{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
 .ax{font-family:var(--mono); font-size:11px; color:var(--muted); border:1px solid var(--line);
@@ -131,7 +132,7 @@ a{color:var(--accent)}
 @keyframes rise{from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:none}}
 .turn{display:grid; grid-template-columns:58px 1fr; gap:14px; padding:10px 0}
 .turn + .turn{border-top:1px solid var(--line)}
-.who{font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:3px; letter-spacing:.04em}
+.who{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding-top:3px}
 .turn.bot .who{color:var(--accent)}
 .said p{font-size:14.5px; line-height:1.6; color:var(--ink-2)}
 .said p + p{margin-top:8px}

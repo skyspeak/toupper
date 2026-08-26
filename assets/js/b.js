@@ -19,7 +19,7 @@
   });
 
   $('tracks').innerHTML = TU.tracks.map(function (t) {
-    var who = TU.trackAgents(t).map(function (x) { return x.code; }).join(' · ');
+    var who = TU.trackAgents(t).map(function (x) { return x.short; }).join(' · ');
     return '<div class="track">' +
       '<span class="eyebrow">' + esc(t.eyebrow) + '</span>' +
       '<h3>' + esc(t.title) + '</h3>' +
