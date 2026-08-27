@@ -42,6 +42,7 @@
       <button class="clear hide" id="clear">Clear</button>
     </div>
     <div id="agents"></div>
+    <div id="capture"></div>
   </section>
 
   <section class="section" id="contact">
@@ -56,8 +57,9 @@
         <label class="field"><span>Name</span><input class="input" id="name" autocomplete="name"></label>
         <label class="field"><span>Work email</span><input class="input" id="email" type="email" autocomplete="email"></label>
       </div>
-      <p class="note">Demo — this form does not submit anywhere. Nothing you type leaves the browser.</p>
-      <button class="btn full" type="submit">Send</button>
+      <label class="hp" aria-hidden="true">Company website<input type="text" id="hp" tabindex="-1" autocomplete="off"></label>
+      <p class="tiny cerr" id="formError" role="status" aria-live="polite"></p>
+      <button class="btn full" type="submit">Route this brief</button>
     </form>
   </section>
 

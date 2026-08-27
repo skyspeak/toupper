@@ -81,7 +81,7 @@ bench (an agent covering *any* selected area is shown, ranked by overlap; with
 nothing selected the bench keeps its authored order, which follows the deal).
 Any agent expands in place to its full spec. "Brief AGENT" carries its name and
 your selected areas into the form at the bottom, which routes the brief and
-shows the question that agent would open with. Nothing is transmitted.
+shows the question that agent would open with.
 
 All three share `data/*.js` and `assets/js/lib.js` — including `TU.bench()`, one
 controller handling list rendering, expansion, briefing and the form, so each
@@ -121,7 +121,9 @@ escalates at the stated boundary.
 node serve.js 4321
 ```
 
-Then open <http://localhost:4321>. No build step, no dependencies.
+Then open <http://localhost:4321>. No build step, no dependencies. `serve.js`
+runs the `/api` functions the same way Vercel does, so lead capture works
+locally — set `LEAD_WEBHOOK_URL` in the environment to test real delivery.
 
 ```
 toupper/
@@ -137,12 +139,54 @@ toupper/
 │   ├── domains.js      18 practice areas in 5 groups
 │   ├── agents.js       9 agent specs, incl. written transcripts
 │   └── tracks.js       compliance and revenue content
+├── api/
+│   └── lead.js         lead capture endpoint (Vercel function)
 ├── vercel.json         static deploy config, no build
-└── serve.js            zero-dependency local server
+└── serve.js            local server — serves static files and runs /api
 ```
 
 Data lives in `data/*.js` as globals rather than JSON so the page also works
 opened straight from the filesystem.
+
+## Lead capture
+
+Two entry points, at different levels of commitment, both posting to
+`POST /api/lead` — a same-origin Vercel function, so the CSP never has to name
+a third-party host.
+
+1. **The shortlist block**, directly under the bench. One email field, and copy
+   that knows what you selected: *"Get this shortlist — Sam L., Bill — plus the
+   readiness checklist for sso, billing."* This is the one that catches people
+   who are researching rather than buying.
+2. **The brief form**, at the bottom. Higher intent: situation, name, work
+   email, routed to the agents that own it.
+
+Every lead carries the context that makes it worth having — selected areas,
+matched agents, which variant the visitor was on, and the page. Which areas get
+selected is the most valuable thing this site could learn.
+
+### Configuring a destination
+
+| Variable | Effect |
+|---|---|
+| `LEAD_WEBHOOK_URL` | Any endpoint accepting a JSON POST — a Slack incoming webhook, a Zapier catch hook, your CRM, an internal API. The payload includes a pre-rendered one-line `text` summary so Slack-style hooks read well without unpacking. |
+| `LEAD_WEBHOOK_AUTH` | Optional, sent as the `Authorization` header. |
+
+With neither set the endpoint runs in **demo mode**: it validates, logs, and
+tells the browser plainly that nothing was delivered. The UI never claims a
+delivery that did not happen — there is a distinct message for stored, demo,
+and "the webhook was down so it is in the log".
+
+### Abuse handling
+
+A honeypot field (`company_website`, positioned off-screen) and a minimum
+time-on-form of 1.2s silently discard bot submissions — returning success, so
+the bot learns nothing. Per-IP throttling allows five submissions a minute,
+kept on `globalThis` so it survives module re-evaluation. Bodies are capped at
+8KB (413 beyond), emails are validated server-side (422), and every field is
+length-clamped before it leaves the process. A failed webhook still returns
+success to the visitor and logs the full lead, so a downstream outage never
+loses one.
 
 ## Hardening
 
@@ -152,13 +196,15 @@ which lets `vercel.json` serve a CSP with **no `unsafe-inline` at all**:
 ```
 default-src 'none'; script-src 'self';
 style-src 'self' https://fonts.googleapis.com;
-font-src https://fonts.gstatic.com; img-src 'self' data:;
+font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';
 form-action 'none'; base-uri 'none'; frame-ancestors 'none';
 object-src 'none'; upgrade-insecure-requests
 ```
 
-`default-src 'none'` means anything not named above — XHR, websockets, workers,
-frames, media — is refused outright. Avatar colours are applied through the
+`default-src 'none'` means anything not named above — websockets, workers,
+frames, media — is refused outright. `connect-src 'self'` permits exactly one
+thing: the lead POST back to our own origin. `form-action 'none'` still stands,
+because capture goes through `fetch`, so no form may natively POST anywhere. Avatar colours are applied through the
 CSSOM (`el.style.backgroundColor`), which `style-src` does not govern, rather
 than through style attributes. Alongside it: HSTS with preload, `nosniff`,
 `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, a `Permissions-Policy`

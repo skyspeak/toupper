@@ -150,10 +150,119 @@
    * in how you choose areas. Each variant wires its own selector and
    * calls bench.select().
    * ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------ *
+   * Lead capture. Same-origin POST to /api/lead, so the CSP never has to
+   * name a third-party host. Two entry points share this: the brief form
+   * (high intent) and the shortlist block below the bench (low friction).
+   * ------------------------------------------------------------------ */
+  var LOADED_AT = Date.now();
+
+  TU.variant = function () {
+    var c = document.body.className || '';
+    return c.indexOf('vb') > -1 ? 'b' : c.indexOf('vc') > -1 ? 'c' : 'a';
+  };
+
+  TU.validEmail = function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v || '').trim()); };
+
+  TU.capture = function (payload) {
+    payload.variant = TU.variant();
+    payload.page = location.pathname;
+    payload.elapsed_ms = Date.now() - LOADED_AT;
+    return fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().then(function (j) { return { status: r.status, body: j }; });
+    });
+  };
+
+  /* One honest sentence per outcome — never claim delivery that did not happen. */
+  TU.captureMessage = function (res) {
+    if (res.status === 429) return { ok: false, text: 'That is a lot of submissions in a minute. Try again shortly.' };
+    if (res.status === 422) return { ok: false, text: 'That email address does not look right.' };
+    if (!res.body || res.body.ok !== true) return { ok: false, text: 'Something went wrong sending that. Try again?' };
+    if (res.body.stored) return { ok: true, text: 'Got it — we will come back within two business days.' };
+    if (res.body.deferred) return { ok: true, text: 'Received. Delivery to the configured destination failed, so it is sitting in the server log.' };
+    return { ok: true, text: 'Captured — though this build has no destination configured, so nothing was actually delivered. Set LEAD_WEBHOOK_URL to make it real.' };
+  };
+
+  /* The low-friction block: one field, and copy that knows what you picked. */
+  TU.captureBlock = function (getContext) {
+    var box = document.getElementById('capture');
+    if (!box) return { refresh: function () {} };
+
+    function copy() {
+      var ctx = getContext();
+      if (ctx.areas.length && ctx.agents.length) {
+        var names = ctx.agents.slice(0, 3).map(function (a) { return a.short; });
+        var more = ctx.agents.length > 3 ? ' and ' + (ctx.agents.length - 3) + ' more' : '';
+        return {
+          h: 'Not ready to brief anyone?',
+          p: 'Get this shortlist — ' + names.join(', ') + more +
+             ' — plus the readiness checklist for ' +
+             ctx.areas.map(TU.chip).map(function (c) { return c.toLowerCase(); }).join(', ') + '.'
+        };
+      }
+      return {
+        h: 'Not ready to brief anyone?',
+        p: 'Get the enterprise readiness checklist — the eighteen things large buyers ask for, and the order most teams end up doing them in.'
+      };
+    }
+
+    function paint(state) {
+      var c = copy();
+      if (state && state.done) {
+        box.innerHTML = '<div class="capture done"><p class="cdone">' + esc(state.text) + '</p></div>';
+        return;
+      }
+      box.innerHTML =
+        '<div class="capture">' +
+          '<div class="ctext"><h3>' + esc(c.h) + '</h3><p>' + esc(c.p) + '</p></div>' +
+          '<form class="crow" id="captureForm" novalidate>' +
+            '<label class="hp" aria-hidden="true">Company website' +
+              '<input type="text" id="capHp" tabindex="-1" autocomplete="off"></label>' +
+            '<label class="vh" for="capEmail">Work email</label>' +
+            '<input class="input" id="capEmail" type="email" placeholder="you@company.com" autocomplete="email">' +
+            '<button class="btn" type="submit">Send it</button>' +
+          '</form>' +
+          '<p class="tiny muted cnote">One email, no list, no follow-up sequence.' +
+            (state && state.error ? ' <span class="cerr">' + esc(state.error) + '</span>' : '') + '</p>' +
+        '</div>';
+
+      document.getElementById('captureForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = document.getElementById('capEmail').value;
+        if (!TU.validEmail(email)) { paint({ error: 'That email address does not look right.' }); return; }
+        var btn = this.querySelector('button');
+        btn.disabled = true; btn.textContent = 'Sending…';
+        var ctx = getContext();
+        TU.capture({
+          kind: 'shortlist',
+          email: email,
+          company_website: document.getElementById('capHp').value,
+          areas: ctx.areas.map(TU.name),
+          agents: ctx.agents.map(function (a) { return a.name; })
+        }).then(function (res) {
+          var m = TU.captureMessage(res);
+          if (m.ok) paint({ done: true, text: m.text }); else paint({ error: m.text });
+        }).catch(function () {
+          paint({ error: 'Could not reach the server. Try again?' });
+        });
+      });
+    }
+
+    paint();
+    return { refresh: function () { if (!box.querySelector('.done')) paint(); } };
+  };
+
   TU.bench = function (cfg) {
     cfg = cfg || {};
     var $ = function (id) { return document.getElementById(id); };
     var state = { picked: [], open: null, briefed: null };
+    var capture = TU.captureBlock(function () {
+      return { areas: state.picked, agents: TU.filter(state.picked).slice(0, 4) };
+    });
 
     function render() {
       var list = TU.filter(state.picked);
@@ -170,6 +279,7 @@
       state.picked = next;
       if (cfg.onSelect) cfg.onSelect(state.picked);
       render();
+      if (capture) capture.refresh();
       if (scroll && $('results')) $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -205,26 +315,62 @@
       if (box) box.innerHTML = bits.length ? '<p class="note">' + bits.join(' ') + '</p>' : '';
     }
 
-    var form = $('form');
-    if (form) form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var what = $('what').value.trim();
-      if (!what) { $('what').focus(); return; }
-
+    function routed() {
       var picks = TU.filter(state.picked).slice(0, 3);
       if (state.briefed) {
         var a = TU.agent(state.briefed);
         if (a) picks = [a].concat(picks.filter(function (x) { return x.id !== a.id; })).slice(0, 3);
       }
+      return picks;
+    }
 
-      this.outerHTML =
-        '<p class="note accent">Nothing was sent — this is a concept demo. On a live build this is where the session would start.</p>' +
-        '<div class="facts mt-2">' + esc(what) + '</div>' +
-        (picks.length
-          ? '<p class="body small mt-1">Routed to <b>' +
-            picks.map(function (x) { return esc(x.name); }).join('</b>, <b>') +
-            '</b>, opening with: <em>' + esc(picks[0].opens) + '</em></p>'
-          : '');
+    var form = $('form');
+    if (form) form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var what = $('what').value.trim();
+      var email = ($('email') || {}).value || '';
+      var err = $('formError');
+
+      if (!what) { $('what').focus(); return; }
+      if (!TU.validEmail(email)) {
+        if (err) err.textContent = 'We need a work email to come back to.';
+        if ($('email')) $('email').focus();
+        return;
+      }
+      if (err) err.textContent = '';
+
+      var btn = this.querySelector('button[type=submit]');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      var picks = routed();
+      var self = this;
+
+      TU.capture({
+        kind: 'brief',
+        email: email,
+        name: ($('name') || {}).value || '',
+        situation: what,
+        company_website: ($('hp') || {}).value || '',
+        areas: state.picked.map(TU.name),
+        agents: picks.map(function (x) { return x.name; })
+      }).then(function (res) {
+        var m = TU.captureMessage(res);
+        if (!m.ok) {
+          btn.disabled = false; btn.textContent = 'Route this brief';
+          if (err) err.textContent = m.text;
+          return;
+        }
+        self.outerHTML =
+          '<p class="note accent">' + esc(m.text) + '</p>' +
+          '<div class="facts mt-2">' + esc(what) + '</div>' +
+          (picks.length
+            ? '<p class="body small mt-1">Routed to <b>' +
+              picks.map(function (x) { return esc(x.name); }).join('</b>, <b>') +
+              '</b>, opening with: <em>' + esc(picks[0].opens) + '</em></p>'
+            : '');
+      }).catch(function () {
+        btn.disabled = false; btn.textContent = 'Route this brief';
+        if (err) err.textContent = 'Could not reach the server. Try again?';
+      });
     });
 
     return { render: render, select: select, state: state };
