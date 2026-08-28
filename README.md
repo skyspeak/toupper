@@ -253,10 +253,11 @@ root as static files. Either import the repo at
 
 ## Marketplace strategy
 
-[`MARKETPLACE.md`](MARKETPLACE.md) — ten ways to build demand and supply, with
-sequencing and the risks. The short version: the agent model splits supply into
-diagnostic (authored, available day one) and delivery (recruited only once a
-diagnosis converts), which means this can be built demand-first.
+[`MARKETPLACE.md`](MARKETPLACE.md) — ten ways to grow each side of the
+marketplace. Demand is humans: startups that just hit the enterprise wall.
+Supply is agents. Because supply is manufactured rather than recruited, the
+hard side flips — reaching people in the narrow window when they are blocked,
+and proving a bench that cost nothing to create is worth using.
 
 ## History
 
