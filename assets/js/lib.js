@@ -66,7 +66,8 @@
         return '<span class="ax' + (on ? ' on' : '') + '">' + esc(TU.chip(s)) + '</span>';
       }).join('');
       return '<div class="agent' + (open ? ' open' : '') + '">' +
-        '<button class="ahead" data-id="' + esc(a.id) + '" aria-expanded="' + (open ? 'true' : 'false') + '">' +
+        '<button class="ahead" data-id="' + esc(a.id) + '" aria-expanded="' + (open ? 'true' : 'false') +
+          '" aria-controls="panel-' + esc(a.id) + '">' +
           TU.mark(a) +
           '<span class="ab">' +
             '<span class="ac-row"><span class="acode">' + esc(a.name) + '</span>' +
@@ -90,7 +91,8 @@
           '<div class="said">' + body + '</div></div>';
       }).join('');
 
-      return '<div class="adetail">' +
+      return '<div class="adetail" id="panel-' + esc(a.id) + '" role="region" ' +
+        'aria-label="' + esc(a.name) + ' — full spec">' +
         '<p class="aopinion">“' + esc(a.opinion) + '”</p>' +
 
         '<div class="acols">' +

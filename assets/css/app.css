@@ -163,8 +163,6 @@ a{color:var(--accent)}
 }
 .btn:hover{background:#152CBE}
 .btn-sm{height:34px; padding:0 13px; font-size:14px}
-.btn-ghost{background:transparent; color:var(--ink); border-color:var(--line-2)}
-.btn-ghost:hover{background:var(--paper); border-color:var(--ink)}
 .field{display:block; margin-bottom:16px}
 .field > span{display:block; font-size:14px; font-weight:500; margin-bottom:6px}
 .input{
@@ -199,7 +197,6 @@ textarea.input{min-height:96px; resize:vertical; line-height:1.6}
 .measure{max-width:58ch}
 .h-sm{font-size:20px}
 .full{width:100%}
-.nowrap{white-space:nowrap}
 
 /* -------------------------------------------------------- variant switch */
 .switch{display:flex; gap:2px; margin-left:auto; align-items:center}
@@ -305,3 +302,24 @@ body.vc .wrap{max-width:900px}
   .capture{padding:18px}
   .crow .btn{width:100%}
 }
+
+/* ============================================================== focus ==== */
+/* Keyboard users need to see where they are. Mouse users never see these. */
+/* element+pseudo (0,1,1) so it always beats a bare class rule */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.ahead:focus-visible,.beat:focus-visible{outline-offset:-2px}
+.input:focus-visible{outline-offset:-1px}
+.skip{
+  position:absolute; left:-9999px; top:0; background:var(--ink); color:#fff;
+  padding:10px 16px; border-radius:0 0 8px 0; z-index:50; text-decoration:none; font-size:14px;
+}
+.skip:focus{left:0}

@@ -135,8 +135,10 @@ toupper/
 │   └── js/
 │       ├── lib.js      shared data access, filtering, row rendering
 │       └── a.js b.js c.js   per-variant controllers
+├── 404.html            not-found page
 ├── data/
-│   ├── domains.js      18 practice areas in 5 groups
+│   ├── domains.js      18 practice areas — only the fields pages read (4 KB)
+│   ├── domains-reference.js  long-form corpus, deliberately NOT loaded (20 KB)
 │   ├── agents.js       9 agent specs, incl. written transcripts
 │   └── tracks.js       compliance and revenue content
 ├── api/
@@ -187,6 +189,23 @@ kept on `globalThis` so it survives module re-evaluation. Bodies are capped at
 length-clamped before it leaves the process. A failed webhook still returns
 success to the visitor and logs the full lead, so a downstream outage never
 loses one.
+
+## Weight
+
+The whole of variant A is ~66 KB uncompressed, including all data and fonts
+excluded. `data/domains.js` carries only the five fields the pages actually
+read; the long-form material for each area (blurb, what-good-looks-like,
+signals, engagements) lives in `data/domains-reference.js`, which no page
+loads. It is the corpus an agent would be grounded in and the source for any
+future writing — worth keeping, not worth shipping to every visitor.
+
+## Accessibility
+
+Every interactive control is a real `<button>` or `<a>`. Agent rows are proper
+disclosures: `aria-expanded` on the trigger, `aria-controls` pointing at a
+`role="region"` panel labelled with the agent's name. Each page opens with a
+skip link to the bench. Focus rings are defined with `:focus-visible` at
+element+pseudo specificity so they cannot lose the cascade to a class rule.
 
 ## Hardening
 
