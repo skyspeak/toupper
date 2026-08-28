@@ -251,6 +251,13 @@ root as static files. Either import the repo at
 4. Publish the corpus behind each agent. For a claim like this, showing the
    grounding is the marketing.
 
+## Marketplace strategy
+
+[`MARKETPLACE.md`](MARKETPLACE.md) — ten ways to build demand and supply, with
+sequencing and the risks. The short version: the agent model splits supply into
+diagnostic (authored, available day one) and delivery (recruited only once a
+diagnosis converts), which means this can be built demand-first.
+
 ## History
 
 Earlier revisions in git history include a multi-page version (separate
