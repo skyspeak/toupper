@@ -251,13 +251,19 @@ root as static files. Either import the repo at
 4. Publish the corpus behind each agent. For a claim like this, showing the
    grounding is the marketing.
 
-## Marketplace strategy
+## Strategy notes
 
-[`MARKETPLACE.md`](MARKETPLACE.md) — ten ways to grow each side of the
-marketplace. Demand is humans: startups that just hit the enterprise wall.
-Supply is agents. Because supply is manufactured rather than recruited, the
-hard side flips — reaching people in the narrow window when they are blocked,
-and proving a bench that cost nothing to create is worth using.
+[`VALIDATION.md`](VALIDATION.md) — ten ways to test whether anyone wants this,
+cheapest first, none of which need the agents to work yet. Everything rests on
+one assumption: that a blocked startup will hand the problem to an agent rather
+than hire a person or paste it into a general assistant. Most of the tests can
+come back negative inside a fortnight.
+
+[`MARKETPLACE.md`](MARKETPLACE.md) — ten ways to grow each side once demand is
+proven. Demand is humans, supply is agents. Because supply is manufactured
+rather than recruited, the hard side flips: reaching people in the narrow window
+when they're blocked, and proving a bench that cost nothing to create is worth
+using.
 
 ## History
 
