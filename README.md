@@ -143,6 +143,8 @@ toupper/
 │   └── tracks.js       compliance and revenue content
 ├── api/
 │   └── lead.js         lead capture endpoint (Vercel function)
+├── tools/
+│   └── leads.js        read the leads back out of the store
 ├── vercel.json         static deploy config, no build
 └── serve.js            local server — serves static files and runs /api
 ```
@@ -167,17 +169,39 @@ Every lead carries the context that makes it worth having — selected areas,
 matched agents, which variant the visitor was on, and the page. Which areas get
 selected is the most valuable thing this site could learn.
 
-### Configuring a destination
+### Where leads go
 
-| Variable | Effect |
-|---|---|
-| `LEAD_WEBHOOK_URL` | Any endpoint accepting a JSON POST — a Slack incoming webhook, a Zapier catch hook, your CRM, an internal API. The payload includes a pre-rendered one-line `text` summary so Slack-style hooks read well without unpacking. |
-| `LEAD_WEBHOOK_AUTH` | Optional, sent as the `Authorization` header. |
+A private [Vercel Blob](https://vercel.com/docs/vercel-blob) store called
+`toupper-leads` is the system of record. One JSON object per lead, keyed by
+timestamp so they sort chronologically. `BLOB_READ_WRITE_TOKEN` is injected
+automatically because the store is linked to the project.
 
-With neither set the endpoint runs in **demo mode**: it validates, logs, and
-tells the browser plainly that nothing was delivered. The UI never claims a
-delivery that did not happen — there is a distinct message for stored, demo,
-and "the webhook was down so it is in the log".
+Private matters here: these records hold email addresses, and objects in the
+store return `403` to anonymous requests. Only the read-write token can read
+them.
+
+The endpoint talks to the Blob REST API with plain `fetch`, so the deploy stays
+dependency-free and needs no build step.
+
+Read them back locally:
+
+```
+node tools/leads.js           # newest first
+node tools/leads.js --areas   # which practice areas people actually pick
+node tools/leads.js --csv     # export
+```
+
+That is a local script rather than an API route on purpose. No read endpoint
+means no read endpoint to secure.
+
+Optionally, set `LEAD_WEBHOOK_URL` (and `LEAD_WEBHOOK_AUTH`) to also fire a
+notification at a Slack hook, Zapier, or a CRM. The payload carries a
+pre-rendered one-line summary. A webhook failure never fails the request,
+because the store already has the record.
+
+If no store is configured at all, the endpoint falls back to demo mode, and the
+UI says plainly that nothing was delivered. It never claims a delivery that did
+not happen.
 
 ### Abuse handling
 
@@ -245,11 +269,8 @@ static files, and runs `api/lead.js` as a function. Redeploy with:
 vercel --prod --scope skyspeak-gmailcoms-projects
 ```
 
-Lead capture is live but running in demo mode, because no destination is
-configured. It validates, logs, and tells the browser plainly that nothing was
-delivered. Set `LEAD_WEBHOOK_URL` in the Vercel project settings and redeploy
-to make it real, since environment variables do not apply to an existing
-deployment.
+Pushes to `main` deploy automatically; the GitHub repo is connected to the
+project.
 
 No custom domain yet. `toupper.com` is taken. `.io`, `.ai`, `.dev`, `.co`,
 `.app` and `.sh` were all available when checked, between $10 and $160 a year,

@@ -3,13 +3,17 @@
  * Same-origin by design: the page fetches this endpoint, so the CSP never has
  * to name a third-party host. No dependencies, no database.
  *
- * Configure one of these and leads are delivered:
- *   LEAD_WEBHOOK_URL   any endpoint that accepts a JSON POST — Slack incoming
+ * Leads are written to a private Vercel Blob store, which is the system of
+ * record. BLOB_READ_WRITE_TOKEN is injected automatically by the linked store.
+ * Read them back with `node tools/leads.js`.
+ *
+ * Optional notification on top of the store:
+ *   LEAD_WEBHOOK_URL   any endpoint accepting a JSON POST — Slack incoming
  *                      webhook, Zapier catch hook, your CRM, an internal API
  *   LEAD_WEBHOOK_AUTH  optional, sent as the Authorization header
  *
- * With neither set the endpoint runs in demo mode: it validates, logs, and
- * tells the browser plainly that nothing was delivered.
+ * A webhook failure never fails the request. With no store configured the
+ * endpoint falls back to demo mode and says so plainly.
  */
 
 'use strict';
@@ -102,30 +106,83 @@ module.exports = async function handler(req, res) {
     at: new Date().toISOString()
   };
 
-  var hook = process.env.LEAD_WEBHOOK_URL;
-  if (!hook) {
-    console.log('[lead:demo]', JSON.stringify(lead));
-    return res.status(200).json({ ok: true, stored: false, demo: true });
+  /* The store is the record. A webhook, if configured, is a notification
+     on top of it and is never allowed to fail the request. */
+  var saved = { ok: false, reason: 'unknown' };
+  try {
+    saved = await persist(lead);
+  } catch (err) {
+    saved = { ok: false, reason: String(err && err.message).slice(0, 80) };
   }
 
-  try {
-    var headers = { 'Content-Type': 'application/json' };
-    if (process.env.LEAD_WEBHOOK_AUTH) headers.Authorization = process.env.LEAD_WEBHOOK_AUTH;
-    var out = await fetch(hook, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify({ text: summarise(lead), lead: lead }),
-      signal: AbortSignal.timeout(6000)
-    });
-    if (!out.ok) throw new Error('webhook ' + out.status);
-    console.log('[lead:stored]', lead.kind, lead.email);
-    return res.status(200).json({ ok: true, stored: true });
-  } catch (err) {
-    /* Never lose the lead to a downstream outage — it is in the log. */
-    console.error('[lead:failed]', String(err && err.message), JSON.stringify(lead));
-    return res.status(200).json({ ok: true, stored: false, deferred: true });
+  if (saved.ok) {
+    console.log('[lead:stored]', lead.kind, lead.email, saved.pathname);
+  } else {
+    /* Log the whole record so a storage outage never loses a lead. */
+    console.error('[lead:unstored]', saved.reason, JSON.stringify(lead));
   }
+
+  var hook = process.env.LEAD_WEBHOOK_URL;
+  if (hook) {
+    try {
+      var headers = { 'Content-Type': 'application/json' };
+      if (process.env.LEAD_WEBHOOK_AUTH) headers.Authorization = process.env.LEAD_WEBHOOK_AUTH;
+      var out = await fetch(hook, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ text: summarise(lead), lead: lead }),
+        signal: AbortSignal.timeout(6000)
+      });
+      if (!out.ok) throw new Error('webhook ' + out.status);
+    } catch (err) {
+      console.error('[lead:webhook-failed]', String(err && err.message));
+    }
+  }
+
+  if (saved.ok) return res.status(200).json({ ok: true, stored: true });
+  if (saved.reason === 'no_store') return res.status(200).json({ ok: true, stored: false, demo: true });
+  return res.status(200).json({ ok: true, stored: false, deferred: true });
 };
+
+/* ------------------------------------------------------------------ *
+ * Storage. Vercel Blob, spoken to over its REST API with plain fetch,
+ * so the deploy stays dependency-free. The store is private: objects
+ * return 403 to anonymous requests and are only readable with the
+ * read-write token, which matters because these records hold emails.
+ * ------------------------------------------------------------------ */
+
+var BLOB_API = 'https://blob.vercel-storage.com';
+
+function leadKey(at) {
+  var stamp = at.replace(/[:.]/g, '-');
+  var rand = Math.random().toString(36).slice(2, 8);
+  return 'leads/' + stamp + '-' + rand + '.json';
+}
+
+async function persist(lead) {
+  var token = process.env.BLOB_READ_WRITE_TOKEN;
+  if (!token) return { ok: false, reason: 'no_store' };
+
+  var res = await fetch(BLOB_API + '/' + leadKey(lead.at), {
+    method: 'PUT',
+    headers: {
+      authorization: 'Bearer ' + token,
+      'x-api-version': '7',
+      'x-content-type': 'application/json',
+      'x-vercel-blob-access': 'private',
+      'x-add-random-suffix': '0'
+    },
+    body: JSON.stringify(lead),
+    signal: AbortSignal.timeout(6000)
+  });
+
+  if (!res.ok) {
+    var detail = await res.text().catch(function () { return ''; });
+    return { ok: false, reason: 'http_' + res.status, detail: detail.slice(0, 200) };
+  }
+  var body = await res.json();
+  return { ok: true, pathname: body.pathname };
+}
 
 /* A one-line summary so Slack-style webhooks are readable without unpacking. */
 function summarise(lead) {
