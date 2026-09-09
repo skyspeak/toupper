@@ -234,11 +234,26 @@ Every value interpolated into markup — including our own data — goes through
 `.vercelignore`. The policy was verified in-browser against all three variants
 with zero violations.
 
-## Deploying
+## Deployed
 
-Vercel, zero-config — `vercel.json` sets `framework: null` and serves the repo
-root as static files. Either import the repo at
-[vercel.com/new](https://vercel.com/new), or run `npx vercel` from this directory.
+Live at **<https://toupper.vercel.app>**.
+
+Zero-config: `vercel.json` sets `framework: null`, serves the repo root as
+static files, and runs `api/lead.js` as a function. Redeploy with:
+
+```
+vercel --prod --scope skyspeak-gmailcoms-projects
+```
+
+Lead capture is live but running in demo mode, because no destination is
+configured. It validates, logs, and tells the browser plainly that nothing was
+delivered. Set `LEAD_WEBHOOK_URL` in the Vercel project settings and redeploy
+to make it real, since environment variables do not apply to an existing
+deployment.
+
+No custom domain yet. `toupper.com` is taken. `.io`, `.ai`, `.dev`, `.co`,
+`.app` and `.sh` were all available when checked, between $10 and $160 a year,
+and none of them are worth buying while the agents are still a design fiction.
 
 ## If this were built for real
 
