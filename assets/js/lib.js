@@ -115,7 +115,9 @@
           '<p class="tiny muted">Written by hand to show the shape of a session. Nothing is generated here.</p>' +
         '</div>' +
 
-        '<button class="btn btn-sm" data-brief="' + esc(a.id) + '">Brief ' + esc(a.short) + '</button>' +
+        (a.topic
+          ? '<button class="btn btn-sm" data-brief="' + esc(a.id) + '" data-topic="' + esc(a.topic.id) + '">Ask ' + esc(a.short) + ' about ' + esc(a.topic.label) + '</button>'
+          : '<button class="btn btn-sm" data-brief="' + esc(a.id) + '">Brief ' + esc(a.short) + '</button>') +
       '</div>';
     },
 
@@ -288,7 +290,13 @@
 
     $('agents').addEventListener('click', function (e) {
       var brief = e.target.closest('[data-brief]');
-      if (brief) { briefFor(brief.getAttribute('data-brief')); return; }
+      if (brief) {
+        /* Talk to the agent right here when the chat is on the page; otherwise fall back to the brief form. */
+        var topic = brief.getAttribute('data-topic');
+        if (topic && typeof TU.openAsk === 'function') TU.openAsk(topic);
+        else briefFor(brief.getAttribute('data-brief'));
+        return;
+      }
       var head = e.target.closest('.ahead'); if (!head) return;
       var id = head.getAttribute('data-id');
       state.open = state.open === id ? null : id;

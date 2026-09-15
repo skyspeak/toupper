@@ -14,7 +14,7 @@
 
 window.TOUPPER_AGENTS = [
   {
-    id: "sam", name: "Sam L. Assertion", short: "Sam L.", initials: "SA", title: "Identity",
+    id: "sam", topic: { id: "sso", label: "SSO" }, name: "Sam L. Assertion", short: "Sam L.", initials: "SA", title: "Identity",
     areas: ["sso", "scim"],
     mandate: "Gets you from email-and-password to federated identity without stranding a single user.",
     opinion: "The protocol is a weekend. The account-linking migration is the project.",
@@ -44,7 +44,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "perry", name: "Perry Mission", short: "Perry", initials: "PM", title: "Authorization",
+    id: "perry", topic: { id: "rbac", label: "custom roles" }, name: "Perry Mission", short: "Perry", initials: "PM", title: "Authorization",
     areas: ["rbac", "org-hierarchy"],
     mandate: "Turns three hardcoded roles into a permission model that survives the org chart.",
     opinion: "If permission checks live in your frontend, you do not have an authorization model. You have a suggestion.",
@@ -72,7 +72,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "bill", name: "Bill Prorata", short: "Bill", initials: "BP", title: "Revenue",
+    id: "bill", topic: { id: "usage-billing", label: "usage billing" }, name: "Bill Prorata", short: "Bill", initials: "BP", title: "Revenue",
     areas: ["billing-revops", "pricing-packaging", "packaging"],
     mandate: "Models enterprise contracts as data, so invoices reconcile and finance stops editing them by hand.",
     opinion: "Nobody has a billing problem. They have a contract-modeling problem that shows up as a billing problem.",
@@ -101,7 +101,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "sarah", name: "Sarah Baines-Oxley", short: "Sarah", initials: "SB", title: "Compliance",
+    id: "sarah", topic: { id: "soc2", label: "SOC 2" }, name: "Sarah Baines-Oxley", short: "Sarah", initials: "SB", title: "Compliance",
     areas: ["compliance", "procurement"],
     mandate: "Sequences certifications against your actual pipeline, then runs the questionnaire machine.",
     opinion: "A certification is a market-access decision. Start with the deals, not the framework.",
@@ -129,7 +129,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "rick", name: "Rick Assessment", short: "Rick", initials: "RA", title: "Security posture",
+    id: "rick", topic: { id: "gdpr-residency", label: "data residency" }, name: "Rick Assessment", short: "Rick", initials: "RA", title: "Security posture",
     areas: ["security", "privacy"],
     mandate: "Builds the posture that survives someone else's security review — and the residency claims that are true.",
     opinion: "\"EU data stays in the EU\" is usually true of the database and false of everything else.",
@@ -161,7 +161,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "audrey", name: "Audrey Trail", short: "Audrey", initials: "AT", title: "Audit & evidence",
+    id: "audrey", topic: { id: "audit-logs", label: "audit logs" }, name: "Audrey Trail", short: "Audrey", initials: "AT", title: "Audit & evidence",
     areas: ["audit-logs", "customer-reporting"],
     mandate: "Makes everything that happened provable months later — to auditors, admins and the renewal conversation.",
     opinion: "An events table is not an audit log. Immutability and coverage are the whole product.",
@@ -189,7 +189,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "terry", name: "Terry Form", short: "Terry", initials: "TF", title: "Deployment",
+    id: "terry", topic: { id: "single-tenant", label: "self-hosting" }, name: "Terry Form", short: "Terry", initials: "TF", title: "Deployment",
     areas: ["deployment", "admin-console"],
     mandate: "Ships software into environments you do not operate, and keeps one release train doing it.",
     opinion: "Every deployment model you add is a permanent tax on release engineering. Charge for it.",
@@ -217,7 +217,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "paige", name: "Paige Nation", short: "Paige", initials: "PN", title: "Platform & integrations",
+    id: "paige", topic: { id: "public-api", label: "your public API" }, name: "Paige Nation", short: "Paige", initials: "PN", title: "Platform & integrations",
     areas: ["integrations-api"],
     mandate: "Turns whatever your web client happens to call into a public contract you can stand behind.",
     opinion: "A public API is a contract you cannot unilaterally change. Price that in before you publish it.",
@@ -245,7 +245,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "eva",
+    id: "eva", topic: { id: "evals", label: "evals" },
     name: "Eva Luation",
     short: "Eva",
     initials: "EL",
@@ -283,7 +283,7 @@ window.TOUPPER_AGENTS = [
     ]
   },
   {
-    id: "nina", name: "Nina Nines", short: "Nina", initials: "NN", title: "Adoption & service",
+    id: "nina", topic: { id: "sla", label: "SLAs" }, name: "Nina Nines", short: "Nina", initials: "NN", title: "Adoption & service",
     areas: ["onboarding", "uptime-support"],
     mandate: "Closes the gap between a signed contract and an activated one — and staffs the promises in it.",
     opinion: "Never sign an availability number you have not measured for four quarters.",

@@ -159,12 +159,15 @@
         '</div>'
       : '';
 
-    var drivers = '<fieldset class="drv"><legend>Does any of this apply to you?</legend>' +
+    /* Folded away until wanted; opens itself when a shared link already ticked something. */
+    var onCount = onList(t, st).length;
+    var drivers = '<details class="drv"' + (onCount ? ' open' : '') + '>' +
+      '<summary>Adjust for your situation <span class="drv-n" data-drvn>' + (onCount ? onCount + ' applied' : t.drivers.length + ' factors') + '</span></summary>' +
       t.drivers.map(function (d, i) {
         return '<label class="drv-row"><input type="checkbox" data-drv="' + i + '"' + (st.on[i] ? ' checked' : '') + '>' +
           '<span class="drv-l">' + esc(d.label) + '</span>' +
           '<span class="drv-a" data-drva="' + i + '">' + esc(addLabel(d, st, t)) + '</span></label>';
-      }).join('') + '</fieldset>';
+      }).join('') + '</details>';
 
     /* The panel shows the first three questions and links to the rest. */
     var ordered = [];
@@ -189,27 +192,27 @@
         (compact ? '' : ' <a href="/">Meet the other agents</a>') + '</p></div>'
       : '';
 
-    var share = compact
-      ? '<div class="ans-act" role="group" aria-label="Share this answer">' +
-          '<a class="act act-primary" data-full href="' + esc(pathFor(t, st)) + '">Open the full answer</a>' +
-          '<button type="button" class="act" data-act="link">Copy link</button>' +
-          '<button type="button" class="act" data-act="slack">Copy for Slack</button>' +
-        '</div>'
-      : '<div class="ans-act" role="group" aria-label="Share this answer">' +
-          '<button type="button" class="act" data-act="link">Copy link</button>' +
-          '<button type="button" class="act" data-act="slack">Copy for Slack</button>' +
-          '<a class="act" data-act="email" href="' + esc(emailHref(t, st)) + '">Email it</a>' +
-          (navigator.share ? '<button type="button" class="act" data-act="share">Share</button>' : '') +
-          '<button type="button" class="act" data-act="print">Save as PDF</button>' +
-        '</div>';
+    /* One footer: get help, share, and (in the pop-up) open the full answer. */
+    var menu = '<div class="share-menu" hidden>' +
+        '<button type="button" data-act="link">Copy link</button>' +
+        '<button type="button" data-act="slack">Copy for Slack</button>' +
+        '<a data-act="email" href="' + esc(emailHref(t, st)) + '">Email it</a>' +
+        (compact ? '' : '<button type="button" data-act="print">Save as PDF</button>') +
+      '</div>';
 
-    var capture = '<form class="capture acap" data-card="' + cid + '" novalidate>' +
-      '<h3>Want a hand scoping ' + esc(t.name) + ' for your team?</h3>' +
-      '<p class="acap-p">Leave a work email and we’ll come back within two business days with how we’d approach it for you.</p>' +
-      timing() + honeypot() +
+    var footer = '<div class="ans-foot">' +
+        '<button type="button" class="btn btn-sm" data-open-cap aria-expanded="false">Get help with ' + esc(t.name) + '</button>' +
+        '<div class="share"><button type="button" class="act" data-act="share-menu" aria-expanded="false" aria-haspopup="true">Share</button>' + menu + '</div>' +
+        (compact ? '<a class="act" data-full href="' + esc(pathFor(t, st)) + '">Full answer →</a>' : '') +
+      '</div>';
+
+    var capture = '<form class="capture acap" data-card="' + cid + '" novalidate hidden>' +
+      '<p class="acap-p">Leave a work email and we’ll come back within two business days with how we’d approach ' + esc(t.name) + ' for you.</p>' +
+      honeypot() +
       '<div class="crow"><label class="vh" for="' + cid + '-email">Work email</label>' +
         '<input class="input" id="' + cid + '-email" name="email" type="email" placeholder="you@company.com" autocomplete="email">' +
-        '<button class="btn" type="submit" data-label="Get help">Get help</button></div>' +
+        '<button class="btn" type="submit" data-label="Send">Send</button></div>' +
+      timing() +
       '<p class="tiny muted cnote">One email about this, no list. <span class="cerr" role="status"></span></p>' +
     '</form>';
 
@@ -230,7 +233,7 @@
         '<section class="ans-s"><span class="eyebrow">What it takes</span>' + seg +
           '<div class="est" data-est aria-live="polite">' + estInner(t, st) + '</div>' + drivers + '</section>' +
         '<section class="ans-s">' + questions + '</section>' +
-        opener + share + capture +
+        opener + footer + capture +
       '</article>' + follow;
   }
 
@@ -296,7 +299,7 @@
       var dots = push('bot', '<div class="typing" role="status">' + who +
         '<span class="dots" aria-hidden="true"><span></span><span></span><span></span></span></div>');
       if (scroller) scroller.scrollTo({ top: scroller.scrollHeight, behavior: 'smooth' });
-      setTimeout(function () { dots.remove(); then(); }, 560);
+      setTimeout(function () { dots.remove(); then(); }, 320);
     }
 
     function greet() {
@@ -371,8 +374,20 @@
       var mail = card.querySelector('[data-act="email"]');
       if (mail) mail.setAttribute('href', emailHref(t, st));
       Array.prototype.forEach.call(card.querySelectorAll('[data-full]'), function (l) { l.setAttribute('href', pathFor(t, st)); });
+      var n = onList(t, st).length, badge = card.querySelector('[data-drvn]');
+      if (badge) badge.textContent = n ? n + ' applied' : t.drivers.length + ' factors';
       syncUrl(t, st);
     }
+
+    function closeMenus(except) {
+      Array.prototype.forEach.call(thread.querySelectorAll('.share-menu:not([hidden])'), function (m) {
+        if (m === except) return;
+        m.hidden = true;
+        m.previousElementSibling.setAttribute('aria-expanded', 'false');
+      });
+    }
+    document.addEventListener('click', function (e) { if (!e.target.closest('.share')) closeMenus(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenus(); });
 
     /* ------------------------------------------------------------ events */
     form.addEventListener('submit', function (e) {
@@ -413,17 +428,44 @@
         return;
       }
 
-      var act = e.target.closest('[data-act]');
-      if (!act || act.getAttribute('data-act') === 'email') return;
-      var c = act.closest('.ans'), term = byId(c.dataset.term), st = states[c.id];
-      var kind = act.getAttribute('data-act');
-
-      if (kind === 'link') copy(linkFor(term, st)).then(function () { flash(act, 'Link copied'); }, function () { flash(act, 'Copy failed'); });
-      if (kind === 'slack') copy(slackText(term, st)).then(function () { flash(act, 'Copied for Slack'); }, function () { flash(act, 'Copy failed'); });
-      if (kind === 'share') {
-        navigator.share({ title: 'What it takes to build ' + term.name, text: term.aka, url: linkFor(term, st) }).catch(function () {});
+      /* "Get help" reveals the capture form in place, ready to type. */
+      var openCap = e.target.closest('[data-open-cap]');
+      if (openCap) {
+        var capCard = openCap.closest('.ans'), capForm = capCard.querySelector('form.acap');
+        if (capForm) {
+          capForm.hidden = false;
+          openCap.setAttribute('aria-expanded', 'true');
+          openCap.hidden = true;
+          capForm.querySelector('[name=email]').focus({ preventScroll: true });
+          reveal(capForm);
+        }
+        return;
       }
+
+      var act = e.target.closest('[data-act]');
+      if (!act) return;
+      var kind = act.getAttribute('data-act');
+      var c = act.closest('.ans'), term = byId(c.dataset.term), st = states[c.id];
+
+      if (kind === 'share-menu') {
+        /* Phones get the native share sheet; everything else gets the menu. */
+        if (touch && navigator.share) {
+          navigator.share({ title: 'What it takes to build ' + term.name, text: term.aka, url: linkFor(term, st) }).catch(function () {});
+          return;
+        }
+        var m = act.nextElementSibling, opening = m.hidden;
+        closeMenus(m);
+        m.hidden = !opening;
+        act.setAttribute('aria-expanded', String(opening));
+        return;
+      }
+      if (kind === 'email') { closeMenus(); return; }
+
+      var done = function (label) { return function () { flash(act, label); setTimeout(closeMenus, 900); }; };
+      if (kind === 'link') copy(linkFor(term, st)).then(done('Link copied'), done('Copy failed'));
+      if (kind === 'slack') copy(slackText(term, st)).then(done('Copied for Slack'), done('Copy failed'));
       if (kind === 'print') {
+        closeMenus();
         document.body.classList.add('printing');
         c.classList.add('print-target');
         window.print();
@@ -514,7 +556,14 @@
       greet();
     }
 
-    return { ask: ask, focus: function () { input.focus({ preventScroll: true }); } };
+    function askId(id) {
+      var t = byId(id);
+      if (!t) return;
+      push('user', '<p>' + esc(t.name) + '</p>');
+      answer(t, { mode: 'build', on: {} });
+    }
+
+    return { ask: ask, askId: askId, focus: function () { input.focus({ preventScroll: true }); } };
   };
 
   /* The full page mounts itself. The panel is mounted by ask-widget.js. */

@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ToUpper — ten agents for the enterprise layer</title>
-<meta name="description" content="You just landed your first enterprise deal. Ten specialist AI agents for the enterprise layer — identity, authorization, revenue, compliance, security, audit, deployment, platform and adoption.">
+<meta name="description" content="You just landed your first enterprise deal. Ten specialist AI agents for the enterprise layer: identity, permissions, revenue, compliance, security, audit, deployment, platform, AI and adoption.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111418'/><text y='70' x='50' text-anchor='middle' font-size='60' font-family='monospace' fill='%23DDF56A'>&#8593;</text></svg>">
 <link rel="canonical" href="https://toupper.vercel.app/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ToUpper">
 <meta property="og:title" content="ToUpper — ten agents for the enterprise layer">
-<meta property="og:description" content="You just landed your first enterprise deal. Then the questions started. Ten specialist agents for SSO, permissions, billing, compliance, security, audit, deployment, platform and adoption.">
+<meta property="og:description" content="You just landed your first enterprise deal. Then the questions started. Ten specialist agents for SSO, permissions, billing, compliance, security, AI and more.">
 <meta property="og:url" content="https://toupper.vercel.app/">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#FAF9F7">
@@ -22,76 +22,70 @@
 <div class="wrap">
   <div class="topbar">
     <a class="logo" href="./">ToUpper<span>()</span></a>
-    <nav class="switch" aria-label="Design variants">
-      <a class="on" href="./">A · Story</a>
-      <a href="variant-b.html">B · Triage</a>
-      <a href="variant-c.html">C · Index</a>
-    </nav>
+    <span class="demo-pill" title="The agents are a design fiction, and every transcript is written by hand.">Concept demo</span>
   </div>
-  <p class="tiny muted demo mt-1">Concept demo — the ten agents are a design fiction and every transcript is written by hand. The names are puns. The specs are not.</p>
 </div>
 
 <main class="wrap">
 
   <section class="hero">
     <h1>You just landed your first enterprise deal.<br><span class="mark">Then the questions started.</span></h1>
-    <p>SAML and SCIM. Audit log export into their SIEM. A DPA with EU residency. A three-year ramp with quarterly true-ups. A 99.9% SLA with credits attached. None of it was on the roadmap, all of it is now between you and go-live — and nobody on your team has shipped it before.</p>
-    <p class="mt-1">Ten agents here have. Each is a specialist in one part of the enterprise layer — what it knows, what it hands back, and where it gives up and fetches a human are all on the record below. Yes, they are all named after the thing they do.</p>
-    <a class="askcta" href="/what"><span class="askcta-q">Not sure what SCIM or SOC 2 actually involves?</span><span class="askcta-a">Ask our Agents what it is and what it takes →</span></a>
+    <p>SSO and SCIM. Audit logs in their SIEM. A DPA, an AI review, a 99.9% SLA. None of it was on the roadmap, and nobody on your team has shipped it before. Ten agents here have, and yes, they're named after what they do.</p>
+    <div class="hero-actions">
+      <a class="btn btn-lg" href="/what" data-open-ask>Ask our Agents</a>
+      <a class="btn-quiet" href="#story">See how the ten weeks go ↓</a>
+    </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="story">
     <span class="eyebrow">How it goes</span>
     <h2 class="h-sm">The ten weeks after you sign</h2>
-    <p class="body small lead-gap measure">It runs roughly the same way at every company. Pick the week you are living in — it calls up the agents that week belongs to.</p>
+    <p class="body small lead-gap measure">Tap the week you're in to see who covers it.</p>
     <div class="beats" id="beats"></div>
   </section>
 
+  <section class="section" id="results">
+    <div class="bench-head">
+      <div>
+        <span class="eyebrow">The bench</span>
+        <h2 class="h-sm">Ten agents, one area each</h2>
+      </div>
+      <button class="clear hide" id="clear" type="button">Clear filter</button>
+    </div>
+    <div class="filter" role="group" aria-label="Filter the bench by area">
+      <div class="chips filter-row" id="chips"></div>
+    </div>
+    <p class="small muted count-line" id="count" aria-live="polite"></p>
+    <div id="agents"></div>
+  </section>
+
   <section class="section">
-    <span class="eyebrow">The two that kill deals</span>
-    <h2 class="h-sm">Compliance and revenue</h2>
-    <p class="body small lead-gap measure">Most enterprise deals stall in one of these two places. Neither is a feature you can ship in a sprint, and both are somebody's full-time speciality.</p>
+    <span class="eyebrow">Where deals stall</span>
     <div id="tracks"></div>
   </section>
 
-  <section class="section">
-    <span class="eyebrow">Or skip the story</span>
-    <h2 class="h-sm">Pick the area yourself</h2>
-    <div class="chips" id="chips"></div>
-  </section>
-
-  <section class="section" id="results">
-    <span class="eyebrow">The bench</span>
-    <h2 class="h-sm mb-2">Ten agents, one part of the layer each</h2>
-    <div class="count">
-      <span class="small muted" id="count"></span>
-      <button class="clear hide" id="clear">Clear</button>
-    </div>
-    <div id="agents"></div>
-    <div id="capture"></div>
-  </section>
-
   <section class="section" id="contact">
-    <span class="eyebrow">Then</span>
-    <h2 class="h-sm">Brief the bench</h2>
-    <p class="body small lead-gap measure">Describe the commercial situation, not the ticket. What is signed, what is blocking it, when it has to move. The brief routes to the agents that own it, and each opens with the question it always asks first.</p>
-    <form id="form" novalidate>
-      <div id="context"></div>
-      <label class="field"><span>What are you trying to do?</span>
-        <textarea class="input" id="what" placeholder="Signed LOI with a 12,000-seat customer. Their IT team requires SAML and SCIM deprovisioning before go-live in November, and our accounts are all email-and-password today."></textarea>
-      </label>
-      <div class="two">
-        <label class="field"><span>Name</span><input class="input" id="name" autocomplete="name"></label>
-        <label class="field"><span>Work email</span><input class="input" id="email" type="email" autocomplete="email"></label>
-      </div>
-      <label class="hp" aria-hidden="true">Company website<input type="text" id="hp" tabindex="-1" autocomplete="off"></label>
-      <p class="tiny cerr" id="formError" role="status" aria-live="polite"></p>
-      <button class="btn full" type="submit">Route this brief</button>
-    </form>
+    <div class="brief">
+      <h2 class="h-sm">Still stuck? Brief the bench</h2>
+      <p class="body small">What's signed, what's blocking it, and when it has to move.</p>
+      <form id="form" novalidate>
+        <div id="context"></div>
+        <label class="vh" for="what">What are you trying to do?</label>
+        <textarea class="input" id="what" rows="3" placeholder="Signed a 12,000-seat customer. They need SAML and SCIM before go-live in November."></textarea>
+        <div class="crow">
+          <label class="vh" for="email">Work email</label>
+          <input class="input" id="email" type="email" autocomplete="email" placeholder="you@company.com">
+          <button class="btn" type="submit">Send brief</button>
+        </div>
+        <label class="hp" aria-hidden="true">Company website<input type="text" id="hp" tabindex="-1" autocomplete="off"></label>
+        <p class="tiny cerr" id="formError" role="status" aria-live="polite"></p>
+      </form>
+    </div>
   </section>
 
   <div class="foot">
-    ToUpper() — a concept demo. The agents are a design fiction; transcripts are written, not generated.
+    ToUpper() is a concept demo. The agents are a design fiction, and transcripts are written, not generated.
+    <span class="foot-links">Other layouts: <a href="variant-b.html">Triage</a> · <a href="variant-c.html">Index</a></span>
   </div>
 </main>
 

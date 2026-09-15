@@ -46,19 +46,18 @@
     bench.select(same ? [] : a.slice(), !same);
   });
 
+  /* Reference material, closed by default so it doesn't compete with the story. */
   $('tracks').innerHTML = TU.tracks.map(function (t) {
     var who = TU.trackAgents(t).map(function (x) { return x.short; }).join(' · ');
-    return '<div class="track" id="track-' + esc(t.id) + '">' +
-      '<span class="eyebrow">' + esc(t.eyebrow) + '</span>' +
-      '<h3>' + esc(t.title) + '</h3>' +
-      '<p class="tb">' + esc(t.blurb) + '</p>' +
-      t.rows.map(function (r) {
-        return '<div class="trow"><div class="tk">' + esc(r.k) + '</div>' +
-          '<div class="tv">' + esc(r.v) + '</div></div>';
-      }).join('') +
-      '<div class="cta"><button class="btn btn-sm" data-track="' + esc(t.id) + '">Show the agents</button>' +
-        '<span class="tiny muted mono">' + esc(who) + '</span></div>' +
-    '</div>';
+    return '<details class="trk" id="track-' + esc(t.id) + '">' +
+      '<summary><span class="trk-t">' + esc(t.title) + '</span><span class="trk-who">' + esc(who) + '</span></summary>' +
+      '<div class="trk-body"><p class="tb">' + esc(t.blurb) + '</p>' +
+        t.rows.map(function (r) {
+          return '<div class="trow"><div class="tk">' + esc(r.k) + '</div>' +
+            '<div class="tv">' + esc(r.v) + '</div></div>';
+        }).join('') +
+        '<button class="btn-quiet" type="button" data-track="' + esc(t.id) + '">Show these agents on the bench ↑</button>' +
+      '</div></details>';
   }).join('');
 
   $('tracks').addEventListener('click', function (e) {

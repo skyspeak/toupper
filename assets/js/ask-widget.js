@@ -93,8 +93,7 @@
         chat = TU.askChat(panel.querySelector('[data-ask-root]'), {
           page: false,
           scroller: panel.querySelector('.aoa-scroll'),
-          greeting: 'Name something a big customer asked for, like SCIM, SOC 2 or RBAC. ' +
-            'The agent who owns it will tell you what it is, what it takes to build, and what your team needs to decide first.'
+          greeting: 'Name what a big customer asked for, and the agent who owns it will answer.'
         });
         return chat;
       })
@@ -121,12 +120,18 @@
     launch.focus({ preventScroll: true });
   }
 
+  /* Open straight into a topic: used by "Ask Sam L. about SSO" on the bench. */
+  TU.openAsk = function (topicId) {
+    open();
+    ensure().then(function (c) { if (c && topicId) c.askId(topicId); });
+  };
+
   launch.addEventListener('click', open);
   panel.querySelector('.aoa-close').addEventListener('click', close);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 
   /* In-page "Ask our Agents" links open the pop-up instead of leaving. */
-  Array.prototype.forEach.call(document.querySelectorAll('.askcta'), function (a) {
+  Array.prototype.forEach.call(document.querySelectorAll('.askcta, [data-open-ask]'), function (a) {
     a.addEventListener('click', function (e) {
       if (e.metaKey || e.ctrlKey || e.shiftKey) return;   /* let "open in new tab" work */
       e.preventDefault();

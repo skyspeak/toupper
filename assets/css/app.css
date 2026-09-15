@@ -639,3 +639,99 @@ body.vb .askcta{margin-top:20px}
 @keyframes aoa-up{from{transform:translateY(24px); opacity:0} to{transform:none; opacity:1}}
 
 @media print{ .aoa-launch,.aoa-panel{display:none !important} }
+
+/* ============================================================ sleeker ==== */
+/* One path per job: a primary button, a compact bench filter, reference
+   material folded away, and one short brief form. */
+
+.demo-pill{
+  margin-left:auto; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--line-2); border-radius:100px; padding:4px 10px; cursor:help;
+}
+
+.hero-actions{display:flex; flex-wrap:wrap; align-items:center; gap:10px 20px; margin-top:26px}
+.btn-lg{height:50px; padding:0 24px; font-size:16px; border-radius:12px; background:var(--ink)}
+@media (hover:hover){.btn-lg:hover{background:#000}}
+.btn-quiet{
+  display:inline-flex; align-items:center; min-height:44px; background:none; border:0; padding:0;
+  font-size:15px; font-weight:500; color:var(--ink-2); text-decoration:none; cursor:pointer;
+}
+@media (hover:hover){.btn-quiet:hover{color:var(--accent)}}
+
+/* bench: heading, one scrollable filter row, results */
+.bench-head{display:flex; align-items:flex-end; justify-content:space-between; gap:12px}
+.bench-head .clear{min-height:44px}
+.filter{position:relative; margin:14px 0 4px}
+.filter-row{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding:2px 32px 6px 0; margin:0;
+  -webkit-mask-image:linear-gradient(to right, #000 88%, transparent); mask-image:linear-gradient(to right, #000 88%, transparent)}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-row .chip{flex:none; white-space:nowrap}
+.count-line{margin:8px 0 10px; min-height:1.4em}
+
+/* compliance and revenue, folded */
+.trk{border-top:1px solid var(--line)}
+.trk:last-child{border-bottom:1px solid var(--line)}
+.trk > summary{
+  list-style:none; cursor:pointer; display:flex; align-items:baseline; gap:12px; padding:16px 0; min-height:44px;
+}
+.trk > summary::-webkit-details-marker{display:none}
+.trk > summary:after{content:'+'; margin-left:auto; font-family:var(--mono); color:var(--muted)}
+.trk[open] > summary:after{content:'\2013'}
+.trk-t{font-size:17px; font-weight:600; letter-spacing:-.015em}
+.trk-who{font-family:var(--mono); font-size:11.5px; color:var(--muted)}
+.trk-body{padding:0 0 20px}
+.trk-body .btn-quiet{margin-top:10px}
+
+/* one short brief */
+.brief{background:var(--paper); border:1px solid var(--line-2); border-radius:16px; padding:22px 24px}
+.brief .body{margin:6px 0 14px}
+.brief textarea.input{min-height:84px}
+.brief .crow{margin-top:10px}
+
+.foot-links{display:block; margin-top:6px}
+.foot-links a{color:var(--ink-2)}
+
+/* chat answers: factors folded, one footer, capture on request */
+details.drv{margin:16px 0 0; border-top:1px solid var(--line)}
+details.drv > summary{
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; min-height:44px;
+  font-size:14.5px; font-weight:500; color:var(--ink);
+}
+details.drv > summary::-webkit-details-marker{display:none}
+details.drv > summary:after{content:'+'; margin-left:auto; font-family:var(--mono); color:var(--muted)}
+details.drv[open] > summary:after{content:'\2013'}
+.drv-n{font-family:var(--mono); font-size:11px; color:var(--muted); font-weight:400}
+details.drv[open] .drv-n{color:var(--accent)}
+
+.ans-foot{display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:14px 24px; border-bottom:1px solid var(--line)}
+.ans-foot .btn-sm{height:auto; min-height:40px}
+.share{position:relative}
+.share-menu{
+  position:absolute; z-index:30; left:0; bottom:calc(100% + 6px); min-width:190px;
+  display:flex; flex-direction:column; padding:6px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:12px; box-shadow:0 10px 30px rgba(17,20,24,.16);
+}
+.share-menu[hidden]{display:none}
+.share-menu button,.share-menu a{
+  text-align:left; background:none; border:0; border-radius:8px; padding:10px 12px; min-height:40px;
+  font:inherit; font-size:14.5px; color:var(--ink); text-decoration:none; cursor:pointer;
+}
+@media (hover:hover){.share-menu button:hover,.share-menu a:hover{background:var(--bg)}}
+.share-menu .ok{color:var(--good)}
+.ans .capture[hidden]{display:none}
+.ans .capture .acap-p{margin-top:0}
+.ans .capture .acap-when{margin-top:10px}
+
+.aoa-panel .ans-foot{padding:12px 16px}
+
+@media (max-width:760px){
+  .hero-actions .btn-lg{width:100%}
+  .brief{padding:18px}
+  .ans-foot{padding:12px 16px}
+  .ans-foot .btn-sm{flex:1 1 100%; min-height:44px}
+  .ans-foot .act{flex:1; min-height:44px; justify-content:center}
+  .share{flex:1; display:flex}
+  .share > .act{flex:1}
+  .share-menu{left:0; right:0; min-width:0}
+  .share-menu button,.share-menu a{min-height:44px}
+}
