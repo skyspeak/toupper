@@ -21,6 +21,14 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   let p = decodeURIComponent(url.pathname);
 
+  /* mirror vercel.json rewrites so /what links work locally */
+  if (p === '/what' || p === '/what/') p = '/ask.html';
+  const whatTerm = p.match(/^\/what\/([^/]+)\/?$/);
+  if (whatTerm) {
+    req.url = '/api/what?term=' + encodeURIComponent(whatTerm[1]) + (url.search ? '&' + url.search.slice(1) : '');
+    p = '/api/what';
+  }
+
   if (p.startsWith('/api/')) {
     const fn = path.join(root, 'api', path.basename(p) + '.js');
     if (!fs.existsSync(fn)) { res.writeHead(404).end('no such function'); return; }

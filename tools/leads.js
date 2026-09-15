@@ -5,6 +5,7 @@
  *   node tools/leads.js --csv      export to CSV on stdout
  *   node tools/leads.js --json     raw records
  *   node tools/leads.js --areas    which practice areas people actually pick
+ *   node tools/leads.js --terms    which features people ask the chat about
  *
  * Needs BLOB_READ_WRITE_TOKEN. It is in .env.local after `vercel blob
  * create-store`, or run `vercel env pull` to refresh it. Deliberately a local
@@ -52,7 +53,7 @@ async function all(tok) {
 }
 
 function csv(rows) {
-  const cols = ['at', 'kind', 'email', 'name', 'variant', 'areas', 'agents', 'situation'];
+  const cols = ['at', 'kind', 'email', 'name', 'term', 'estimate', 'timing', 'variant', 'areas', 'agents', 'situation'];
   const cell = v => {
     const s = Array.isArray(v) ? v.join('; ') : (v == null ? '' : String(v));
     return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -67,6 +68,20 @@ function csv(rows) {
 
   if (arg === '--json') return console.log(JSON.stringify(rows, null, 2));
   if (arg === '--csv') return console.log(csv(rows));
+
+  if (arg === '--terms') {
+    const tally = {};
+    rows.filter(r => r.term).forEach(r => {
+      const k = r.term + (r.kind === 'ask-missing' ? '  (not in the guide)' : '');
+      tally[k] = (tally[k] || 0) + 1;
+    });
+    const ranked = Object.entries(tally).sort((a, b) => b[1] - a[1]);
+    if (!ranked.length) return console.log('No questions from the chat yet.');
+    console.log('What people ask the chat about\n');
+    const width = Math.max(...ranked.map(([t]) => t.length));
+    ranked.forEach(([t, n]) => console.log('  ' + t.padEnd(width) + '  ' + '\u2588'.repeat(n) + ' ' + n));
+    return;
+  }
 
   if (arg === '--areas') {
     const tally = {};
@@ -83,6 +98,7 @@ function csv(rows) {
   console.log(rows.length + (rows.length === 1 ? ' lead\n' : ' leads\n'));
   rows.forEach(r => {
     console.log('  ' + r.at + '   ' + r.kind + '   ' + r.email + (r.name ? '  (' + r.name + ')' : ''));
+    if (r.term) console.log('    asked:  ' + r.term + (r.estimate ? '  \u00b7 ' + r.estimate : '') + (r.timing ? '  \u00b7 needs it ' + r.timing.toLowerCase() : ''));
     if (r.areas && r.areas.length) console.log('    areas:  ' + r.areas.join(', '));
     if (r.agents && r.agents.length) console.log('    agents: ' + r.agents.join(', '));
     if (r.situation) console.log('    "' + r.situation.slice(0, 120) + (r.situation.length > 120 ? '…' : '') + '"');

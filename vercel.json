@@ -78,5 +78,20 @@
         }
       ]
     }
-  ]
+  ],
+  "rewrites": [
+    {
+      "source": "/what",
+      "destination": "/ask.html"
+    },
+    {
+      "source": "/what/:term",
+      "destination": "/api/what?term=:term"
+    }
+  ],
+  "functions": {
+    "api/what.js": {
+      "includeFiles": "ask.html"
+    }
+  }
 }

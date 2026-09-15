@@ -160,7 +160,8 @@
   var LOADED_AT = Date.now();
 
   TU.variant = function () {
-    var c = document.body.className || '';
+    var c = ' ' + (document.body.className || '') + ' ';
+    if (c.indexOf(' ask ') > -1) return 'ask';
     return c.indexOf('vb') > -1 ? 'b' : c.indexOf('vc') > -1 ? 'c' : 'a';
   };
 

@@ -396,3 +396,144 @@ summary:focus-visible,
   .hero{padding:28px 0 22px}
   .section{padding:26px 0}
 }
+
+/* ------------------------------------------------ entry point to the chat */
+.askcta{
+  display:flex; flex-direction:column; gap:3px; margin:24px 0 4px; padding:14px 16px;
+  border:1px solid var(--line-2); border-radius:12px; background:var(--paper); text-decoration:none;
+}
+.askcta-q{font-size:14.5px; color:var(--ink-2)}
+.askcta-a{font-size:15.5px; font-weight:500; color:var(--accent)}
+@media (hover:hover){.askcta:hover{border-color:var(--accent)}}
+body.vb .askcta{margin-top:20px}
+
+/* ================================================================ ask ==== */
+/* "What is this thing?" — a chat that answers from the glossary. The thread
+   scrolls with the page rather than inside a box, so answers print and link
+   cleanly; the question bar sticks to the bottom of the viewport. */
+
+.toplink{margin-left:auto; font-size:14px; text-decoration:none; color:var(--ink-2); min-height:44px; display:inline-flex; align-items:center}
+@media (hover:hover){.toplink:hover{color:var(--accent)}}
+
+.askhead{padding:40px 0 18px}
+.askhead h1{font-size:clamp(28px,4.2vw,38px); line-height:1.12; letter-spacing:-.03em; margin-top:2px}
+.askhead p{font-size:17px; color:var(--ink-2); margin-top:14px; max-width:58ch}
+
+.thread{display:flex; flex-direction:column; gap:16px; padding:10px 0 24px}
+.msg.user{align-self:flex-end; max-width:82%}
+.msg.user p{
+  background:var(--ink); color:#fff; padding:10px 15px; border-radius:16px 16px 4px 16px;
+  font-size:15.5px; line-height:1.45; overflow-wrap:anywhere;
+}
+.msg.bot{align-self:stretch}
+.msg.greet > p,.unk > p{font-size:16px; color:var(--ink-2); max-width:60ch}
+.starters{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.unk-l{font-size:14px; color:var(--muted); margin-top:14px}
+.unk .capture{margin-top:20px}
+.msg.fresh{animation:rise .32s cubic-bezier(.2,.7,.3,1) both}
+
+.typing{display:inline-flex; gap:5px; padding:12px 14px; background:var(--paper);
+  border:1px solid var(--line); border-radius:14px}
+.typing span{width:6px; height:6px; border-radius:50%; background:var(--muted); animation:blink 1s infinite ease-in-out}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.25} 40%{opacity:1}}
+
+/* the answer card */
+.ans{background:var(--paper); border:1px solid var(--line-2); border-radius:14px; overflow:hidden}
+.ans-s{padding:22px 24px; border-bottom:1px solid var(--line)}
+.ans-name{font-size:28px; letter-spacing:-.03em; line-height:1.1; margin-top:2px}
+.ans-aka{font-size:14.5px; color:var(--muted); margin-top:4px}
+.ans-body{font-size:16px; line-height:1.65; color:var(--ink); margin-top:14px; max-width:62ch}
+.ans-why{font-size:15px; line-height:1.6; color:var(--ink-2); margin-top:12px; max-width:62ch}
+.ans-why b{font-weight:600; color:var(--ink)}
+
+.seg{display:inline-flex; border:1px solid var(--line-2); border-radius:10px; padding:3px; margin:4px 0 16px; background:var(--bg)}
+.seg button{border:0; background:transparent; font-size:14px; padding:8px 14px; border-radius:7px; color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--paper); color:var(--ink); box-shadow:0 1px 2px rgba(17,20,24,.08), 0 0 0 1px var(--line-2)}
+
+.est-range{font-size:17px; color:var(--ink-2)}
+.est-range b{font-family:var(--mono); font-weight:500; font-size:40px; letter-spacing:-.04em; color:var(--ink); margin-right:6px}
+.est-sub{font-size:15px; color:var(--ink); margin-top:4px}
+.est-scope{font-size:14.5px; color:var(--ink-2); margin-top:10px; max-width:62ch}
+.est-extra{font-size:14px; color:var(--ink-2); margin-top:10px; padding:10px 12px; background:var(--bg); border-radius:8px; max-width:62ch}
+
+.drv{border:0; padding:0; margin:18px 0 0}
+.drv legend{font-size:13px; font-weight:500; color:var(--muted); margin-bottom:6px; padding:0}
+.drv-row{display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-top:1px solid var(--line); cursor:pointer}
+.drv-row input{accent-color:var(--accent); width:18px; height:18px; margin:2px 0 0; flex:none; cursor:pointer}
+.drv-l{flex:1; font-size:15px; color:var(--ink); line-height:1.45}
+.drv-a{font-family:var(--mono); font-size:12px; color:var(--muted); white-space:nowrap; padding-top:3px}
+.drv-row input:checked ~ .drv-a{color:var(--accent)}
+
+.q-lede{font-size:14px; color:var(--muted); margin:2px 0 6px}
+.qg{margin-top:16px}
+.qg-h{font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--accent)}
+.qg-l{margin-top:6px}
+.qg-l li{padding:9px 0 9px 22px; position:relative; border-top:1px solid var(--line)}
+.qg-l li:before{content:''; position:absolute; left:3px; top:18px; width:6px; height:6px; border-radius:50%; background:var(--accent); opacity:.5}
+.q-q{display:block; font-size:15.5px; color:var(--ink); line-height:1.45}
+.q-why{display:block; font-size:13.5px; color:var(--muted); margin-top:3px; line-height:1.5}
+
+.ans-agent{display:flex; gap:12px; align-items:flex-start; padding:18px 24px; border-bottom:1px solid var(--line); background:var(--bg)}
+.ans-agent p{font-size:14.5px; color:var(--ink-2); line-height:1.55}
+.ans-agent b{color:var(--ink); font-weight:600}
+.ans-agent em{color:var(--ink)}
+.ans-agent a{white-space:nowrap}
+
+.ans-act{display:flex; flex-wrap:wrap; gap:8px; padding:16px 24px; border-bottom:1px solid var(--line)}
+.act{
+  font:inherit; font-size:14px; color:var(--ink); background:var(--paper); border:1px solid var(--line-2);
+  border-radius:8px; padding:8px 13px; text-decoration:none; display:inline-flex; align-items:center; cursor:pointer;
+}
+@media (hover:hover){.act:hover{border-color:var(--ink)}}
+.act.ok{border-color:var(--good); color:var(--good)}
+
+.ans .capture{margin:0; border:0; border-radius:0; padding:22px 24px; background:var(--paper)}
+.ans .capture.done{border-left:3px solid var(--accent)}
+.acap-p{font-size:14.5px; color:var(--ink-2); margin-top:6px; max-width:58ch}
+.acap-when{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px}
+.acap-when .chip{font-size:13px}
+
+.fu{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px}
+.fu-l{font-size:13px; color:var(--muted); margin-right:2px}
+
+.askbar{
+  position:sticky; bottom:0; z-index:20; display:flex; gap:8px; align-items:center;
+  padding:12px 0 max(12px, env(safe-area-inset-bottom));
+  background:linear-gradient(to top, var(--bg) 78%, rgba(250,249,247,0));
+}
+.askbar .input{flex:1; font-size:16px; min-height:48px; border-radius:12px}
+.askbar .btn{min-height:48px; border-radius:12px; padding:0 20px}
+.askfoot{padding:6px 0 40px; max-width:62ch}
+
+@media (max-width:760px){
+  .askhead{padding:26px 0 10px}
+  .askhead p{font-size:16px}
+  .msg.user{max-width:90%}
+  .ans-s,.ans-agent,.ans-act,.ans .capture{padding-left:16px; padding-right:16px}
+  .ans-name{font-size:25px}
+  .est-range b{font-size:34px}
+  .seg{display:flex}
+  .seg button{flex:1; min-height:44px}
+  .drv-row{padding:12px 0}
+  .drv-a{font-size:11.5px}
+  .ans-act{display:grid; grid-template-columns:1fr 1fr}
+  .act{min-height:44px; justify-content:center}
+  .acap-when .chip{font-size:14px}
+}
+
+/* Save as PDF: one clean answer, no chrome, no forms. */
+@media print{
+  @page{margin:16mm}
+  body{background:#fff}
+  .topbar,.askhead,.askbar,.askfoot,.skip,.ans-act,.ans .capture,.fu,.msg.user,.msg.greet,.typing,.drv-row input{display:none !important}
+  body.printing .msg.bot:not(:has(.print-target)){display:none !important}
+  .ans{border:0; border-radius:0}
+  .ans-s,.ans-agent{padding:12px 0; break-inside:avoid}
+  .drv-row{border:0; padding:3px 0}
+  .drv-row:not(:has(input:checked)){display:none}
+  .drv legend{margin-bottom:2px}
+  .ans-agent{background:#fff}
+  .ans:after{content:"toupper.vercel.app/what"; display:block; margin-top:14px; font-family:var(--mono); font-size:10px; color:#767C86}
+}

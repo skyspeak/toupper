@@ -101,6 +101,9 @@ module.exports = async function handler(req, res) {
     situation: clean(body.situation, 4000),
     areas: Array.isArray(body.areas) ? body.areas.slice(0, 24).map(function (a) { return clean(a, 60); }) : [],
     agents: Array.isArray(body.agents) ? body.agents.slice(0, 12).map(function (a) { return clean(a, 60); }) : [],
+    term: clean(body.term, 80),
+    estimate: clean(body.estimate, 80),
+    timing: clean(body.timing, 24),
     variant: clean(body.variant, 24),
     page: clean(body.page, 200),
     at: new Date().toISOString()
@@ -187,6 +190,8 @@ async function persist(lead) {
 /* A one-line summary so Slack-style webhooks are readable without unpacking. */
 function summarise(lead) {
   var bits = ['New ' + lead.kind + ' — ' + lead.email];
+  if (lead.term) bits.push('about ' + lead.term + (lead.estimate ? ' (' + lead.estimate + ')' : ''));
+  if (lead.timing) bits.push('· needs it: ' + lead.timing);
   if (lead.name) bits.push('(' + lead.name + ')');
   if (lead.areas.length) bits.push('· areas: ' + lead.areas.join(', '));
   if (lead.agents.length) bits.push('· agents: ' + lead.agents.join(', '));

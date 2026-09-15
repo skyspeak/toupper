@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>What is this thing? — ToUpper</title>
+<meta name="description" content="Name something a big customer asked for, like SCIM, SOC 2 or RBAC. Get what it is, a rough estimate of what it takes to build, and the questions your team needs to answer first.">
+<link rel="canonical" href="https://toupper.vercel.app/what">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ToUpper">
+<meta property="og:title" content="What is this thing? — ToUpper">
+<meta property="og:description" content="Name something a big customer asked for, like SCIM, SOC 2 or RBAC. Get what it is, what it takes to build, and what to decide first.">
+<meta property="og:url" content="https://toupper.vercel.app/what">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#FAF9F7">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111418'/><text y='70' x='50' text-anchor='middle' font-size='60' font-family='monospace' fill='%23DDF56A'>&#8593;</text></svg>">
+<link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body class="ask">
+<a class="skip" href="#askInput">Skip to the question box</a>
+
+<div class="wrap">
+  <div class="topbar">
+    <a class="logo" href="/">ToUpper<span>()</span></a>
+    <a class="toplink" href="/">Meet the agents →</a>
+  </div>
+</div>
+
+<main class="wrap">
+  <header class="askhead">
+    <span class="eyebrow">Ask ToUpper</span>
+    <h1>What is this thing, and what will it take?</h1>
+    <p>Name something a big customer asked for, like SCIM, SOC 2 or RBAC. You get what it is, a rough estimate of what it takes to build, and the questions your team needs to answer before starting.</p>
+  </header>
+
+  <div class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions"></div>
+
+  <noscript>
+    <!--SSR-->
+    <p class="note">This page works best with JavaScript on. Every answer also has its own address, like <a href="/what/scim">/what/scim</a>.</p>
+  </noscript>
+
+  <form class="askbar" id="askForm" novalidate>
+    <label class="vh" for="askInput">Ask about an enterprise feature</label>
+    <input class="input" id="askInput" type="text" autocomplete="off" enterkeyhint="send"
+           placeholder="Try “SCIM” or “Okta login”" maxlength="160">
+    <button class="btn" type="submit" id="askSend">Ask</button>
+  </form>
+
+  <p class="tiny muted askfoot">
+    Answers come from a hand-written guide to twenty-one enterprise features, not a model generating text.
+    Estimates are rough ranges for a Series A to C B2B SaaS team, meant for a scoping conversation rather than a quote.
+  </p>
+</main>
+
+<script src="/data/domains.js"></script>
+<script src="/data/agents.js"></script>
+<script src="/data/glossary.js"></script>
+<script src="/assets/js/lib.js"></script>
+<script src="/assets/js/ask-match.js"></script>
+<script src="/assets/js/ask.js"></script>
+</body>
+</html>

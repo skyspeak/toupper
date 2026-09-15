@@ -134,15 +134,21 @@ toupper/
 │   ├── css/app.css     design system, all three variants
 │   └── js/
 │       ├── lib.js      shared data access, filtering, row rendering
+│       ├── ask.js      the chat: answers, estimates, sharing, capture
+│       ├── ask-match.js  resolves free text to a glossary term
 │       └── a.js b.js c.js   per-variant controllers
 ├── 404.html            not-found page
 ├── data/
 │   ├── domains.js      18 practice areas — only the fields pages read (4 KB)
 │   ├── domains-reference.js  long-form corpus, deliberately NOT loaded (20 KB)
 │   ├── agents.js       9 agent specs, incl. written transcripts
+│   ├── glossary.js     21 features: explainer, estimate model, questions
 │   └── tracks.js       compliance and revenue content
+├── ask.html            the "what is this thing?" chat
+├── sitemap.xml robots.txt
 ├── api/
-│   └── lead.js         lead capture endpoint (Vercel function)
+│   ├── lead.js         lead capture endpoint (Vercel function)
+│   └── what.js         per-term link previews for /what/:term
 ├── tools/
 │   └── leads.js        read the leads back out of the store
 ├── vercel.json         static deploy config, no build
@@ -286,6 +292,63 @@ and none of them are worth buying while the agents are still a design fiction.
    expert who knows the domain.
 4. Publish the corpus behind each agent. For a claim like this, showing the
    grounding is the marketing.
+
+## Ask: what is this thing?
+
+**<https://toupper.vercel.app/what>** is a lead engine in the shape of a chat.
+Someone types what a big customer asked for, in whatever words they have ("we
+need Okta login", "soc2", "scmi"), and gets three things back:
+
+1. **What it is**, in plain language, and why enterprise buyers ask for it.
+2. **What it takes**: a rough range in engineer-weeks, a build-or-buy toggle
+   with named vendors, and a short list of "does this apply to you?" factors
+   that move the estimate live.
+3. **Answer these first**: six or seven questions, grouped by who in the org
+   usually owns the answer, each with a line on why it matters.
+
+It answers from `data/glossary.js`, a hand-written guide to twenty-one
+features, rather than a model generating text. That was a deliberate choice:
+an estimate is only useful if it's the same every time someone asks, and a
+generative answer that drifts would undermine the one thing the page is for.
+The matcher (`assets/js/ask-match.js`) handles phrasing, acronyms and typos,
+and was tested against 38 real-world queries before any UI existed.
+
+### Built to be forwarded
+
+- Every answer has its own URL, like `/what/scim`, and the estimate choices
+  travel in it: `/what/scim?mode=buy&d=0,3` reopens exactly that view.
+- `api/what.js` rewrites the title, description and Open Graph tags per term,
+  so a pasted link previews properly in Slack and email, which don't run
+  JavaScript. It also puts a plain version of the answer in `<noscript>`.
+- **Copy for Slack** produces paste-ready text with the estimate and the
+  questions; **Email it** opens a pre-written message; **Save as PDF** prints
+  just that answer, with the checked factors only.
+- `sitemap.xml` lists every term, so the guide is indexable. It is generated
+  from the glossary, so it can't drift.
+
+### As a lead engine
+
+The full answer is free and never gated, because gating kills forwarding.
+Capture comes after the value, at the bottom of each answer: a work email and
+an optional timeline. Each lead arrives unusually well qualified:
+
+```
+ask   jane@acme.com
+  asked:  SCIM · buy, 3–6 wks · needs it this quarter
+  areas:  Provisioning & Directory Sync
+  agents: Sam L. Assertion
+  "Directory groups need to map to roles; SSO isn't built yet"
+```
+
+When someone asks about something the guide doesn't cover, they get the
+closest matches plus a "tell us what you're building" form, logged as
+`ask-missing`. That doubles as a demand signal for what to write next:
+
+```
+node tools/leads.js --terms
+```
+
+Entry points sit on all three variants of the main page.
 
 ## Strategy notes
 
