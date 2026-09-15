@@ -23,4 +23,11 @@
   <url><loc>https://toupper.vercel.app/what/data-export</loc></url>
   <url><loc>https://toupper.vercel.app/what/sla</loc></url>
   <url><loc>https://toupper.vercel.app/what/enterprise-onboarding</loc></url>
+  <url><loc>https://toupper.vercel.app/what/rag</loc></url>
+  <url><loc>https://toupper.vercel.app/what/evals</loc></url>
+  <url><loc>https://toupper.vercel.app/what/guardrails</loc></url>
+  <url><loc>https://toupper.vercel.app/what/llm-observability</loc></url>
+  <url><loc>https://toupper.vercel.app/what/ai-data-controls</loc></url>
+  <url><loc>https://toupper.vercel.app/what/ai-governance</loc></url>
+  <url><loc>https://toupper.vercel.app/what/agent-permissions</loc></url>
 </urlset>

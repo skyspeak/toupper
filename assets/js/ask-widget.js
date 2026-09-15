@@ -39,7 +39,7 @@
     '<header class="aoa-head">' +
       '<span class="aoa-faces" aria-hidden="true">' + faces() + '</span>' +
       '<div class="aoa-title"><b id="aoaTitle">Ask our Agents</b>' +
-        '<span>Nine specialists, one area each</span></div>' +
+        '<span>Ten specialists, one area each</span></div>' +
       '<button type="button" class="aoa-close" aria-label="Close Ask our Agents">×</button>' +
     '</header>' +
     '<div class="aoa-body" data-ask-root>' +

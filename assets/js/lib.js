@@ -209,7 +209,7 @@
       }
       return {
         h: 'Not ready to brief anyone?',
-        p: 'Get the enterprise readiness checklist — the eighteen things large buyers ask for, and the order most teams end up doing them in.'
+        p: 'Get the enterprise readiness checklist — the twenty things large buyers ask for, and the order most teams end up doing them in.'
       };
     }
 

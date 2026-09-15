@@ -128,5 +128,19 @@ window.TOUPPER_DOMAIN_DETAIL = {
     signals: ["Large accounts sit at low activation months after signature.","Implementations depend on one heroic solutions engineer.","Migration tooling is a set of internal scripts."],
     engagements: ["Enterprise onboarding program design and time-to-value instrumentation","Migration tooling and bulk-admin capability build","Professional services offering definition and pricing"],
     related: ["uptime-support","customer-reporting","admin-console"]
+  },
+  "ai-quality": {
+    blurb: "Enterprise buyers have moved past asking whether you have AI. They ask whether it's accurate on their data, how you know, and what stops someone turning it against them. Answering takes grounded retrieval, an evaluation set that runs on every change, guardrails sized to what the AI can do, and traces that explain a bad answer.",
+    good: ["Answers grounded in the customer's own content, with citations a user can check.", "An evaluation set drawn from real cases that runs on every change.", "Prompt injection tested on purpose, and the AI given only the access it needs.", "Every AI interaction traceable, with cost and quality tracked per customer."],
+    signals: ["Quality is judged by trying a few prompts after each change.", "A security questionnaire asks about prompt injection and nobody owns the answer.", "An AI answer went wrong and nobody could reconstruct why."],
+    engagements: ["Evaluation set and regression gate for an existing AI feature", "Prompt injection and data-leak review ahead of a security assessment", "Retrieval redesign for permission-aware, per-tenant search"],
+    related: ["ai-governance", "security", "integrations-api"]
+  },
+  "ai-governance": {
+    blurb: "AI now has its own line of questions in procurement: is our data used for training, which providers see it, can we turn it off, and how is all of this governed. Behind them sit contracts with model providers, per-customer settings, and increasingly a formal management system such as ISO 42001, especially for regulated buyers or those covered by the EU AI Act.",
+    good: ["A written position on training, retention and providers that legal will sign.", "Admin controls to switch AI features off or keep processing in-region.", "A current inventory of which models and versions each feature uses.", "Risk assessments and human oversight documented for each AI feature."],
+    signals: ["The answer to 'do you train on our data' depends on who you ask.", "AI model providers are missing from the subprocessor list.", "A regulated buyer asked about ISO 42001 and nobody knew what it was."],
+    engagements: ["AI data-use policy, provider review and DPA updates", "ISO 42001 readiness alongside an existing ISO 27001 programme", "EU AI Act classification of current and planned AI features"],
+    related: ["ai-quality", "compliance", "privacy"]
   }
 };

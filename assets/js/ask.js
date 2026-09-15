@@ -22,7 +22,7 @@
   var IDX = M.index(G);
   var esc = TU.esc;
   var ORDER = ['Product', 'Engineering', 'Security', 'Sales', 'Finance', 'Legal', 'Support'];
-  var STARTERS = ['scim', 'sso', 'rbac', 'soc2', 'audit-logs', 'usage-billing', 'byok', 'gdpr-residency'];
+  var STARTERS = ['scim', 'sso', 'soc2', 'rag', 'evals', 'rbac', 'usage-billing', 'ai-data-controls'];
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var touch = window.matchMedia && matchMedia('(hover: none)').matches;
   var states = {}, seq = 0;

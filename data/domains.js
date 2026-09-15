@@ -57,7 +57,13 @@ window.TOUPPER_DOMAINS = [
     short: "Availability you have actually measured, and response times you can staff." },
   { slug: "onboarding", chip: "Onboarding", group: "Service & Adoption",
     name: "Onboarding, Migration & Implementation",
-    short: "From signed contract to thousands of active users, without heroics." }
+    short: "From signed contract to thousands of active users, without heroics." },
+  { slug: "ai-quality", chip: "RAG & evals", group: "AI & Agents",
+    name: "AI Quality, RAG & Guardrails",
+    short: "Grounded answers, measured accuracy, and defences against prompt injection." },
+  { slug: "ai-governance", chip: "AI governance", group: "AI & Agents",
+    name: "AI Governance & Data Controls",
+    short: "What models see and keep, who signs off, and what regulators expect." }
 ];
 
 window.TOUPPER_GROUPS = [
@@ -65,5 +71,6 @@ window.TOUPPER_GROUPS = [
   { name: "Identity & Access", tag: "Who gets in, and what they can touch" },
   { name: "Trust & Compliance", tag: "What survives someone else's security review" },
   { name: "Operations & Scale", tag: "Running the product inside someone else's company" },
-  { name: "Service & Adoption", tag: "From signature to renewal" }
+  { name: "Service & Adoption", tag: "From signature to renewal" },
+  { name: "AI & Agents", tag: "What buyers ask before letting a model near their data" }
 ];

@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------------ *
- * CONCEPT DEMO. These nine agents are a design fiction. They are archetypes
+ * CONCEPT DEMO. These ten agents are a design fiction. They are archetypes
  * built from bodies of public practice — specs, RFCs, post-mortems, audit
  * frameworks — not portraits of, or claims about, any real practitioner.
  * Every transcript below is written by hand, not generated at runtime.
@@ -7,7 +7,8 @@
  * The names are puns. Sam L. Assertion handles SAML; Perry Mission does
  * permissions; Bill Prorata does billing; Sarah Baines-Oxley does compliance;
  * Rick Assessment does security; Audrey Trail does audit; Terry Form does
- * deployment; Paige Nation does APIs; Nina Nines does uptime. The specs
+ * deployment; Paige Nation does APIs; Eva Luation does AI evaluation;
+ * Nina Nines does uptime. The specs
  * underneath them are not a joke.
  * ------------------------------------------------------------------------ */
 
@@ -241,6 +242,44 @@ window.TOUPPER_AGENTS = [
         "Then publish the deprecation policy before the API, not after. Twelve months' notice is the enterprise norm and it constrains what you are willing to ship on day one, which is the point.",
         "Share your route list and I will mark what belongs in v1 and what should stay behind the curtain."
       ] }
+    ]
+  },
+  {
+    id: "eva",
+    name: "Eva Luation",
+    short: "Eva",
+    initials: "EL",
+    title: "AI systems",
+    areas: ["ai-quality", "ai-governance"],
+    mandate: "Makes AI features something a buyer's security team will approve: grounded, measured, contained and documented.",
+    opinion: "A demo proves the AI can work. An eval set proves it does, and tells you the day it stops.",
+    grounding: [
+      "Retrieval pipelines, chunking and embedding choices, and how they fail on real enterprise documents.",
+      "Evaluation design: golden sets, model-graded scoring and when not to trust it, and regression gates on every change.",
+      "The OWASP Top 10 for LLM applications, ISO/IEC 42001, the EU AI Act and the NIST AI Risk Management Framework."
+    ],
+    produces: [
+      "An eval set built from real cases, with a baseline score",
+      "A prompt injection and data-leak review of each AI feature",
+      "AI data-handling answers that legal can put in a contract",
+      "An AI governance pack: policy, risk assessments, model inventory"
+    ],
+    opens: "How do you know your AI feature got better, and not worse, after the last change?",
+    handoff: "When a use might be legally high-risk. It maps the obligations; a lawyer decides what applies.",
+    sample: [
+      {
+        role: "you",
+        text: "A bank wants our AI assistant, but their review asks how we prevent hallucinations and prompt injection."
+      },
+      {
+        role: "agent",
+        text: [
+          "Those are two different questions, and a good answer to each is a number and a mechanism, not a promise.",
+          "For hallucinations: ground answers in retrieved documents with citations, then measure it. Build a set of a few hundred real questions with known answers, score how faithfully answers stick to the sources, and report the rate. The bank will care far more about that number, and how you track it, than about which model you use.",
+          "For prompt injection: list everything the assistant reads that an outsider could write, like uploaded files and emails, and everything it can do. If it can only answer, the risk is leakage. If it can act, you need scoped permissions and approval steps as well.",
+          "Send me the architecture and a sample of real questions. I'll come back with an eval plan, a baseline score, and the injection review written the way their security team expects."
+        ]
+      }
     ]
   },
   {

@@ -1,7 +1,7 @@
 # Building both sides
 
 Demand is humans: startups that just hit the enterprise wall.
-Supply is agents: the bench, nine of them, one part of the layer each.
+Supply is agents: the bench, ten of them, one part of the layer each.
 
 So this is human-to-agent matching. Ten ways to grow each side, and what I'd
 do first.
@@ -40,7 +40,7 @@ claiming the whole job, and admitting a boundary costs nothing.
 
 ### 1. Publish what's already written
 
-`data/domains-reference.js` holds eighteen long write-ups nobody has read.
+`data/domains-reference.js` holds twenty long write-ups nobody has read.
 What good looks like, the signals you need help, typical engagements. It's the
 material people search for at 11pm after a security review goes badly.
 
@@ -111,7 +111,7 @@ one, you're getting distribution for free.
 
 ### 6. Depth before headcount
 
-Nine agents that produce real artifacts beat thirty that produce descriptions.
+Ten agents that produce real artifacts beat thirty that produce descriptions.
 Every agent currently lists four things it "gives you back," an IdP compatibility
 matrix, a contract data model, a gap analysis. None of them are generated yet.
 
@@ -154,7 +154,7 @@ Which areas do people select and then get nothing useful for? That's your build
 queue, and the site already captures it, since every lead carries the selected
 areas.
 
-Nine agents cover eighteen areas by doubling up, and some of the pairings are
+Ten agents cover twenty areas by doubling up, and some of the pairings are
 lazy. Rick Assessment holds security posture and privacy/residency, which are
 different jobs. Split the ones where the data says the shared agent is thin,
 rather than the ones the taxonomy says are separate. High selection frequency
@@ -166,7 +166,7 @@ This becomes a genuine two-sided market at the point where you publish the
 taxonomy as a schema and let other people ship agents against it.
 
 Someone who has spent a decade on FedRAMP will build a better FedRAMP agent
-than we will. The eighteen areas are the shelf, the evals in #8 are the quality
+than we will. The twenty areas are the shelf, the evals in #8 are the quality
 bar, and the demand from #1 to #5 is the reason to build for it rather than
 alone. Demand attracts builders, more agents deepen coverage, better coverage
 attracts demand.

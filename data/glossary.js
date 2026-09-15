@@ -1,6 +1,7 @@
 /* ToUpper — the "what is this thing" knowledge base.
  *
- * Twenty-one enterprise features a large customer tends to ask for. Each entry
+ * Twenty-eight enterprise features a large customer tends to ask for, including
+ * what they now ask of AI features. Each entry
  * has a plain explanation, a rough build estimate with the factors that move
  * it, and the questions an org has to answer before starting.
  *
@@ -539,6 +540,678 @@
       { who: "Finance", q: "Is implementation included, or sold as services?", why: "Unpriced services quietly eat margin." }
     ],
     related: ["sso", "admin-console", "sla"]
+  },
+
+  /* ------------------------------------------------------- ai & agents */
+  {
+    id: "rag",
+    name: "RAG",
+    aka: "Retrieval-augmented generation",
+    areas: ["ai-quality"],
+    aliases: [
+      "rag",
+      "retrieval augmented generation",
+      "retrieval-augmented generation",
+      "vector search",
+      "vector database",
+      "vector db",
+      "embeddings",
+      "semantic search",
+      "knowledge base ai",
+      "grounding",
+      "grounded answers",
+      "chat with your docs",
+      "hallucination",
+      "hallucinations",
+      "citations",
+      "chunking",
+      "ai search"
+    ],
+    what: "Retrieval-augmented generation answers a question by first finding the relevant passages in a customer's own content, then giving only those passages to a language model to write the answer. Content is split into chunks, turned into embeddings and stored in a vector index. Done well, answers cite their sources and stay inside what the customer's documents actually say.",
+    why: "Enterprise buyers want answers grounded in their data, not the model's general knowledge. They also need to know one customer's documents can never surface in another customer's answers.",
+    build: {
+      weeks: [6, 12],
+      scope: "Ingestion and chunking, a per-tenant embedding index, retrieval tuning, citations and an evaluation set."
+    },
+    buy: {
+      weeks: [3, 6],
+      options: [
+        {
+          name: "Pinecone",
+          url: "https://www.pinecone.io"
+        },
+        {
+          name: "Vectara",
+          url: "https://www.vectara.com"
+        },
+        {
+          name: "LlamaIndex",
+          url: "https://www.llamaindex.ai"
+        }
+      ]
+    },
+    drivers: [
+      {
+        label: "Documents carry permissions that answers must respect",
+        add: [3, 6],
+        buyAdd: [2, 4]
+      },
+      {
+        label: "Content lives in many sources, like Drive, Confluence and Slack",
+        add: [2, 5],
+        buyAdd: [1, 3]
+      },
+      {
+        label: "Answers must cite sources a user can check",
+        add: [1, 2],
+        buyAdd: [0, 1]
+      },
+      {
+        label: "Data must stay in one region or in the customer's cloud",
+        add: [2, 4]
+      }
+    ],
+    questions: [
+      {
+        who: "Product",
+        q: "What questions should it answer well, and which should it refuse?",
+        why: "A written scope is the only way to judge whether it works."
+      },
+      {
+        who: "Engineering",
+        q: "How does retrieval respect each user's permissions on the source documents?",
+        why: "An answer built from a document someone can't open is a data leak."
+      },
+      {
+        who: "Engineering",
+        q: "How will we know when a change to chunking or embeddings made answers worse?",
+        why: "Without an evaluation set, every tweak is a guess."
+      },
+      {
+        who: "Security",
+        q: "How are each tenant's indexes kept apart?",
+        why: "Cross-tenant retrieval is the first thing a reviewer will probe."
+      },
+      {
+        who: "Legal",
+        q: "Which model providers see customer content, and do they retain it?",
+        why: "They go on your subprocessor list and into the DPA."
+      },
+      {
+        who: "Sales",
+        q: "Do buyers need citations before they'll trust the answers?",
+        why: "Citations change the design, and they're hard to add later."
+      }
+    ],
+    related: ["evals", "ai-data-controls", "guardrails"]
+  },
+  {
+    id: "evals",
+    name: "Evals",
+    aka: "Evaluations for AI features",
+    areas: ["ai-quality"],
+    aliases: [
+      "evals",
+      "eval",
+      "evaluations",
+      "llm evals",
+      "ai evals",
+      "model evaluation",
+      "llm evaluation",
+      "eval set",
+      "golden set",
+      "golden dataset",
+      "llm as a judge",
+      "llm-as-a-judge",
+      "ai regression testing",
+      "ai quality",
+      "ai accuracy",
+      "measure hallucinations",
+      "measuring hallucinations",
+      "evaluate",
+      "evaluating",
+      "llm testing",
+      "test the ai",
+      "testing ai"
+    ],
+    what: "Evals are tests for AI features. You collect realistic inputs with known good outcomes, run the feature against them, and score the results automatically: with code, with another model acting as a judge, or with human review. They tell you whether a prompt change, a new model or a retrieval tweak made things better or worse before customers find out.",
+    why: "Enterprise buyers ask how you know the AI is accurate and how you catch regressions. A pass rate on a real set of tasks is a far better answer than a demo.",
+    build: {
+      weeks: [4, 8],
+      scope: "An eval set built from real cases, automated scoring, a run on every change, and results tracked over time."
+    },
+    buy: {
+      weeks: [2, 4],
+      options: [
+        {
+          name: "Braintrust",
+          url: "https://www.braintrust.dev"
+        },
+        {
+          name: "LangSmith",
+          url: "https://www.langchain.com/langsmith"
+        },
+        {
+          name: "Arize",
+          url: "https://arize.com"
+        }
+      ]
+    },
+    drivers: [
+      {
+        label: "No labelled examples of good answers exist yet",
+        add: [2, 4]
+      },
+      {
+        label: "Quality needs expert human review, not just automated scoring",
+        add: [2, 5]
+      },
+      {
+        label: "Evals must run on every deploy and block bad releases",
+        add: [1, 2],
+        buyAdd: [0, 1]
+      }
+    ],
+    questions: [
+      {
+        who: "Product",
+        q: "What does a good answer look like, written down precisely enough to score?",
+        why: "If you can't define it, you can't measure it."
+      },
+      {
+        who: "Product",
+        q: "Which failures are unacceptable, and which are merely annoying?",
+        why: "Scoring should weight the failures customers actually care about."
+      },
+      {
+        who: "Engineering",
+        q: "Where do eval cases come from, and how do real production failures get added?",
+        why: "An eval set that never grows stops reflecting reality."
+      },
+      {
+        who: "Engineering",
+        q: "If a model grades the answers, how did we check the grader?",
+        why: "An unchecked judge can hide the very problems it's meant to catch."
+      },
+      {
+        who: "Sales",
+        q: "Would we share eval results with buyers?",
+        why: "Published numbers build trust, and commit you to maintaining them."
+      },
+      {
+        who: "Support",
+        q: "How do bad answers reported by customers end up in the eval set?",
+        why: "Every complaint should become a test."
+      }
+    ],
+    related: ["rag", "llm-observability", "guardrails"]
+  },
+  {
+    id: "guardrails",
+    name: "AI guardrails",
+    aka: "Prompt injection defences and output controls",
+    areas: ["ai-quality", "security"],
+    aliases: [
+      "guardrails",
+      "ai guardrails",
+      "llm guardrails",
+      "prompt injection",
+      "prompt injections",
+      "jailbreak",
+      "jailbreaks",
+      "ai safety filters",
+      "ai content moderation",
+      "pii redaction",
+      "output filtering",
+      "llm security",
+      "ai security",
+      "ai red teaming",
+      "owasp llm",
+      "owasp top 10 for llm"
+    ],
+    what: "Guardrails are the checks around an AI feature that stop it being misused or saying something it shouldn't. They screen inputs for prompt injection, where hidden instructions in a document or message try to take over the model, redact sensitive data, and check outputs before they reach a user or trigger an action. The OWASP Top 10 for LLM applications is where most security teams start.",
+    why: "Security reviewers now ask specifically about prompt injection and data leaking through AI features. Without a good answer, the AI feature can block the whole deal.",
+    build: {
+      weeks: [4, 8],
+      scope: "Input and output checks, sensitive-data redaction, limits on what the model can reach, and adversarial testing."
+    },
+    buy: {
+      weeks: [2, 4],
+      options: [
+        {
+          name: "Lakera",
+          url: "https://www.lakera.ai"
+        },
+        {
+          name: "Guardrails AI",
+          url: "https://guardrailsai.com"
+        },
+        {
+          name: "NVIDIA NeMo Guardrails",
+          url: "https://developer.nvidia.com/nemo-guardrails"
+        }
+      ]
+    },
+    drivers: [
+      {
+        label: "The AI reads untrusted content, like emails, web pages or uploads",
+        add: [2, 4]
+      },
+      {
+        label: "The AI can take actions, not just answer",
+        add: [3, 6]
+      },
+      {
+        label: "Regulated data must be redacted before it reaches a model",
+        add: [1, 3],
+        buyAdd: [1, 2]
+      }
+    ],
+    questions: [
+      {
+        who: "Security",
+        q: "What is the worst thing the AI could be tricked into doing?",
+        why: "Guardrails should be sized to the real blast radius."
+      },
+      {
+        who: "Security",
+        q: "Has anyone tried to break it on purpose?",
+        why: "Red teaming finds what checklists miss."
+      },
+      {
+        who: "Engineering",
+        q: "Which content reaching the model could contain instructions written by outsiders?",
+        why: "That's where prompt injection comes from."
+      },
+      {
+        who: "Engineering",
+        q: "What can the model access or change, and is that the minimum it needs?",
+        why: "Least privilege limits the damage when a guardrail fails."
+      },
+      {
+        who: "Legal",
+        q: "Who is accountable when a filtered answer is still wrong or harmful?",
+        why: "Decide it before it happens."
+      },
+      {
+        who: "Product",
+        q: "Do users see why something was blocked?",
+        why: "Silent blocking looks like a bug."
+      }
+    ],
+    related: ["evals", "agent-permissions", "ai-data-controls"]
+  },
+  {
+    id: "llm-observability",
+    name: "LLM observability",
+    aka: "Tracing, cost and quality monitoring for AI features",
+    areas: ["ai-quality"],
+    aliases: [
+      "llm observability",
+      "ai observability",
+      "llm monitoring",
+      "ai monitoring",
+      "llm tracing",
+      "prompt tracing",
+      "token costs",
+      "token usage",
+      "ai costs",
+      "ai cost tracking",
+      "llm logs",
+      "prompt logging",
+      "llm latency",
+      "model monitoring"
+    ],
+    what: "LLM observability records what an AI feature actually did in production: the prompt, the retrieved context, the model's response, any tool calls, latency, token cost and user feedback, all linked together as one trace. It's how teams debug a bad answer, notice quality drifting and explain a surprising bill.",
+    why: "Enterprise customers expect a bad AI answer to be investigated like any other incident. They also ask what gets logged, because prompts usually contain their data.",
+    build: {
+      weeks: [3, 6],
+      scope: "Tracing across prompts, retrieval and tool calls, cost and latency dashboards, and feedback capture."
+    },
+    buy: {
+      weeks: [1, 2],
+      options: [
+        {
+          name: "Langfuse",
+          url: "https://langfuse.com"
+        },
+        {
+          name: "Helicone",
+          url: "https://www.helicone.ai"
+        },
+        {
+          name: "Datadog",
+          url: "https://www.datadoghq.com/product/llm-observability/"
+        }
+      ]
+    },
+    drivers: [
+      {
+        label: "Prompts contain customer data needing redaction or short retention",
+        add: [1, 3],
+        buyAdd: [1, 2]
+      },
+      {
+        label: "Customers need traces for their own audits",
+        add: [2, 4]
+      },
+      {
+        label: "Several models and providers are in use",
+        add: [1, 2],
+        buyAdd: [0, 1]
+      }
+    ],
+    questions: [
+      {
+        who: "Engineering",
+        q: "Can we reconstruct exactly what happened for any single answer?",
+        why: "It's the first thing you need when a customer escalates."
+      },
+      {
+        who: "Engineering",
+        q: "What does each AI feature cost per customer, per month?",
+        why: "AI costs grow with usage and can quietly erase margin."
+      },
+      {
+        who: "Security",
+        q: "What do traces store, for how long, and who can see them?",
+        why: "Prompt logs are customer data."
+      },
+      {
+        who: "Product",
+        q: "How do users tell us an answer was wrong?",
+        why: "Feedback is the cheapest quality signal you'll get."
+      },
+      {
+        who: "Finance",
+        q: "Do we pass AI costs on, cap them, or absorb them?",
+        why: "Pricing needs to know before usage takes off."
+      },
+      {
+        who: "Support",
+        q: "Can support look up a customer's AI interaction without an engineer?",
+        why: "Otherwise every AI ticket escalates."
+      }
+    ],
+    related: ["evals", "usage-billing", "audit-logs"]
+  },
+  {
+    id: "ai-data-controls",
+    name: "AI data controls",
+    aka: "What the model sees, keeps and learns from",
+    areas: ["ai-governance"],
+    aliases: [
+      "ai data controls",
+      "ai data usage",
+      "no training on customer data",
+      "training on our data",
+      "train on our data",
+      "model training data",
+      "zero data retention",
+      "zdr",
+      "ai data retention",
+      "ai privacy",
+      "llm privacy",
+      "turn off ai",
+      "disable ai",
+      "ai opt out",
+      "ai subprocessors",
+      "model provider dpa",
+      "ai data residency",
+      "bring your own model",
+      "byo model"
+    ],
+    what: "AI data controls answer the questions every enterprise legal team now asks. Is our data used to train models? Which model providers see it, and do they keep it? Can we switch AI features off, or keep processing in our region? The answers live partly in contracts with model providers, partly in settings customers control, and partly in how the system is built.",
+    why: "It's often the first AI question in procurement, and a vague answer stalls the deal. Some companies block AI features entirely until these controls exist.",
+    build: {
+      weeks: [3, 6],
+      scope: "Per-tenant AI settings, provider terms with zero or limited retention, logging limits and clear documentation."
+    },
+    buy: null,
+    extra: "Most of this is policy and contracts. Check each model provider's retention terms, enterprise agreement and regional options before promising anything.",
+    drivers: [
+      {
+        label: "Admins must be able to switch AI features off per workspace",
+        add: [1, 2]
+      },
+      {
+        label: "AI processing must stay in the customer's region",
+        add: [2, 5]
+      },
+      {
+        label: "Some customers want to bring their own model or API key",
+        add: [3, 6]
+      }
+    ],
+    questions: [
+      {
+        who: "Legal",
+        q: "Is customer data ever used to train or improve models, ours or a provider's?",
+        why: "Buyers will want the answer in writing."
+      },
+      {
+        who: "Legal",
+        q: "Which AI providers are subprocessors, and what do they retain?",
+        why: "They belong on the subprocessor list and in the DPA."
+      },
+      {
+        who: "Product",
+        q: "When an admin turns AI off, does all data stop flowing to models?",
+        why: "An off switch that doesn't stop the data isn't one."
+      },
+      {
+        who: "Engineering",
+        q: "Where are prompts, context and outputs stored, and for how long?",
+        why: "Retention promises have to match the system."
+      },
+      {
+        who: "Security",
+        q: "Could one customer's data influence another customer's answers?",
+        why: "Shared caches, fine-tunes and indexes are common leak paths."
+      },
+      {
+        who: "Sales",
+        q: "How many deals now include AI restrictions in the contract?",
+        why: "Tells you whether these controls are table stakes yet."
+      }
+    ],
+    related: ["ai-governance", "gdpr-residency", "rag"]
+  },
+  {
+    id: "ai-governance",
+    name: "AI governance",
+    aka: "ISO 42001, the EU AI Act and responsible AI reviews",
+    areas: ["ai-governance", "compliance"],
+    aliases: [
+      "ai governance",
+      "responsible ai",
+      "ai policy",
+      "ai risk",
+      "ai risk assessment",
+      "iso 42001",
+      "iso42001",
+      "iso/iec 42001",
+      "eu ai act",
+      "ai act",
+      "nist ai rmf",
+      "ai rmf",
+      "model risk management",
+      "ai compliance",
+      "ai impact assessment",
+      "ai transparency",
+      "model card",
+      "model cards",
+      "ai vendor review"
+    ],
+    what: "AI governance is how you show AI features are built and run responsibly: an AI policy, a risk assessment for each feature, a record of which models are used and how, human oversight where it matters, and a process for incidents. ISO/IEC 42001 certifies an AI management system, the EU AI Act places obligations on certain uses, and the NIST AI Risk Management Framework is a common reference in the US.",
+    why: "Large buyers now run AI-specific vendor reviews alongside security reviews. Regulated customers especially need evidence they can show their own auditors.",
+    build: {
+      weeks: [6, 12],
+      scope: "An AI policy, per-feature risk assessments, a model inventory, oversight and an incident process."
+    },
+    buy: {
+      weeks: [3, 6],
+      options: [
+        {
+          name: "Credo AI",
+          url: "https://www.credo.ai"
+        },
+        {
+          name: "Holistic AI",
+          url: "https://www.holisticai.com"
+        },
+        {
+          name: "Vanta",
+          url: "https://www.vanta.com/products/iso-42001"
+        }
+      ]
+    },
+    calendar: "Plan for four to nine months to ISO 42001 certification if you already run a security programme.",
+    drivers: [
+      {
+        label: "You already hold ISO 27001 (this reduces effort)",
+        add: [-2, -4],
+        buyAdd: [-1, -2]
+      },
+      {
+        label: "An AI feature could fall into a regulated or high-risk use",
+        add: [4, 10]
+      },
+      {
+        label: "Buyers want an AI-specific questionnaire answered",
+        add: [1, 2]
+      }
+    ],
+    questions: [
+      {
+        who: "Legal",
+        q: "Could any of our AI features count as high-risk under the EU AI Act?",
+        why: "It decides how much of the Act applies."
+      },
+      {
+        who: "Product",
+        q: "Where does a person review or approve what the AI does?",
+        why: "Human oversight is central to every framework."
+      },
+      {
+        who: "Engineering",
+        q: "Do we keep a record of which models and versions each feature uses?",
+        why: "It's the first thing an assessor asks for."
+      },
+      {
+        who: "Security",
+        q: "How would we detect and respond to an AI incident?",
+        why: "Frameworks expect a process, not an apology."
+      },
+      {
+        who: "Sales",
+        q: "Are buyers asking for ISO 42001, or only for answers to AI questions?",
+        why: "Certification is a much bigger commitment than a questionnaire."
+      },
+      {
+        who: "Finance",
+        q: "Who owns AI governance, and can it sit inside existing compliance work?",
+        why: "Running it separately doubles the effort."
+      }
+    ],
+    related: ["ai-data-controls", "iso27001", "evals"]
+  },
+  {
+    id: "agent-permissions",
+    name: "Agent permissions",
+    aka: "Letting AI agents act safely on a user's behalf",
+    areas: ["ai-quality", "rbac"],
+    aliases: [
+      "agent permissions",
+      "ai agent permissions",
+      "ai agents",
+      "agentic ai",
+      "agentic",
+      "tool calling",
+      "function calling",
+      "tool use",
+      "mcp",
+      "model context protocol",
+      "human in the loop",
+      "human-in-the-loop",
+      "ai approvals",
+      "agent authorization",
+      "agent authorisation",
+      "delegated access",
+      "oauth for agents",
+      "agent actions"
+    ],
+    what: "Agent permissions control what an AI agent can do when it acts for someone: which tools and APIs it can call, whose data it can touch, and which actions need a person to approve first. The safe pattern is to give the agent the acting user's permissions and no more, keep credentials out of the model's reach, log every action, and require approval before anything destructive or irreversible.",
+    why: "Buyers are comfortable with AI that drafts and suggests. They get nervous when it can send, delete or pay, and they'll ask exactly how that's contained.",
+    build: {
+      weeks: [5, 10],
+      scope: "Scoped delegated credentials, a tool permission model, approval steps for risky actions, and a full action log."
+    },
+    buy: {
+      weeks: [2, 4],
+      options: [
+        {
+          name: "Arcade",
+          url: "https://www.arcade.dev"
+        },
+        {
+          name: "Oso",
+          url: "https://www.osohq.com"
+        },
+        {
+          name: "Permit.io",
+          url: "https://www.permit.io"
+        }
+      ]
+    },
+    drivers: [
+      {
+        label: "Agents act in third-party tools like email, CRM or payments",
+        add: [3, 6],
+        buyAdd: [1, 3]
+      },
+      {
+        label: "Some actions need a person to approve before they run",
+        add: [2, 3]
+      },
+      {
+        label: "Customers must be able to see and undo what an agent did",
+        add: [2, 4]
+      }
+    ],
+    questions: [
+      {
+        who: "Product",
+        q: "Which actions can an agent take on its own, and which need a person to approve?",
+        why: "That line is the heart of the design."
+      },
+      {
+        who: "Engineering",
+        q: "Does the agent act with the user's permissions, or broader ones of its own?",
+        why: "Broad service credentials turn one mistake into a breach."
+      },
+      {
+        who: "Engineering",
+        q: "Where are credentials for connected tools stored, and can the model ever see them?",
+        why: "Secrets that reach the prompt can leak through the output."
+      },
+      {
+        who: "Security",
+        q: "How would we stop an agent that's been manipulated by prompt injection?",
+        why: "An agent that can act is the highest-stakes injection target."
+      },
+      {
+        who: "Support",
+        q: "Can a customer see a log of every action an agent took?",
+        why: "Trust depends on being able to check."
+      },
+      {
+        who: "Legal",
+        q: "Who is responsible when an agent takes the wrong action?",
+        why: "Decide it before a customer asks."
+      }
+    ],
+    related: ["guardrails", "rbac", "audit-logs"]
   }
 
   ];

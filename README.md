@@ -2,7 +2,7 @@
 
 > `smb.toUpper() → enterprise`
 
-A one-page bench of **nine specialist agents** for the enterprise layer — the
+A one-page bench of **ten specialist agents** for the enterprise layer — the
 product work a company has to ship before a large customer will sign: SSO,
 directory provisioning, custom roles, audit logs, contract billing, SOC 2, VPC
 deployment, an SLA someone can actually staff.
@@ -12,7 +12,7 @@ That is exactly what makes them a good fit for a narrow agent — one that carri
 the specs, the vendor quirks and the post-mortems for a single area, asks the
 question a practitioner would ask first, and says plainly where it stops.
 
-**This is a concept demo.** The nine agents are a design fiction. They are
+**This is a concept demo.** The ten agents are a design fiction. They are
 archetypes assembled from bodies of public practice — specs, RFCs, audit
 frameworks, published post-mortems — not portraits of, or claims about, any
 real practitioner. Every transcript in `data/agents.js` is written by hand;
@@ -27,12 +27,12 @@ at the top of any page.
 |---|---|---|
 | **A · Story** | `index.html` | Narrative-led. Opens on the moment — a startup that just signed its first enterprise contract — then walks the ten weeks after signature. Each beat is clickable and selects the practice areas that week is really about, so the story doubles as the filter. |
 | **B · Triage** | `variant-b.html` | Deal-desk tone, dark hero, no warm-up. "Which part of the deal is stuck?" — name the blocker, get the bench. Compliance and revenue sit side by side below the results. |
-| **C · Index** | `variant-c.html` | Utilitarian reference. All eighteen areas as a table with group and expert count, filterable by group, compliance and revenue as collapsed reference blocks. For teams who already know what they need. |
+| **C · Index** | `variant-c.html` | Utilitarian reference. All twenty areas as a table with group and expert count, filterable by group, compliance and revenue as collapsed reference blocks. For teams who already know what they need. |
 
 All three share `data/*.js` and `assets/js/lib.js` (filtering, ranking, row
 rendering); each has its own thin controller in `assets/js/{a,b,c}.js`.
 
-## The nine agents
+## The ten agents
 
 | Agent | Covers | Mandate |
 |---|---|---|
@@ -44,15 +44,16 @@ rendering); each has its own thin controller in `assets/js/{a,b,c}.js`.
 | **Audrey Trail** | Audit logs, reporting | Everything that happened, provable months later |
 | **Terry Form** | Deployment, admin console | Software into environments you do not operate |
 | **Paige Nation** | API & integrations | A public contract you can stand behind |
+| **Eva Luation** | RAG & evals, AI governance | AI features a buyer's security team will approve |
 | **Nina Nines** | Onboarding, SLA & support | Signature to activation, and promises you can staff |
 
 Yes, the names are puns — SAML assertion, permission, pro rata, Sarbanes-Oxley,
-risk assessment, audit trail, Terraform, pagination, nine nines. The joke is
-load-bearing: the names are the most memorable thing about a bench of nine, and
+risk assessment, audit trail, Terraform, pagination, evaluation, nine nines. The joke is
+load-bearing: the names are the most memorable thing about a bench of ten, and
 the contrast with a completely straight spec underneath is the tone the whole
 page is going for.
 
-Nine agents cover all eighteen practice areas. Each publishes the same five
+Ten agents cover all twenty practice areas. Each publishes the same five
 things, which is what makes the claim inspectable rather than decorative:
 
 - **Grounded in** — the body of practice it encodes
@@ -89,18 +90,29 @@ variant only wires its own way of choosing areas.
 
 ## The practice areas
 
-Eighteen areas in five groups, organised around who inside a vendor usually
-owns the work when a large customer asks for it:
+Twenty areas in six groups, organised around who inside a vendor usually owns
+the work when a large customer asks for it:
 
 - **Money** — packaging and tiers, pricing, billing and revenue operations, procurement
 - **Identity & Access** — SSO, provisioning, permissions, org hierarchy and tenancy
 - **Trust & Compliance** — audit logs, security posture, certifications, privacy and residency
 - **Operations & Scale** — private deployment, admin console, public API, customer reporting
 - **Service & Adoption** — uptime and support commitments, onboarding and migration
+- **AI & Agents** — AI quality, RAG and guardrails; AI governance and data controls
 
 The split is deliberately finer than "security" or "identity", because that is
 where the specialists are: billing is a different job from packaging, and
 provisioning a different job from single sign-on.
+
+### AI & Agents
+
+Enterprise procurement now runs a separate line of questions for AI features.
+Is our data used for training? How do you measure hallucinations? What stops
+prompt injection? Who approves what an agent does? Those get their own group,
+their own agent (Eva Luation), a Week 5 beat in the story ("their AI review
+arrives"), and seven topics in Ask our Agents: RAG, evals, AI guardrails, LLM
+observability, AI data controls, AI governance (ISO 42001, the EU AI Act, NIST
+AI RMF) and agent permissions.
 
 ## What is real and what is not
 
@@ -315,7 +327,7 @@ need Okta login", "soc2", "scmi"), and the owning agent gives three things back:
 
 1. **What it is**, in plain language, and why enterprise buyers ask for it.
 2. **What it takes**: a rough range in engineer-weeks, a build-or-buy toggle
-   with named vendors, and a short list of "does this apply to you?" factors
+   that links three platforms worth a look, and a short list of "does this apply to you?" factors
    that move the estimate live.
 3. **Answer these first**: six or seven questions, grouped by who in the org
    usually owns the answer, each with a line on why it matters.
@@ -323,7 +335,7 @@ need Okta login", "soc2", "scmi"), and the owning agent gives three things back:
 In the pop-up, answers are shorter: the first three questions with a link to
 the rest, and the estimate, factors and capture form intact.
 
-It answers from `data/glossary.js`, a hand-written guide to twenty-one
+It answers from `data/glossary.js`, a hand-written guide to twenty-eight
 features, rather than a model generating text. That was a deliberate choice:
 an estimate is only useful if it's the same every time someone asks, and a
 generative answer that drifts would undermine the one thing the page is for.
