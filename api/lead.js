@@ -105,6 +105,10 @@ module.exports = async function handler(req, res) {
     estimate: clean(body.estimate, 80),
     timing: clean(body.timing, 24),
     variant: clean(body.variant, 24),
+    source: clean(body.source, 80),
+    medium: clean(body.medium, 40),
+    campaign: clean(body.campaign, 80),
+    referrer: clean(body.referrer, 120),
     page: clean(body.page, 200),
     at: new Date().toISOString()
   };
@@ -192,6 +196,7 @@ function summarise(lead) {
   var bits = ['New ' + lead.kind + ' — ' + lead.email];
   if (lead.term) bits.push('about ' + lead.term + (lead.estimate ? ' (' + lead.estimate + ')' : ''));
   if (lead.timing) bits.push('· needs it: ' + lead.timing);
+  if (lead.source || lead.referrer) bits.push('· via ' + [lead.source, lead.campaign].filter(Boolean).join('/') + (lead.source ? '' : lead.referrer));
   if (lead.name) bits.push('(' + lead.name + ')');
   if (lead.areas.length) bits.push('· areas: ' + lead.areas.join(', '));
   if (lead.agents.length) bits.push('· agents: ' + lead.agents.join(', '));

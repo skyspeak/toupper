@@ -100,6 +100,9 @@
   "functions": {
     "api/what.js": {
       "includeFiles": "ask.html"
+    },
+    "api/slack.js": {
+      "includeFiles": "data/agents.js"
     }
   }
 }

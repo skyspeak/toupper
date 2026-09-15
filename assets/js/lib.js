@@ -161,6 +161,25 @@
    * ------------------------------------------------------------------ */
   var LOADED_AT = Date.now();
 
+  /* First-touch attribution for the session, so each growth channel can be
+     measured. Read before anything rewrites the URL. Host only for referrers. */
+  var ATTR = (function () {
+    var key = 'tu.attr';
+    try {
+      var saved = JSON.parse(sessionStorage.getItem(key) || 'null');
+      if (saved) return saved;
+    } catch (e) {}
+    var q = new URLSearchParams(location.search), a = {};
+    ['utm_source', 'utm_medium', 'utm_campaign'].forEach(function (k) { if (q.get(k)) a[k.slice(4)] = q.get(k).slice(0, 80); });
+    if (!a.source && q.get('ref')) a.source = q.get('ref').slice(0, 80);
+    try {
+      var r = document.referrer ? new URL(document.referrer) : null;
+      if (r && r.host !== location.host) a.referrer = r.host;
+    } catch (e) {}
+    try { sessionStorage.setItem(key, JSON.stringify(a)); } catch (e) {}
+    return a;
+  })();
+
   TU.variant = function () {
     var c = ' ' + (document.body.className || '') + ' ';
     if (c.indexOf(' ask ') > -1) return 'ask';
@@ -171,6 +190,10 @@
 
   TU.capture = function (payload) {
     payload.variant = TU.variant();
+    payload.source = ATTR.source || '';
+    payload.medium = ATTR.medium || '';
+    payload.campaign = ATTR.campaign || '';
+    payload.referrer = ATTR.referrer || '';
     payload.page = location.pathname;
     payload.elapsed_ms = Date.now() - LOADED_AT;
     return fetch('/api/lead', {
