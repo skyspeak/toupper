@@ -58,7 +58,7 @@ module.exports = function handler(req, res) {
     return res.end(html);
   }
 
-  var title = t.name + ': what it is and what it takes — ToUpper';
+  var title = t.name + ': what it is and what it takes — Ask our Agents';
   var desc = t.aka + '. ' + t.what.split('. ')[0] + '. About ' + range(t.build.weeks) +
     ' engineer-weeks to build, and ' + t.questions.length + ' questions to answer first.';
   var canonical = ORIGIN + '/what/' + t.id;

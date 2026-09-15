@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>What is this thing? — ToUpper</title>
-<meta name="description" content="Name something a big customer asked for, like SCIM, SOC 2 or RBAC. Get what it is, a rough estimate of what it takes to build, and the questions your team needs to answer first.">
+<title>Ask our Agents — ToUpper</title>
+<meta name="description" content="Ask our Agents what a big customer's request involves, like SCIM, SOC 2 or RBAC. Get what it is, a rough estimate of what it takes to build, and the questions your team needs to answer first.">
 <link rel="canonical" href="https://toupper.vercel.app/what">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ToUpper">
-<meta property="og:title" content="What is this thing? — ToUpper">
+<meta property="og:title" content="Ask our Agents — ToUpper">
 <meta property="og:description" content="Name something a big customer asked for, like SCIM, SOC 2 or RBAC. Get what it is, what it takes to build, and what to decide first.">
 <meta property="og:url" content="https://toupper.vercel.app/what">
 <meta name="twitter:card" content="summary">
@@ -26,29 +26,30 @@
   </div>
 </div>
 
-<main class="wrap">
+<main class="wrap" data-ask-page>
   <header class="askhead">
-    <span class="eyebrow">Ask ToUpper</span>
-    <h1>What is this thing, and what will it take?</h1>
-    <p>Name something a big customer asked for, like SCIM, SOC 2 or RBAC. You get what it is, a rough estimate of what it takes to build, and the questions your team needs to answer before starting.</p>
+    <span class="aoa-faces askhead-faces" id="askFaces" aria-hidden="true"></span>
+    <h1>Ask our Agents</h1>
+    <p class="askhead-sub">What is this thing, and what will it take?</p>
+    <p>Name something a big customer asked for, like SCIM, SOC 2 or RBAC. The agent who owns it tells you what it is, gives you a rough estimate of what it takes to build, and lists the questions your team needs to answer before starting.</p>
   </header>
 
-  <div class="thread" id="thread" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <div class="thread" data-ask-thread role="log" aria-live="polite" aria-relevant="additions"></div>
 
   <noscript>
     <!--SSR-->
     <p class="note">This page works best with JavaScript on. Every answer also has its own address, like <a href="/what/scim">/what/scim</a>.</p>
   </noscript>
 
-  <form class="askbar" id="askForm" novalidate>
-    <label class="vh" for="askInput">Ask about an enterprise feature</label>
-    <input class="input" id="askInput" type="text" autocomplete="off" enterkeyhint="send"
+  <form class="askbar" data-ask-form novalidate>
+    <label class="vh" for="askInput">Ask our Agents about an enterprise feature</label>
+    <input class="input" id="askInput" data-ask-input type="text" autocomplete="off" enterkeyhint="send"
            placeholder="Try “SCIM” or “Okta login”" maxlength="160">
-    <button class="btn" type="submit" id="askSend">Ask</button>
+    <button class="btn" type="submit">Ask</button>
   </form>
 
   <p class="tiny muted askfoot">
-    Answers come from a hand-written guide to twenty-one enterprise features, not a model generating text.
+    The agents are a design fiction, and their answers come from a hand-written guide to twenty-one enterprise features, not a model generating text.
     Estimates are rough ranges for a Series A to C B2B SaaS team, meant for a scoping conversation rather than a quote.
   </p>
 </main>
@@ -59,5 +60,6 @@
 <script src="/assets/js/lib.js"></script>
 <script src="/assets/js/ask-match.js"></script>
 <script src="/assets/js/ask.js"></script>
+<script src="/assets/js/ask-faces.js"></script>
 </body>
 </html>

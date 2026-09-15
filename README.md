@@ -134,7 +134,9 @@ toupper/
 │   ├── css/app.css     design system, all three variants
 │   └── js/
 │       ├── lib.js      shared data access, filtering, row rendering
-│       ├── ask.js      the chat: answers, estimates, sharing, capture
+│       ├── ask.js      the chat engine, mountable as page or pop-up
+│       ├── ask-widget.js  the Ask our Agents pop-up on the main pages
+│       ├── ask-faces.js   agent marks in the full page header
 │       ├── ask-match.js  resolves free text to a glossary term
 │       └── a.js b.js c.js   per-variant controllers
 ├── 404.html            not-found page
@@ -293,11 +295,23 @@ and none of them are worth buying while the agents are still a design fiction.
 4. Publish the corpus behind each agent. For a claim like this, showing the
    grounding is the marketing.
 
-## Ask: what is this thing?
+## Ask our Agents
 
-**<https://toupper.vercel.app/what>** is a lead engine in the shape of a chat.
+A lead engine in the shape of a chat, in two places:
+
+- **The pop-up** on every page of the main site. The launcher sits bottom-right;
+  the in-page "Ask our Agents" link opens it too, and so does `#ask` on any URL.
+  It goes full screen on phones. Only the launcher loads up front: the guide,
+  matcher and engine (about 70 KB) load the first time someone opens it.
+- **The full page** at **<https://toupper.vercel.app/what>**, where every answer
+  has its own shareable URL. The pop-up links out to it for sharing.
+
+Each answer comes from the agent who owns that area. Sam L. Assertion answers
+SSO and SCIM, Sarah Baines-Oxley answers SOC 2, and so on, and the typing
+indicator shows who is about to reply. The agents are still a design fiction,
+and both surfaces say so.
 Someone types what a big customer asked for, in whatever words they have ("we
-need Okta login", "soc2", "scmi"), and gets three things back:
+need Okta login", "soc2", "scmi"), and the owning agent gives three things back:
 
 1. **What it is**, in plain language, and why enterprise buyers ask for it.
 2. **What it takes**: a rough range in engineer-weeks, a build-or-buy toggle
@@ -305,6 +319,9 @@ need Okta login", "soc2", "scmi"), and gets three things back:
    that move the estimate live.
 3. **Answer these first**: six or seven questions, grouped by who in the org
    usually owns the answer, each with a line on why it matters.
+
+In the pop-up, answers are shorter: the first three questions with a link to
+the rest, and the estimate, factors and capture form intact.
 
 It answers from `data/glossary.js`, a hand-written guide to twenty-one
 features, rather than a model generating text. That was a deliberate choice:
