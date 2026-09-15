@@ -1,6 +1,6 @@
 # Growth playbook
 
-Ten growth hacks built around what ToUpper already has: a guide people forward,
+Twenty growth hacks built around what ToUpper already has: a guide people forward,
 estimates that change with their situation, ten agents with names people
 remember, and a lead store that records where each lead came from.
 
@@ -19,6 +19,16 @@ Swap anything in `[brackets]` for your own details before sending.
 | 08 | [Answer the questionnaire line by line](08-questionnaire-answers.md) | People search the literal question they were sent | 10 posts | Week 4 |
 | 09 | [An honest Show HN](09-show-hn.md) | "The agents are fake, the estimates aren't" is the hook | 1 day | Launch day |
 | 10 | [The Friday questionnaire rescue](10-questionnaire-rescue.md) | Hand-done work becomes case studies and proof | 10 rescues | Week 2 |
+| 11 | [Open the data on GitHub](11-open-dataset.md) | Awesome lists and docs link to open datasets for years | 2 hours, dataset built | Week 2 |
+| 12 | [Give away a security page template](12-security-page-template.md) | Every copy with the credit link points reviewers back | Done, 3 posts | Week 2 |
+| 13 | [Get the buyers to send it](13-buyer-side.md) | One security reviewer reaches every vendor they assess | 20 messages | Week 4 |
+| 14 | [The sales rep's cheat sheet](14-ae-cheat-sheet.md) | Reps hear "do you support SCIM?" first, and forward it to the CTO | Done, 2 posts | Week 2 |
+| 15 | ["How we closed our first enterprise deal"](15-first-deal-interviews.md) | Founders share stories about themselves | 1 interview a week | Week 3 |
+| 16 | [Referral links for fractional CTOs and advisors](16-referral-partners.md) | They meet startups the week the deal gets serious | 15 emails | Week 3 |
+| 17 | [The podcast and newsletter guest circuit](17-podcast-circuit.md) | Hosts need a specific topic, and the puns make it memorable | 20 pitches | Week 5 |
+| 18 | [Name-tag stickers at SaaS conferences](18-conference-stickers.md) | "Hello, my name is Sarah Baines-Oxley" gets kept and scanned | Sheet made, 1 event | Event day |
+| 19 | [The Enterprise Ask Report](19-enterprise-ask-report.md) | Writers quote numbers and link to the source | 2 days a quarter | Week 6 |
+| 20 | [A five-day email course](20-email-course.md) | Catches people a month before they need help | 2 hours, once | Week 2 |
 
 ## Before you start (30 minutes)
 
@@ -55,6 +65,15 @@ spend: people's trust that ToUpper is useful rather than promotional.
 | 3 | 03 Slack command live, 07 first VC pitch | Needs a few people who've used the guide to vouch for it |
 | 4 | 08 questionnaire posts, 09 Show HN once the rescues give you stories to tell | Launch with proof, not just a link |
 
+## Days 31 to 60
+
+| Week | Do | Why this order |
+|---|---|---|
+| 5 | 20 email course live, 11 dataset repo, 12 template post | Gives every later hack somewhere to send people who aren't ready yet |
+| 6 | 14 cheat sheet, 16 first 15 partner emails, 15 first interview | Different audiences, same week, so you learn which one replies |
+| 7 | 13 buyer messages, 17 podcast pitches, 19 survey opens | Buyers and hosts respond better once there's a repo, a template and interviews to point to |
+| 8 | 18 stickers at the nearest event, 19 report written from the survey | The report needs three weeks of responses; the event gives you a tally to add to it |
+
 ## Rules, not suggestions
 
 - **Always say you built it.** In communities, emails and comments: "I built
@@ -74,7 +93,11 @@ spend: people's trust that ToUpper is useful rather than promotional.
 
 ## What's in this folder
 
-- `01`–`10` — the hacks, each with steps, copy, and what to measure
+- `01`–`20` — the hacks, each with steps, copy, and what to measure
 - `cards/` — 11 ready-to-post PNGs for hack 04 (1080x1350)
 - `make_cards.py` — regenerates the cards after you edit an agent
+- `dataset/` — the open dataset for hack 11 (`node tools/export-dataset.js` rebuilds it)
+- `kits/security-page.html` — the security page template for hack 12
+- `kits/ae-cheat-sheet.md` — the sales rep one-pager for hack 14
+- `stickers/sheet-letter.png` — printable sticker sheet for hack 18 (`python3 growth/make_stickers.py` rebuilds it)
 - `links.csv` — every tracked link, by hack

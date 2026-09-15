@@ -78,3 +78,25 @@ hack,use,url
 09 show hn,post link,https://toupper.vercel.app/what?utm_source=hackernews&utm_medium=launch&utm_campaign=h09_launch
 09 product hunt,listing link,https://toupper.vercel.app/?utm_source=producthunt&utm_medium=launch&utm_campaign=h09_launch
 10 questionnaire rescue,offer post,https://toupper.vercel.app/what/security-questionnaire?utm_source=linkedin&utm_medium=social&utm_campaign=h10_rescue
+11 open dataset,repo readme,https://toupper.vercel.app/what?utm_source=github&utm_medium=dataset&utm_campaign=h11_dataset
+11 open dataset,launch post,https://toupper.vercel.app/what?utm_source=linkedin&utm_medium=social&utm_campaign=h11_dataset
+12 security page template,credit link (in template),https://toupper.vercel.app/what?utm_source=security_page&utm_medium=template&utm_campaign=h12_template
+12 security page template,launch post,https://toupper.vercel.app/what/security-questionnaire?utm_source=linkedin&utm_medium=social&utm_campaign=h12_template
+13 buyer side,per-buyer link (replace <company>),https://toupper.vercel.app/what?utm_source=buyer_<company>&utm_medium=vendor_email&utm_campaign=h13_buyers
+13 buyer side,tprm post,https://toupper.vercel.app/what?utm_source=linkedin&utm_medium=social&utm_campaign=h13_buyers
+14 ae cheat sheet,pdf footer,https://toupper.vercel.app/what?utm_source=cheatsheet&utm_medium=pdf&utm_campaign=h14_cheatsheet
+14 ae cheat sheet,linkedin document post,https://toupper.vercel.app/what?utm_source=linkedin&utm_medium=social&utm_campaign=h14_cheatsheet
+14 ae cheat sheet,sales community,https://toupper.vercel.app/what?utm_source=sales_community&utm_medium=community&utm_campaign=h14_cheatsheet
+15 first deal interviews,write-up links (replace <term> and <company>),https://toupper.vercel.app/what/<term>?utm_source=interview&utm_medium=content&utm_campaign=h15_interviews&utm_content=<company>
+16 referral partners,partner link (replace <name>),https://toupper.vercel.app/what?utm_source=partner_<name>&utm_medium=referral&utm_campaign=h16_partners
+16 referral partners,soc2 consultant link (replace <name>),https://toupper.vercel.app/what/soc2?utm_source=partner_<name>&utm_medium=referral&utm_campaign=h16_partners
+17 podcast circuit,show notes (replace <show>),https://toupper.vercel.app/?utm_source=<show>&utm_medium=podcast&utm_campaign=h17_guest
+17 podcast circuit,newsletter guest post (replace <newsletter>),https://toupper.vercel.app/what?utm_source=<newsletter>&utm_medium=newsletter&utm_campaign=h17_guest
+18 conference stickers,agent stickers (one per topic),https://toupper.vercel.app/what/<topic>?utm_source=conference&utm_medium=sticker&utm_campaign=h18_stickers
+18 conference stickers,general sticker,https://toupper.vercel.app/?utm_source=conference&utm_medium=sticker&utm_campaign=h18_stickers
+18 conference stickers,post-event post,https://toupper.vercel.app/?utm_source=linkedin&utm_medium=social&utm_campaign=h18_stickers
+19 enterprise ask report,report page,https://toupper.vercel.app/what?utm_source=report&utm_medium=content&utm_campaign=h19_report
+19 enterprise ask report,press email,https://toupper.vercel.app/what?utm_source=press&utm_medium=email&utm_campaign=h19_report
+20 email course,day 3 link,https://toupper.vercel.app/what/security-questionnaire?utm_source=course&utm_medium=email&utm_campaign=h20_course
+20 email course,day 4 link,https://toupper.vercel.app/what/evals?utm_source=course&utm_medium=email&utm_campaign=h20_course
+20 email course,day 5 link,https://toupper.vercel.app/what?utm_source=course&utm_medium=email&utm_campaign=h20_course

@@ -1,0 +1,101 @@
+<!doctype html>
+<!--
+  Free security page template (ToUpper growth hack 12).
+
+  One file, no build step, no tracking. Replace everything in [brackets],
+  delete any section that isn't true for you yet, and publish it at
+  /security. Leave a section out rather than overstating it: enterprise
+  reviewers check.
+
+  The small credit link at the bottom is optional. Keep it if the template
+  saved you time.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security at [Company]</title>
+<meta name="description" content="How [Company] protects customer data: compliance, access control, encryption, AI data use and how to report an issue.">
+<style>
+  :root { --ink:#111418; --ink2:#3c424c; --muted:#6b717b; --line:#e5e2dc; --bg:#faf9f7; --paper:#fff; --ok:#1c7a45; --soon:#9a6b00; --accent:#1f3bee; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; padding-inline:16px; }
+  main { max-width:760px; margin:0 auto; padding-block:48px 64px; }
+  h1 { font-size:2.2rem; line-height:1.15; margin:0 0 .5rem; letter-spacing:-.02em; }
+  h2 { font-size:1.15rem; margin:2.5rem 0 .75rem; }
+  p { color:var(--ink2); margin:.4rem 0; }
+  a { color:var(--accent); }
+  .lede { font-size:1.1rem; }
+  .updated { color:var(--muted); font-size:.9rem; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:4px 20px; }
+  .row { display:flex; gap:16px; justify-content:space-between; align-items:baseline; padding:14px 0; border-top:1px solid var(--line); flex-wrap:wrap; }
+  .row:first-child { border-top:0; }
+  .row b { font-weight:600; }
+  .row span.note { display:block; color:var(--muted); font-size:.92rem; }
+  .st { font-size:.85rem; font-weight:600; white-space:nowrap; }
+  .st.ok { color:var(--ok); } .st.soon { color:var(--soon); }
+  .cta { display:inline-block; margin-top:.75rem; padding:10px 16px; border-radius:8px; background:var(--ink); color:#fff; text-decoration:none; font-weight:600; }
+  footer { margin-top:3rem; color:var(--muted); font-size:.85rem; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Security at [Company]</h1>
+  <p class="lede">[Company] is used by [who, e.g. "finance teams at 300 companies"]. This page covers how we protect their data, what we're certified for, and what's still in progress.</p>
+  <p class="updated">Last reviewed [Month Year] by [name, role].</p>
+
+  <h2>Compliance</h2>
+  <div class="card">
+    <div class="row"><div><b>SOC 2 Type II</b><span class="note">Report available under NDA.</span></div><span class="st ok">Complete</span></div>
+    <!-- If you're not there yet, say so plainly: -->
+    <div class="row"><div><b>ISO 27001</b><span class="note">Audit scheduled for [quarter].</span></div><span class="st soon">In progress</span></div>
+    <div class="row"><div><b>GDPR</b><span class="note">Data processing agreement available. EU data hosted in [region].</span></div><span class="st ok">Available</span></div>
+    <div class="row"><div><b>Penetration test</b><span class="note">Last test [Month Year] by an independent firm. Summary letter on request.</span></div><span class="st ok">Annual</span></div>
+  </div>
+
+  <h2>Access and identity</h2>
+  <div class="card">
+    <div class="row"><div><b>Single sign-on (SAML, OIDC)</b><span class="note">Works with Okta, Microsoft Entra ID and Google. Can be enforced for your whole organisation.</span></div><span class="st ok">[Plan name]</span></div>
+    <div class="row"><div><b>SCIM user provisioning</b><span class="note">Users are added and removed automatically from your identity provider.</span></div><span class="st ok">[Plan name]</span></div>
+    <div class="row"><div><b>Roles and permissions</b><span class="note">[Admin, Member, Viewer] roles, set per [workspace/project].</span></div><span class="st ok">All plans</span></div>
+    <div class="row"><div><b>Audit logs</b><span class="note">Who did what and when, retained for [N] days, exportable as [CSV/JSON].</span></div><span class="st ok">[Plan name]</span></div>
+  </div>
+
+  <h2>Data protection</h2>
+  <div class="card">
+    <div class="row"><div><b>Encryption</b><span class="note">TLS 1.2+ in transit. AES-256 at rest, keys managed in [AWS KMS / Google Cloud KMS].</span></div></div>
+    <div class="row"><div><b>Hosting</b><span class="note">[Provider] in [regions]. Production is isolated from development and staging.</span></div></div>
+    <div class="row"><div><b>Backups</b><span class="note">Encrypted daily backups kept for [N] days. Restores tested [quarterly].</span></div></div>
+    <div class="row"><div><b>Deletion</b><span class="note">Customer data is deleted within [N] days of contract end, including backups.</span></div></div>
+    <div class="row"><div><b>Subprocessors</b><span class="note">The current list is <a href="[link]">here</a>. We give [30] days' notice before adding one.</span></div></div>
+  </div>
+
+  <!-- Delete this section if your product has no AI features. Buyers now ask these three questions in almost every review. -->
+  <h2>AI features</h2>
+  <div class="card">
+    <div class="row"><div><b>Training on your data</b><span class="note">We do not use customer data to train models. [Model provider] does not retain prompts beyond [N] days under our agreement.</span></div></div>
+    <div class="row"><div><b>Admin controls</b><span class="note">Admins can switch AI features off for their organisation.</span></div></div>
+    <div class="row"><div><b>Quality and safety</b><span class="note">AI output is tested against [N] reviewed examples before each release, and we defend against prompt injection in content the AI reads.</span></div></div>
+  </div>
+
+  <h2>Our team</h2>
+  <div class="card">
+    <div class="row"><div><b>Access to production</b><span class="note">Limited to [N] engineers, granted per task and reviewed [quarterly].</span></div></div>
+    <div class="row"><div><b>Devices</b><span class="note">Company laptops are managed, encrypted and require screen lock.</span></div></div>
+    <div class="row"><div><b>Training and background checks</b><span class="note">Security training on joining and every year. Background checks where local law allows.</span></div></div>
+  </div>
+
+  <h2>Reporting a security issue</h2>
+  <p>Email <a href="mailto:[security@company.com]">[security@company.com]</a>. We reply within [2] business days and won't take legal action against good-faith research.</p>
+
+  <h2>Reviewing us for your company?</h2>
+  <p>We can send our SOC 2 report, pen test summary and completed questionnaires ([SIG Lite / CAIQ]) under NDA.</p>
+  <a class="cta" href="mailto:[security@company.com]?subject=Security%20review">Request the security pack</a>
+
+  <footer>
+    Template from <a href="https://toupper.vercel.app/what?utm_source=security_page&amp;utm_medium=template&amp;utm_campaign=h12_template">ToUpper</a>.
+  </footer>
+</main>
+</body>
+</html>
