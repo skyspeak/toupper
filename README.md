@@ -89,18 +89,18 @@ variant only wires its own way of choosing areas.
 
 ## The practice areas
 
-Adapted from the twelve chapters of [enterpriseready.io](https://www.enterpriseready.io/)
-— Replicated's study of fifty leading SaaS applications — and split further where
-the market has produced genuine specialists rather than generalists:
+Eighteen areas in five groups, organised around who inside a vendor usually
+owns the work when a large customer asks for it:
 
-- **Money** — packaging, pricing, billing & revenue operations, procurement
-- **Identity & Access** — SSO, provisioning, permissions, multi-tenancy
-- **Trust & Compliance** — audit logs, security posture, compliance, privacy & residency
-- **Operations & Scale** — deployment, admin console, API & integrations, reporting
-- **Service & Adoption** — SLA & support, onboarding & migration
+- **Money** — packaging and tiers, pricing, billing and revenue operations, procurement
+- **Identity & Access** — SSO, provisioning, permissions, org hierarchy and tenancy
+- **Trust & Compliance** — audit logs, security posture, certifications, privacy and residency
+- **Operations & Scale** — private deployment, admin console, public API, customer reporting
+- **Service & Adoption** — uptime and support commitments, onboarding and migration
 
-Splitting billing out of packaging, and provisioning out of SSO, is the main
-departure from the source: those are where people actually specialise.
+The split is deliberately finer than "security" or "identity", because that is
+where the specialists are: billing is a different job from packaging, and
+provisioning a different job from single sign-on.
 
 ## What is real and what is not
 

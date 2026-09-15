@@ -12,9 +12,9 @@
     { w: 'Week 4',  t: '<b>Legal wants a DPA</b> with EU residency. Their admin wants audit log export into Splunk, and custom roles for three regions.',
       a: ['privacy', 'audit-logs', 'rbac'] },
     { w: 'Week 6',  t: '<b>Procurement rewrites the order form</b>: three-year ramp, quarterly true-up, net 60, 99.9% uptime with credits.',
-      a: ['billing-revops', 'pricing-packaging', 'sla-support'] },
+      a: ['billing-revops', 'pricing-packaging', 'uptime-support'] },
     { w: 'Week 10', t: '<b>Signed.</b> Now roll out to 12,000 people across four business units who have never seen your product.',
-      a: ['onboarding', 'team-management', 'admin-console'] }
+      a: ['onboarding', 'org-hierarchy', 'admin-console'] }
   ];
 
   var bench = TU.bench({ onSelect: sync });

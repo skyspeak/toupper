@@ -94,7 +94,7 @@
     related: ["multi-tenancy", "audit-logs", "sso"]
   },
   {
-    id: "multi-tenancy", name: "Org hierarchy", aka: "Multi-tenancy, workspaces and parent-child accounts", areas: ["team-management"],
+    id: "multi-tenancy", name: "Org hierarchy", aka: "Multi-tenancy, workspaces and parent-child accounts", areas: ["org-hierarchy"],
     aliases: ["multi tenancy", "multi-tenancy", "multitenancy", "tenant isolation", "workspaces", "organizations",
       "organisations", "org hierarchy", "parent child accounts", "parent-child accounts", "sub accounts", "subaccounts",
       "subsidiaries", "business units", "delegated admin", "enterprise accounts", "account hierarchy", "merge workspaces"],
@@ -367,7 +367,7 @@
     related: ["usage-billing", "entitlements", "sla"]
   },
   {
-    id: "entitlements", name: "Entitlements", aka: "Plans, tiers and feature access", areas: ["product-assortment"],
+    id: "entitlements", name: "Entitlements", aka: "Plans, tiers and feature access", areas: ["packaging"],
     aliases: ["entitlements", "entitlement service", "plans", "pricing tiers", "tiers", "packaging", "enterprise tier",
       "enterprise plan", "feature gating", "feature access", "plan limits", "feature flags by plan", "add ons", "add-ons",
       "editions", "sku", "skus"],
@@ -401,7 +401,7 @@
     what: "Some customers won't use a shared, multi-tenant service. Single-tenant options range from a dedicated instance you run for one customer, to deploying into the customer's own cloud account, to on-premises or fully air-gapped installs you never see. Each step moves more operational work into environments you don't control.",
     why: "Regulated industries, governments and large enterprises often require data to stay inside their environment. For them, shared SaaS is a non-starter.",
     build: { weeks: [8, 16], scope: "Packaging the product to install anywhere, an upgrade path, licensing, and support for environments you can't see." },
-    buy: { weeks: [4, 8], vendors: "Replicated, Distr or Omnistrate", note: "Distribution platforms handle packaging, licensing and updates. Making the product itself installable and supportable is still engineering work." },
+    buy: { weeks: [4, 8], vendors: "Distr, Omnistrate or Northflank", note: "Distribution platforms handle packaging, licensing and updates. Making the product itself installable and supportable is still engineering work." },
     drivers: [
       { label: "The customer runs it, not you", add: [4, 8], buyAdd: [2, 4] },
       { label: "Fully air-gapped, with offline installs and licensing", add: [4, 8], buyAdd: [2, 4] },
@@ -466,7 +466,7 @@
     related: ["data-export", "audit-logs", "rbac"]
   },
   {
-    id: "data-export", name: "Data export", aka: "Reporting, analytics and warehouse sync", areas: ["reporting"],
+    id: "data-export", name: "Data export", aka: "Reporting, analytics and warehouse sync", areas: ["customer-reporting"],
     aliases: ["data export", "export data", "csv export", "reporting", "reports", "analytics", "dashboards",
       "usage reports", "warehouse sync", "data warehouse", "snowflake", "bigquery", "redshift", "databricks",
       "s3 export", "data sharing", "bi integration", "looker", "tableau", "qbr report", "roi report"],
@@ -492,7 +492,7 @@
 
   /* ------------------------------------------------ service & adoption */
   {
-    id: "sla", name: "SLA", aka: "Service level agreement: uptime and support commitments", areas: ["sla-support"],
+    id: "sla", name: "SLA", aka: "Service level agreement: uptime and support commitments", areas: ["uptime-support"],
     aliases: ["sla", "service level agreement", "uptime", "uptime guarantee", "99.9", "99.9%", "99.95", "99.99", "99.99%",
       "three nines", "four nines", "availability", "service credits", "status page", "incident response", "support sla",
       "response times", "severity levels", "premium support", "24/7 support"],

@@ -44,7 +44,7 @@ window.TOUPPER_AGENTS = [
   },
   {
     id: "perry", name: "Perry Mission", short: "Perry", initials: "PM", title: "Authorization",
-    areas: ["rbac", "team-management"],
+    areas: ["rbac", "org-hierarchy"],
     mandate: "Turns three hardcoded roles into a permission model that survives the org chart.",
     opinion: "If permission checks live in your frontend, you do not have an authorization model. You have a suggestion.",
     grounding: [
@@ -72,7 +72,7 @@ window.TOUPPER_AGENTS = [
   },
   {
     id: "bill", name: "Bill Prorata", short: "Bill", initials: "BP", title: "Revenue",
-    areas: ["billing-revops", "pricing-packaging", "product-assortment"],
+    areas: ["billing-revops", "pricing-packaging", "packaging"],
     mandate: "Models enterprise contracts as data, so invoices reconcile and finance stops editing them by hand.",
     opinion: "Nobody has a billing problem. They have a contract-modeling problem that shows up as a billing problem.",
     grounding: [
@@ -161,7 +161,7 @@ window.TOUPPER_AGENTS = [
   },
   {
     id: "audrey", name: "Audrey Trail", short: "Audrey", initials: "AT", title: "Audit & evidence",
-    areas: ["audit-logs", "reporting"],
+    areas: ["audit-logs", "customer-reporting"],
     mandate: "Makes everything that happened provable months later — to auditors, admins and the renewal conversation.",
     opinion: "An events table is not an audit log. Immutability and coverage are the whole product.",
     grounding: [
@@ -194,7 +194,7 @@ window.TOUPPER_AGENTS = [
     opinion: "Every deployment model you add is a permanent tax on release engineering. Charge for it.",
     grounding: [
       "Single-tenant, BYOC, on-prem and air-gapped delivery — packaging, licensing, offline installs.",
-      "Helm, Terraform modules and Replicated-style distribution on one artifact.",
+      "Helm charts, Terraform modules and licensed installers, all built from one artifact.",
       "Per-tenant flagging, staged rollout and deprecation policy for customers who plan quarters ahead."
     ],
     produces: [
@@ -245,7 +245,7 @@ window.TOUPPER_AGENTS = [
   },
   {
     id: "nina", name: "Nina Nines", short: "Nina", initials: "NN", title: "Adoption & service",
-    areas: ["onboarding", "sla-support"],
+    areas: ["onboarding", "uptime-support"],
     mandate: "Closes the gap between a signed contract and an activated one — and staffs the promises in it.",
     opinion: "Never sign an availability number you have not measured for four quarters.",
     grounding: [

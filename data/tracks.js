@@ -23,7 +23,7 @@ window.TOUPPER_TRACKS = [
     title: "Enterprise contracts do not fit through a checkout.",
     blurb: "Self-serve billing is a payment flow. Enterprise billing is a system of record — and the month after your first large contract signs is a bad time to discover the difference.",
     rows: [
-      { k: "Packaging", v: "What sits in Enterprise, what is an add-on, what is a platform fee — decided once, not renegotiated per deal.", a: ["product-assortment"] },
+      { k: "Packaging", v: "What sits in Enterprise, what is an add-on, what is a platform fee — decided once, not renegotiated per deal.", a: ["packaging"] },
       { k: "The value metric", v: "Seats stop working upmarket. Whatever you meter instead has to be right before it appears on an invoice.", a: ["pricing-packaging"] },
       { k: "Contract shapes", v: "Three-year ramps, annual commits, quarterly true-ups, overage. Modeled as data, or reconciled by hand forever.", a: ["billing-revops"] },
       { k: "Order to cash", v: "POs, net-60, credit memos, entity consolidation. Invoices reproducible from usage events months later.", a: ["billing-revops"] },
