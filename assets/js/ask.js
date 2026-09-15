@@ -31,6 +31,12 @@
   function agentFor(t) { return TU.agentsFor(t.areas[0])[0] || null; }
   function range(lo, hi) { return lo === hi ? String(lo) : lo + '–' + hi; }
 
+  /* "Metronome, Orb or Lago" for plain-text contexts. */
+  function optionNames(t) {
+    var n = t.buy.options.map(function (o) { return o.name; });
+    return n.length > 1 ? n.slice(0, -1).join(', ') + ' or ' + n[n.length - 1] : n[0];
+  }
+
   /* ------------------------------------------------------------ estimate */
   function estimate(t, st) {
     var buy = st.mode === 'buy' && !!t.buy;
@@ -74,7 +80,7 @@
 
   function effortSentence(t, st) {
     var e = estimate(t, st);
-    var how = e.buy ? 'using ' + t.buy.vendors : 'to build in-house';
+    var how = e.buy ? 'using ' + optionNames(t) : 'to build in-house';
     var cal = t.calendar ? ' ' + t.calendar : ', roughly ' + range(e.calLo, e.calHi) + ' calendar weeks with two engineers.';
     return range(e.lo, e.hi) + ' engineer-weeks ' + how + cal;
   }
@@ -109,7 +115,11 @@
     html += '<p class="est-sub">' + esc(t.calendar ||
       'Roughly ' + range(e.calLo, e.calHi) + ' calendar weeks with two engineers on it.') + '</p>';
     html += e.buy
-      ? '<p class="est-scope">Using ' + esc(t.buy.vendors) + '. ' + esc(t.buy.note) + '</p>'
+      ? '<p class="est-scope">Platforms worth a look:</p><div class="vendors">' +
+          t.buy.options.map(function (o) {
+            return '<a class="vendor" href="' + esc(o.url) + '" target="_blank" rel="noopener noreferrer">' +
+              esc(o.name) + '<span aria-hidden="true">\u2197</span><span class="vh"> (opens in a new tab)</span></a>';
+          }).join('') + '</div>'
       : '<p class="est-scope">' + esc(t.build.scope) + '</p>';
     if (t.extra) html += '<p class="est-extra">' + esc(t.extra) + '</p>';
     return html;

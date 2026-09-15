@@ -8,6 +8,7 @@
  * SaaS team on a modern web stack. They are for scoping conversations, not
  * quotes. Drivers add to the range; a driver with no buyAdd costs the same
  * whether you build or buy, and buyAdd [0,0] means a vendor absorbs it.
+ * Each buy block names three platforms worth a look, with links.
  *
  * Loaded as a browser global and require()-able from the /what function,
  * which uses it to write per-term link previews.
@@ -25,7 +26,7 @@
     what: "Single sign-on lets a customer's employees log into your product with their company identity, from Okta, Microsoft Entra ID or Google Workspace, instead of a separate password. Two protocols matter. SAML 2.0 is what most enterprise IT teams still default to, and OIDC is newer and simpler. Either way, your product trusts the customer's identity provider to vouch for who someone is.",
     why: "IT teams want one place to grant and revoke access. Without SSO, every employee who leaves keeps a working password to your product, and that is usually a hard blocker in security review.",
     build: { weeks: [3, 5], scope: "SAML and OIDC against the major identity providers, set up by your team for each customer." },
-    buy: { weeks: [1, 2], vendors: "WorkOS, Auth0, Stytch or Clerk", note: "A vendor handles the protocols and each identity provider's quirks. Linking existing accounts and deciding enforcement policy are still your work." },
+    buy: { weeks: [1, 2], options: [{ name: "WorkOS", url: "https://workos.com" }, { name: "Auth0", url: "https://auth0.com" }, { name: "Stytch", url: "https://stytch.com" }] },
     drivers: [
       { label: "Customers set it up themselves, without your team", add: [2, 3], buyAdd: [0, 0] },
       { label: "Existing password users need their accounts linked", add: [2, 4] },
@@ -51,7 +52,7 @@
     what: "SCIM is a standard API that lets a customer's identity provider create, update and remove users in your product automatically. When IT adds someone to the right group in Okta or Entra ID, they appear in your app. When that person leaves the company, their access goes with them, and nobody has to file a ticket.",
     why: "Removing access is a security control. Auditors check that departed employees lose access quickly, and doing it by hand doesn't pass.",
     build: { weeks: [3, 6], scope: "SCIM 2.0 user and group endpoints, with sync that is safe to replay, and deprovisioning." },
-    buy: { weeks: [1, 2], vendors: "WorkOS, Stytch or Merge", note: "Vendors absorb the differences between identity providers. What a removed user means for their data in your product is still your call." },
+    buy: { weeks: [1, 2], options: [{ name: "WorkOS", url: "https://workos.com" }, { name: "Stytch", url: "https://stytch.com" }, { name: "Merge", url: "https://www.merge.dev" }] },
     drivers: [
       { label: "Directory groups need to map to roles in your product", add: [1, 2] },
       { label: "It must be certified with Okta, Entra ID and Google", add: [1, 3], buyAdd: [0, 0] },
@@ -76,7 +77,7 @@
     what: "Role-based access control decides what each user is allowed to do. Instead of everyone being an admin or a member, users get roles, and each role carries specific permissions. Enterprise customers usually want to define their own roles, and to limit access to parts of the product, such as one region or one project.",
     why: "Large companies run on least privilege and separation of duties. If your only options are admin and member, their security team will ask you to change that.",
     build: { weeks: [4, 8], scope: "A central authorization layer, a permission model and role management." },
-    buy: { weeks: [2, 4], vendors: "Oso, Permit.io, Cerbos or SpiceDB", note: "An authorization service gives you the engine. Finding and replacing the permission checks already in your code is still most of the work." },
+    buy: { weeks: [2, 4], options: [{ name: "Oso", url: "https://www.osohq.com" }, { name: "Permit.io", url: "https://www.permit.io" }, { name: "Cerbos", url: "https://www.cerbos.dev" }] },
     drivers: [
       { label: "Permission checks are scattered across the codebase today", add: [4, 10] },
       { label: "Access must be scoped to resources, like projects or regions", add: [3, 6], buyAdd: [1, 3] },
@@ -126,7 +127,7 @@
     what: "SOC 2 is an audit report showing that your security controls exist and actually work. An independent CPA firm checks areas like access control, change management, monitoring and incident response against the AICPA's Trust Services Criteria. Type I looks at how the controls are designed at a single point in time. Type II checks that they operated over a period, usually three to twelve months, and Type II is the one enterprise buyers want.",
     why: "It is the default proof of security when selling to US companies. Without it you'll answer long security questionnaires by hand, and some deals won't start.",
     build: { weeks: [6, 12], scope: "Readiness work: policies, access reviews, logging, change management and evidence collection." },
-    buy: { weeks: [3, 6], vendors: "Vanta, Drata or Secureframe", note: "Automation platforms collect evidence and track controls. They don't fix the gaps they find, and you still need an audit firm." },
+    buy: { weeks: [3, 6], options: [{ name: "Vanta", url: "https://www.vanta.com" }, { name: "Drata", url: "https://drata.com" }, { name: "Secureframe", url: "https://secureframe.com" }] },
     calendar: "Plan for six to nine months end to end. The Type II observation window is the long pole, not the engineering.",
     extra: "Budget beyond engineering time: the audit itself commonly runs $15k to $50k, and automation platforms $10k to $25k a year.",
     drivers: [
@@ -152,7 +153,7 @@
     what: "ISO 27001 is an international certification for how you manage information security. Instead of auditing individual controls the way SOC 2 does, it certifies a management system: how you assess risk, choose controls and keep improving them. An accredited certification body issues it on a three-year cycle, with a smaller surveillance audit each year.",
     why: "It is the certification buyers in Europe and much of Asia expect. Many global enterprises accept either ISO 27001 or SOC 2, and some insist on ISO.",
     build: { weeks: [8, 14], scope: "A risk assessment, the management system documentation, controls and internal audit." },
-    buy: { weeks: [4, 8], vendors: "Vanta, Drata or Secureframe", note: "If you already have SOC 2, most controls overlap. The risk assessment and the management-system paperwork are the new parts." },
+    buy: { weeks: [4, 8], options: [{ name: "Vanta", url: "https://www.vanta.com" }, { name: "Drata", url: "https://drata.com" }, { name: "Secureframe", url: "https://secureframe.com" }] },
     calendar: "Typically four to nine months to certification, depending on how much already exists.",
     extra: "Certification body fees commonly run $10k to $30k for the initial audit, plus the yearly surveillance audits.",
     drivers: [
@@ -177,7 +178,7 @@
     what: "An audit log is a record of who did what, and when, inside your product: logins, permission changes, data exports, settings edits. Enterprise customers need to see it themselves, search it, export it and stream it into their own security tools, such as Splunk or Datadog. It has to be complete, hard to tamper with and kept for as long as their contract says.",
     why: "Security teams investigate incidents with it, and auditors ask for it. Your internal application logs don't count, because customers can't see them and they aren't complete.",
     build: { weeks: [3, 6], scope: "An event schema, capture across admin and data-access actions, a search view and export." },
-    buy: { weeks: [1, 3], vendors: "WorkOS Audit Logs, Retraced or Pangea", note: "Vendors store and display events. Deciding what to log, and emitting those events from every service, is still yours." },
+    buy: { weeks: [1, 3], options: [{ name: "WorkOS Audit Logs", url: "https://workos.com/audit-logs" }, { name: "Pangea", url: "https://pangea.cloud" }, { name: "Frontegg", url: "https://frontegg.com" }] },
     drivers: [
       { label: "Events must stream into the customer's SIEM", add: [1, 3], buyAdd: [0, 1] },
       { label: "Events come from many different services", add: [2, 5] },
@@ -201,7 +202,7 @@
     what: "A security questionnaire is the list of questions a buyer's security team sends before approving you as a vendor. Standard ones include SIG, CAIQ and HECVAT, and many companies send their own spreadsheet of a few hundred questions. They cover encryption, access control, incident response, subprocessors and more.",
     why: "It sits between a verbal yes and a signed contract. Slow or inconsistent answers delay deals, and a wrong answer can end up written into the contract.",
     build: { weeks: [2, 4], scope: "An answer library, a public trust page, and an owner and process to keep them current." },
-    buy: { weeks: [1, 2], vendors: "Vanta Trust, SafeBase, Conveyor or Loopio", note: "Tools draft answers from a library and host a trust center. Someone who knows the systems still has to write and maintain the answers they draw on." },
+    buy: { weeks: [1, 2], options: [{ name: "Conveyor", url: "https://www.conveyor.com" }, { name: "Loopio", url: "https://loopio.com" }, { name: "Vanta", url: "https://www.vanta.com" }] },
     drivers: [
       { label: "More than one questionnaire arrives each month", add: [1, 2], buyAdd: [0, 1] },
       { label: "Some answers depend on controls you haven't built yet", add: [2, 6] },
@@ -249,7 +250,7 @@
     what: "HIPAA is the US law governing protected health information. If your product stores or processes health data for healthcare customers, you're a business associate: you sign a business associate agreement and meet the Security Rule's safeguards for access control, encryption, audit logging and breach notification. There is no official HIPAA certification. Buyers look at your controls, your BAA, and often a SOC 2 or HITRUST report.",
     why: "Healthcare organisations legally can't share patient data with a vendor that won't sign a BAA.",
     build: { weeks: [6, 12], scope: "Safeguards for health data, a BAA program, and keeping that data contained." },
-    buy: { weeks: [3, 6], vendors: "Aptible, Vanta or Drata with a HIPAA framework", note: "HIPAA-ready hosting and compliance platforms cover infrastructure and evidence. Keeping health data out of logs, analytics and support tools is still your work." },
+    buy: { weeks: [3, 6], options: [{ name: "Aptible", url: "https://www.aptible.com" }, { name: "Vanta", url: "https://www.vanta.com" }, { name: "Drata", url: "https://drata.com" }] },
     calendar: "Usually three to six months before you can sign a BAA with confidence.",
     drivers: [
       { label: "Health data flows into logs, analytics or support tools", add: [2, 4] },
@@ -274,7 +275,7 @@
     what: "BYOK lets a customer control the key that encrypts their data inside your product, usually held in their own AWS KMS, Google Cloud KMS or Azure Key Vault. Your system uses their key to encrypt and decrypt, and if they revoke it, their data becomes unreadable, including to you. It is typically built with envelope encryption: per-tenant data keys, wrapped by the customer's master key.",
     why: "Banks, healthcare companies and large enterprises want the ability to cut off access to their data, including from their vendors.",
     build: { weeks: [6, 12], scope: "Per-tenant envelope encryption, integration with a cloud KMS, and key rotation and revocation handling." },
-    buy: { weeks: [3, 6], vendors: "a cloud KMS plus a library such as the AWS Encryption SDK or Tink", note: "Libraries handle the cryptography. Deciding which data to encrypt, and what the product does when a key is revoked, is design work you can't outsource." },
+    buy: { weeks: [3, 6], options: [{ name: "AWS KMS", url: "https://aws.amazon.com/kms/" }, { name: "Google Cloud KMS", url: "https://docs.cloud.google.com/kms/docs" }, { name: "Azure Key Vault", url: "https://azure.microsoft.com/en-us/products/key-vault" }] },
     drivers: [
       { label: "Support for more than one cloud KMS", add: [2, 4] },
       { label: "Search or analytics must still work over encrypted data", add: [3, 8] },
@@ -325,7 +326,7 @@
     what: "Usage-based billing charges customers for what they use: API calls, active seats, compute, messages. It needs a metering pipeline that records usage accurately, rates it against each customer's contract, and turns it into invoices. Enterprise contracts often combine usage with a committed minimum, prepaid credits and overage rates.",
     why: "Buyers want to pay in line with value, and their finance teams want to forecast. Both depend on meters you can trust and invoices you can explain.",
     build: { weeks: [8, 14], scope: "Metering, a rating engine, invoice generation and reconciliation." },
-    buy: { weeks: [3, 6], vendors: "Metronome, Orb, Lago or Stripe Billing", note: "Billing platforms rate and invoice. Sending accurate usage events from your product, and reconciling them, stays with you." },
+    buy: { weeks: [3, 6], options: [{ name: "Metronome", url: "https://metronome.com" }, { name: "Orb", url: "https://www.withorb.com" }, { name: "Lago", url: "https://getlago.com" }] },
     drivers: [
       { label: "Contracts mix commits, credits and overage", add: [2, 4], buyAdd: [1, 2] },
       { label: "Customers see their usage in near real time", add: [2, 3], buyAdd: [1, 2] },
@@ -350,7 +351,7 @@
     what: "Self-serve products charge a card on a subscription. Enterprise customers pay invoices instead: annual or multi-year contracts, purchase order numbers, net 30 or net 60 terms, payment by bank transfer, and pricing that changes over time with ramps and true-ups. Billing has to model the contract, not just the plan.",
     why: "Enterprise procurement often can't pay by card at all. And contracts your billing can't represent end up managed in spreadsheets, which is where invoices go wrong.",
     build: { weeks: [6, 10], scope: "Contract modelling, invoice generation, a collections workflow and accounting sync." },
-    buy: { weeks: [2, 4], vendors: "Stripe Billing, Chargebee, Maxio or Salesforce CPQ", note: "Platforms handle invoices, terms and collections. Getting sales, billing and product entitlements to agree on what was sold is still an internal process." },
+    buy: { weeks: [2, 4], options: [{ name: "Stripe Billing", url: "https://stripe.com/billing" }, { name: "Chargebee", url: "https://www.chargebee.com" }, { name: "Maxio", url: "https://www.maxio.com" }] },
     drivers: [
       { label: "Multi-year deals with ramps or quarterly true-ups", add: [2, 4], buyAdd: [1, 2] },
       { label: "Invoices must sync to your accounting system", add: [1, 3], buyAdd: [0, 1] },
@@ -374,7 +375,7 @@
     what: "Entitlements decide which features and limits each customer has, based on what they bought. A good entitlement system is one source of truth that the product checks, instead of plan names hardcoded throughout the code. It lets you create an enterprise tier, sell add-ons and give one customer a custom limit without a code deploy.",
     why: "Enterprise deals come with custom packaging. Without entitlements, every deal turns into an engineering ticket.",
     build: { weeks: [3, 6], scope: "An entitlement model, a check the product calls, and admin tools to grant and override." },
-    buy: { weeks: [1, 3], vendors: "Stigg, Schematic or LaunchDarkly with plan targeting", note: "Vendors provide the model and the checks. Replacing the plan checks already in your code is still internal work." },
+    buy: { weeks: [1, 3], options: [{ name: "Stigg", url: "https://www.stigg.io" }, { name: "Schematic", url: "https://schematichq.com" }, { name: "LaunchDarkly", url: "https://launchdarkly.com" }] },
     drivers: [
       { label: "Plan checks are hardcoded across the codebase", add: [2, 6] },
       { label: "Contracts grant custom limits or features per customer", add: [1, 2], buyAdd: [0, 1] },
@@ -401,7 +402,7 @@
     what: "Some customers won't use a shared, multi-tenant service. Single-tenant options range from a dedicated instance you run for one customer, to deploying into the customer's own cloud account, to on-premises or fully air-gapped installs you never see. Each step moves more operational work into environments you don't control.",
     why: "Regulated industries, governments and large enterprises often require data to stay inside their environment. For them, shared SaaS is a non-starter.",
     build: { weeks: [8, 16], scope: "Packaging the product to install anywhere, an upgrade path, licensing, and support for environments you can't see." },
-    buy: { weeks: [4, 8], vendors: "Distr, Omnistrate or Northflank", note: "Distribution platforms handle packaging, licensing and updates. Making the product itself installable and supportable is still engineering work." },
+    buy: { weeks: [4, 8], options: [{ name: "Distr", url: "https://distr.sh" }, { name: "Omnistrate", url: "https://omnistrate.com" }, { name: "Northflank", url: "https://northflank.com" }] },
     drivers: [
       { label: "The customer runs it, not you", add: [4, 8], buyAdd: [2, 4] },
       { label: "Fully air-gapped, with offline installs and licensing", add: [4, 8], buyAdd: [2, 4] },
@@ -449,7 +450,7 @@
     what: "A public API lets customers automate your product and connect it to their other systems. For enterprise use that means stable, versioned endpoints, authentication with scoped tokens, documented rate limits, and webhooks that tell their systems when something changes. Once customers build on it, changing it breaks them, so the API becomes a long-term commitment.",
     why: "Enterprises run dozens of tools and expect them to connect. Integrations and automation are often part of the evaluation, not an afterthought.",
     build: { weeks: [6, 12], scope: "A versioned API for core workflows, token auth, rate limits, webhooks and documentation." },
-    buy: { weeks: [4, 8], vendors: "Speakeasy or Stainless for SDKs, and Svix or Hookdeck for webhooks", note: "Tooling covers SDKs, docs and webhook delivery. Choosing which resources and workflows to expose is still the main work." },
+    buy: { weeks: [4, 8], options: [{ name: "Speakeasy", url: "https://www.speakeasy.com" }, { name: "Stainless", url: "https://www.stainless.com" }, { name: "Svix", url: "https://www.svix.com" }] },
     drivers: [
       { label: "Your app's internal endpoints would need redesigning first", add: [3, 6] },
       { label: "Webhooks need retries, signing and replay", add: [2, 3], buyAdd: [0, 1] },
@@ -473,7 +474,7 @@
     what: "Enterprise customers want two things from their data in your product: reports that show the value they're getting, and a way to get raw data into their own warehouse. The first means dashboards for admins and executives. The second means scheduled exports or direct syncs into Snowflake, BigQuery or S3 that their analysts can build on.",
     why: "Renewals are argued with data. The executive who signs off on the renewal rarely logs in, so the reporting has to reach them.",
     build: { weeks: [4, 8], scope: "Admin reporting on adoption and outcomes, scheduled exports and a warehouse sync." },
-    buy: { weeks: [2, 4], vendors: "Prequel, Bobsled or Snowflake data sharing", note: "Warehouse sync tools handle delivery. Defining metrics customers trust stays with you." },
+    buy: { weeks: [2, 4], options: [{ name: "Prequel", url: "https://www.prequel.co" }, { name: "Bobsled", url: "https://www.bobsled.com" }, { name: "Snowflake", url: "https://www.snowflake.com" }] },
     drivers: [
       { label: "Customers want direct warehouse syncs, not CSV files", add: [2, 4], buyAdd: [0, 1] },
       { label: "Reports need custom metrics per customer", add: [2, 4] },
@@ -499,7 +500,7 @@
     what: "An SLA is a contractual promise about your service: usually an uptime percentage, support response times by severity, and credits if you miss them. 99.9% uptime allows about 43 minutes of downtime a month, and 99.99% allows about four. Behind the number you need monitoring that measures uptime the way customers experience it, and a support team staffed to meet the response times.",
     why: "Enterprises depend on your product for their own work. An SLA shows you'll stand behind it, and procurement often won't sign without one.",
     build: { weeks: [3, 6], scope: "Availability monitoring from the customer's side, a status page, an incident process and support severity tiers." },
-    buy: { weeks: [1, 3], vendors: "Better Stack, Datadog Synthetics, Statuspage or incident.io", note: "Tools handle monitoring, status pages and incident workflows. Deciding what you can honestly promise, and staffing to it, doesn't come in a box." },
+    buy: { weeks: [1, 3], options: [{ name: "Better Stack", url: "https://betterstack.com" }, { name: "incident.io", url: "https://incident.io" }, { name: "Statuspage", url: "https://www.atlassian.com/software/statuspage" }] },
     drivers: [
       { label: "Promising 99.99% or higher, which means multi-region failover", add: [6, 12] },
       { label: "24/7 response for top-severity issues", add: [2, 4] },

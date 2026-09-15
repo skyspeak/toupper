@@ -541,6 +541,17 @@ body.vb .askcta{margin-top:20px}
   .ans:after{content:"toupper.vercel.app/what"; display:block; margin-top:14px; font-family:var(--mono); font-size:10px; color:#767C86}
 }
 
+/* linked platforms in the "Buy and integrate" view */
+.vendors{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+.vendor{
+  display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:0 14px;
+  border:1px solid var(--line-2); border-radius:10px; background:var(--paper);
+  font-size:15px; font-weight:500; color:var(--ink); text-decoration:none;
+}
+.vendor span[aria-hidden]{font-size:12px; color:var(--accent)}
+@media (hover:hover){.vendor:hover{border-color:var(--accent); color:var(--accent)}}
+@media (max-width:760px){.vendor{min-height:44px}}
+
 /* ===================================================== Ask our Agents ==== */
 /* The agent who owns the topic signs each answer. */
 .ans-by{display:flex; align-items:center; gap:10px; margin:0 0 8px 2px}

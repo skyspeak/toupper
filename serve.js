@@ -33,7 +33,8 @@ http.createServer(async (req, res) => {
     const fn = path.join(root, 'api', path.basename(p) + '.js');
     if (!fs.existsSync(fn)) { res.writeHead(404).end('no such function'); return; }
     try {
-      delete require.cache[require.resolve(fn)];   // pick up edits without a restart
+      // pick up edits without a restart, including data the function requires
+      Object.keys(require.cache).forEach((k) => { if (k.startsWith(root) && !k.includes('node_modules')) delete require.cache[k]; });
       await require(fn)(req, decorate(res));
     } catch (err) {
       console.error(err);

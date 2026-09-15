@@ -28,7 +28,8 @@ function plain(t) {
   return '<article class="ssr"><h2>' + esc(t.name) + '</h2><p>' + esc(t.aka) + '</p>' +
     '<h3>What it is</h3><p>' + esc(t.what) + '</p><p>' + esc(t.why) + '</p>' +
     '<h3>What it takes</h3><p>About ' + range(t.build.weeks) + ' engineer-weeks to build in-house' +
-      (t.buy ? ', or ' + range(t.buy.weeks) + ' using ' + esc(t.buy.vendors) : '') + '.</p>' +
+      (t.buy ? ', or ' + range(t.buy.weeks) + ' using ' + t.buy.options.map(function (o) {
+        return '<a href="' + esc(o.url) + '" rel="noopener noreferrer">' + esc(o.name) + '</a>'; }).join(', ') : '') + '.</p>' +
     (t.calendar ? '<p>' + esc(t.calendar) + '</p>' : '') +
     '<h3>Answer these first</h3><ul>' + q + '</ul></article>';
 }
