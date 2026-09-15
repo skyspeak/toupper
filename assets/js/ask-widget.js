@@ -79,6 +79,16 @@
       .then(function () { return load('/assets/js/ask-match.js'); })
       .then(function () { return load('/assets/js/ask.js'); })
       .then(function () {
+        /* A browser can hold an older engine from before a deploy. If what
+           loaded doesn't match this page, fetch a fresh copy past the cache. */
+        if (typeof TU.askChat === 'function' && window.TU_MATCH && window.TOUPPER_GLOSSARY) return;
+        var v = '?v=' + Date.now();
+        return load('/data/glossary.js' + v)
+          .then(function () { return load('/assets/js/ask-match.js' + v); })
+          .then(function () { return load('/assets/js/ask.js' + v); })
+          .then(function () { if (typeof TU.askChat !== 'function') throw new Error('stale engine'); });
+      })
+      .then(function () {
         thread.innerHTML = '';
         chat = TU.askChat(panel.querySelector('[data-ask-root]'), {
           page: false,

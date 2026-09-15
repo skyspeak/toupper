@@ -72,6 +72,7 @@ module.exports = function handler(req, res) {
   html = html.replace('<!--SSR-->', plain(t));
 
   res.statusCode = 200;
-  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+  res.setHeader('CDN-Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
   return res.end(html);
 };
