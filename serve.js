@@ -21,6 +21,9 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   let p = decodeURIComponent(url.pathname);
 
+  /* Vercel injects web analytics in production; locally it is a no-op. */
+  if (p.startsWith('/_vercel/insights/')) { res.writeHead(204).end(); return; }
+
   /* mirror vercel.json rewrites so /what links work locally */
   if (p === '/what' || p === '/what/') p = '/ask.html';
   const whatTerm = p.match(/^\/what\/([^/]+)\/?$/);
