@@ -689,7 +689,8 @@ body.vb .askcta{margin-top:20px}
 .brief .crow{margin-top:10px}
 
 .foot-links{display:block; margin-top:6px}
-.foot-links a{color:var(--ink-2)}
+/* Padded so the layout links are a comfortable tap target on a phone. */
+.foot-links a{color:var(--ink-2); display:inline-block; padding:12px 6px}
 
 /* chat answers: factors folded, one footer, capture on request */
 details.drv{margin:16px 0 0; border-top:1px solid var(--line)}
