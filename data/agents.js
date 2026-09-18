@@ -19,7 +19,7 @@ window.TOUPPER_AGENTS = [
     mandate: "Gets you from email-and-password to federated identity without stranding a single user.",
     opinion: "The protocol is a weekend. The account-linking migration is the project.",
     grounding: [
-      "SAML 2.0 and OIDC as specified — and the dozen places vendors read them differently.",
+      "SAML 2.0 and OIDC as specified, plus the dozen places vendors read them differently.",
       "Quirk sets for Okta, Entra ID, Ping, OneLogin and Google Workspace, including IdP-initiated flows.",
       "Account-linking migrations at products with existing password users, including the ones that went badly."
     ],
@@ -34,10 +34,10 @@ window.TOUPPER_AGENTS = [
     sample: [
       { role: "you", text: "We need SAML by November for a 12,000-seat customer. Every account today is email and password." },
       { role: "agent", text: [
-        "Then your deadline is not SAML — it is the migration. SAML is roughly two weeks. Relinking 12,000 live accounts is the part that slips.",
+        "Then your deadline is not SAML. It is the migration. SAML is roughly two weeks. Relinking 12,000 live accounts is the part that slips.",
         "Three answers set the shape:",
         "1. Do you control the email domain check, or will users self-assert? Self-assertion means duplicate accounts on day one.",
-        "2. Is SSO enforced for the whole tenant, or optional per user? Optional means you maintain both paths forever — enterprise IT will ask you to remove it later anyway.",
+        "2. Is SSO enforced for the whole tenant, or optional per user? Optional means you maintain both paths forever, and enterprise IT will ask you to remove it later anyway.",
         "3. What happens to the six service accounts nobody remembers creating?",
         "Give me those and I will produce the migration plan with a rollback, plus the IdP matrix for their stack."
       ] }
@@ -54,17 +54,17 @@ window.TOUPPER_AGENTS = [
       "Tenancy hierarchies: parent-child accounts, delegated administration, policy inheritance."
     ],
     produces: [
-      "Permission inventory — every check in the codebase, deduplicated",
+      "Permission inventory: every check in the codebase, deduplicated",
       "Target authorization model with a staged migration",
       "Custom-roles design, admin UX and API surface",
       "Tenant isolation write-up for their security review"
     ],
     opens: "Name the last permission bug that reached a customer. What was actually wrong?",
-    handoff: "When the answer is organisational — two teams disagreeing on who owns a resource. It can model any policy; it cannot settle that argument.",
+    handoff: "When the answer is organisational: two teams disagreeing on who owns a resource. It can model any policy; it cannot settle that argument.",
     sample: [
       { role: "you", text: "Customer wants read-only access scoped to one region. We have admin, member, viewer." },
       { role: "agent", text: [
-        "That request is not about roles, it is about scope — and scope is the expensive half.",
+        "That request is not about roles, it is about scope, and scope is the expensive half.",
         "Adding a fourth role gets you through this deal and traps you before the next one. The next buyer asks for read-only in two regions plus write in a third.",
         "What I would check first: are your permission checks centralised, or scattered across handlers, jobs and the frontend? If scattered, the inventory is the project and the model is the easy part.",
         "Point me at the repo layout and I will produce the inventory, then a resource-scoped model that answers this request as data rather than as a code change."
@@ -80,10 +80,10 @@ window.TOUPPER_AGENTS = [
       "Contract shapes: multi-year ramps, annual commits, quarterly true-ups, overage, credits.",
       "Metering pipelines with replay and reconciliation, and where they drift from the invoice.",
       "ASC 606 treatment of ramped contracts, and what auditors ask for after the fact.",
-      "Packaging and entitlement architecture — the seam where billing meets permissions."
+      "Packaging and entitlement architecture: the seam where billing meets permissions."
     ],
     produces: [
-      "Contract data model covering the terms you actually sell",
+      "Contract data model covering the terms you sell",
       "Metering and reconciliation design with a replay path",
       "Billing platform selection: Stripe, Metronome, Orb, Zuora or in-house",
       "Order-to-cash process map with finance"
@@ -93,9 +93,9 @@ window.TOUPPER_AGENTS = [
     sample: [
       { role: "you", text: "Three-year ramp, quarterly true-up, net 60. Our billing system does monthly per-seat." },
       { role: "agent", text: [
-        "Your billing system is not the constraint yet — your data model is. A ramp is four things at once: a commit schedule, a rate schedule, a usage meter, and a true-up cadence. Most systems model one and hand-patch the rest.",
+        "Your billing system is not the constraint yet. Your data model is. A ramp is four things at once: a commit schedule, a rate schedule, a usage meter, and a true-up cadence. Most systems model one and hand-patch the rest.",
         "The tell: ask whoever runs close how many invoices they touched by hand last month. If it is more than zero, the pattern is already set.",
-        "Before tooling, I would fix the shape — terms as data, invoices reproducible from events, one reconciliation job that fails loudly.",
+        "Before tooling, I would fix the shape: terms as data, invoices reproducible from events, one reconciliation job that fails loudly.",
         "Send me the order form language and I will draft the contract model, then score three platforms against it rather than against a feature list."
       ] }
     ]
@@ -106,7 +106,7 @@ window.TOUPPER_AGENTS = [
     mandate: "Sequences certifications against your actual pipeline, then runs the questionnaire machine.",
     opinion: "A certification is a market-access decision. Start with the deals, not the framework.",
     grounding: [
-      "SOC 2, ISO 27001, HIPAA, PCI DSS and FedRAMP — cost curves, timelines, and where they overlap.",
+      "SOC 2, ISO 27001, HIPAA, PCI DSS and FedRAMP: cost curves, timelines, and where they overlap.",
       "Scope drawing: which systems are in, which are deliberately out, and how to defend the line.",
       "Security questionnaire corpora, trust centers, and the answer libraries that retire them."
     ],
@@ -123,7 +123,7 @@ window.TOUPPER_AGENTS = [
       { role: "agent", text: [
         "Ask the board one question first: which agency is sponsoring you? Without a sponsor there is no authorisation to pursue, and the programme is multi-year and multi-million before it produces revenue.",
         "If the answer is \"none yet\", the honest sequence is StateRAMP or SOC 2 plus a FedRAMP-aligned control set, which unblocks most public-sector pipeline at a fraction of the cost.",
-        "If there is a sponsor, the conversation changes entirely and we should talk about your boundary before anything else — that diagram sets the price.",
+        "If there is a sponsor, the conversation changes entirely and we should talk about your boundary before anything else. That diagram sets the price.",
         "Tell me which it is and I will produce the roadmap with the deals attached, so the board is choosing against revenue rather than against a logo."
       ] }
     ]
@@ -131,7 +131,7 @@ window.TOUPPER_AGENTS = [
   {
     id: "rick", topic: { id: "gdpr-residency", label: "data residency" }, name: "Rick Assessment", short: "Rick", initials: "RA", title: "Security posture",
     areas: ["security", "privacy"],
-    mandate: "Builds the posture that survives someone else's security review — and the residency claims that are true.",
+    mandate: "Builds the posture that survives someone else's security review, and the residency claims that are true.",
     opinion: "\"EU data stays in the EU\" is usually true of the database and false of everything else.",
     grounding: [
       "Threat modeling against real architectures, not diagrams that stopped being accurate a year ago.",
@@ -142,7 +142,7 @@ window.TOUPPER_AGENTS = [
       "Threat model and architecture write-up for external reviewers",
       "Vulnerability management policy with severity SLAs",
       "Data flow map covering every subprocessor",
-      "Residency design: what genuinely stays in region, and what does not"
+      "Residency design: what stays in region, and what does not"
     ],
     opens: "If a customer demanded full deletion today, would it reach your backups, logs and analytics?",
     handoff: "Penetration testing and incident response. It scopes and reads the report; independent testers run it.",
@@ -155,7 +155,7 @@ window.TOUPPER_AGENTS = [
         "· Analytics and product telemetry",
         "· Support tooling holding attachments customers uploaded",
         "· A queue or cache in the default region nobody re-provisioned",
-        "None of that is negligence — it is what \"sensible defaults\" produce. The risk is the sentence already being in a signed DPA.",
+        "None of that is negligence. It is what \"sensible defaults\" produce. The risk is the sentence already being in a signed DPA.",
         "Give me your subprocessor list and region config and I will map what actually crosses, then tell you which claims to correct before they are tested."
       ] }
     ]
@@ -163,12 +163,12 @@ window.TOUPPER_AGENTS = [
   {
     id: "audrey", topic: { id: "audit-logs", label: "audit logs" }, name: "Audrey Trail", short: "Audrey", initials: "AT", title: "Audit & evidence",
     areas: ["audit-logs", "customer-reporting"],
-    mandate: "Makes everything that happened provable months later — to auditors, admins and the renewal conversation.",
+    mandate: "Makes everything that happened provable months later, to auditors, admins and the renewal conversation.",
     opinion: "An events table is not an audit log. Immutability and coverage are the whole product.",
     grounding: [
       "Audit event taxonomies, schema versioning, and the coverage gaps that appear under review.",
       "Tamper-evident retention, SIEM streaming into Splunk, Datadog and S3.",
-      "Customer-facing analytics: adoption and outcome reporting mapped to what was actually sold."
+      "Customer-facing analytics: adoption and outcome reporting mapped to what was sold."
     ],
     produces: [
       "Event taxonomy with a coverage gap analysis across services",
@@ -176,7 +176,7 @@ window.TOUPPER_AGENTS = [
       "Retention and immutability model that stands as SOC 2 evidence",
       "Renewal reporting pack for the buyer who never logs in"
     ],
-    opens: "Who deleted the thing that went missing six months ago — and can you show me?",
+    opens: "Who deleted the thing that went missing six months ago, and can you show me?",
     handoff: "When coverage gaps are really ownership gaps. It can specify every event; someone has to make nine teams emit them.",
     sample: [
       { role: "you", text: "Their security team wants audit log export. We have application logs." },
@@ -194,7 +194,7 @@ window.TOUPPER_AGENTS = [
     mandate: "Ships software into environments you do not operate, and keeps one release train doing it.",
     opinion: "Every deployment model you add is a permanent tax on release engineering. Charge for it.",
     grounding: [
-      "Single-tenant, BYOC, on-prem and air-gapped delivery — packaging, licensing, offline installs.",
+      "Single-tenant, BYOC, on-prem and air-gapped delivery: packaging, licensing, offline installs.",
       "Helm charts, Terraform modules and licensed installers, all built from one artifact.",
       "Per-tenant flagging, staged rollout and deprecation policy for customers who plan quarters ahead."
     ],
@@ -211,7 +211,7 @@ window.TOUPPER_AGENTS = [
       { role: "agent", text: [
         "Then the question is whether that is one deal or a product line, because the engineering is nearly the same and the pricing is not.",
         "One-off: a senior engineer on a shared screen for a week, an environment you cannot observe, and a release train that quietly forks. That cost recurs every upgrade, forever.",
-        "Product line: one artifact, customer-run upgrades, offline licensing, and support that works blind. Six to twelve weeks of real work — and it is chargeable, usually at a multiple of list.",
+        "Product line: one artifact, customer-run upgrades, offline licensing, and support that works blind. Six to twelve weeks of real work, and it is chargeable, usually at a multiple of list.",
         "Send me their security requirements and your current deploy pipeline. I will come back with the menu, the unit economics per model, and what to tell sales they may promise next quarter."
       ] }
     ]
@@ -238,7 +238,7 @@ window.TOUPPER_AGENTS = [
       { role: "you", text: "Enterprise customers want an API. We have internal endpoints the web app uses." },
       { role: "agent", text: [
         "Publishing those is the tempting move and the expensive one. Internal endpoints encode your UI's assumptions, and the moment a customer builds against them, your frontend refactor becomes their outage.",
-        "What I would do instead: pick the five workflows enterprise buyers actually automate — usually provisioning, export, config, search and webhooks — and design those as a versioned surface. Leave the rest internal.",
+        "What I would do instead: pick the five workflows enterprise buyers actually automate, usually provisioning, export, config, search and webhooks, and design those as a versioned surface. Leave the rest internal.",
         "Then publish the deprecation policy before the API, not after. Twelve months' notice is the enterprise norm and it constrains what you are willing to ship on day one, which is the point.",
         "Share your route list and I will mark what belongs in v1 and what should stay behind the curtain."
       ] }
@@ -285,12 +285,12 @@ window.TOUPPER_AGENTS = [
   {
     id: "nina", topic: { id: "sla", label: "SLAs" }, name: "Nina Nines", short: "Nina", initials: "NN", title: "Adoption & service",
     areas: ["onboarding", "uptime-support"],
-    mandate: "Closes the gap between a signed contract and an activated one — and staffs the promises in it.",
+    mandate: "Closes the gap between a signed contract and an activated one, and staffs the promises in it.",
     opinion: "Never sign an availability number you have not measured for four quarters.",
     grounding: [
       "Enterprise implementation: migration tooling, admin enablement, change management inside the customer.",
       "SLA measurement as the customer experiences it, and credit-exposure modeling against real history.",
-      "Support tiering, severity definitions and escalation paths that are actually staffed."
+      "Support tiering, severity definitions and escalation paths that are staffed."
     ],
     produces: [
       "Implementation plan with milestones and owners on both sides",
@@ -306,7 +306,7 @@ window.TOUPPER_AGENTS = [
         "Your dashboard measures your infrastructure. The SLA is about their experience, and those numbers usually differ by a factor.",
         "99.99% is 4.4 minutes of downtime a month. That is less than most deploy windows, and it implies multi-region failover you either have or do not.",
         "Before negotiating, do two things: measure availability from the customer's side for a full quarter, and replay the last eight quarters against the proposed credit schedule. Companies routinely discover they would have paid out in five of them.",
-        "Send me your incident history and error-budget data and I will model the exposure, then draft a number you can defend — usually 99.9% with a genuinely staffed escalation path, which enterprise buyers accept more often than people expect."
+        "Send me your incident history and error-budget data and I will model the exposure, then draft a number you can defend, usually 99.9% with a staffed escalation path, which enterprise buyers accept more often than people expect."
       ] }
     ]
   }

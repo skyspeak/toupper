@@ -54,7 +54,7 @@ window.TOUPPER_DOMAINS = [
     short: "Showing the value delivered, and getting raw data into the customer's warehouse." },
   { slug: "uptime-support", chip: "SLA & support", group: "Service & Adoption",
     name: "Uptime & Support Commitments",
-    short: "Availability you have actually measured, and response times you can staff." },
+    short: "Availability you have measured, and response times you can staff." },
   { slug: "onboarding", chip: "Onboarding", group: "Service & Adoption",
     name: "Onboarding, Migration & Implementation",
     short: "From signed contract to thousands of active users, without heroics." },

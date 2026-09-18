@@ -40,7 +40,7 @@
     },
 
     summary: function (picked, n) {
-      if (!picked.length) return 'All ' + n + ' agents — pick an area to narrow it down';
+      if (!picked.length) return 'All ' + n + ' agents. Pick an area to narrow it down';
       var labels = picked.map(function (s) { return TU.chip(s).toLowerCase(); });
       var said = labels.length > 3
         ? labels.slice(0, 3).join(', ') + ' and ' + (labels.length - 3) + ' more'
@@ -92,7 +92,7 @@
       }).join('');
 
       return '<div class="adetail" id="panel-' + esc(a.id) + '" role="region" ' +
-        'aria-label="' + esc(a.name) + ' — full spec">' +
+        'aria-label="' + esc(a.name) + ', full spec">' +
         '<p class="aopinion">“' + esc(a.opinion) + '”</p>' +
 
         '<div class="acols">' +
@@ -210,9 +210,9 @@
     if (res.status === 429) return { ok: false, text: 'That is a lot of submissions in a minute. Try again shortly.' };
     if (res.status === 422) return { ok: false, text: 'That email address does not look right.' };
     if (!res.body || res.body.ok !== true) return { ok: false, text: 'Something went wrong sending that. Try again?' };
-    if (res.body.stored) return { ok: true, text: 'Got it — we will come back within two business days.' };
+    if (res.body.stored) return { ok: true, text: 'Got it. We will come back within two business days.' };
     if (res.body.deferred) return { ok: true, text: 'Received. Delivery to the configured destination failed, so it is sitting in the server log.' };
-    return { ok: true, text: 'Captured — though this build has no destination configured, so nothing was actually delivered. Set LEAD_WEBHOOK_URL to make it real.' };
+    return { ok: true, text: 'Captured, but this build has no destination configured, so nothing was delivered. Set LEAD_WEBHOOK_URL to make it real.' };
   };
 
   /* The low-friction block: one field, and copy that knows what you picked. */
@@ -227,14 +227,14 @@
         var more = ctx.agents.length > 3 ? ' and ' + (ctx.agents.length - 3) + ' more' : '';
         return {
           h: 'Not ready to brief anyone?',
-          p: 'Get this shortlist — ' + names.join(', ') + more +
-             ' — plus the readiness checklist for ' +
+          p: 'Get this shortlist, ' + names.join(', ') + more +
+             ', plus the readiness checklist for ' +
              ctx.areas.map(TU.chip).map(function (c) { return c.toLowerCase(); }).join(', ') + '.'
         };
       }
       return {
         h: 'Not ready to brief anyone?',
-        p: 'Get the enterprise readiness checklist — the twenty things large buyers ask for, and the order most teams end up doing them in.'
+        p: 'Get the enterprise readiness checklist: the twenty things large buyers ask for, and the order most teams end up doing them in.'
       };
     }
 
@@ -340,7 +340,7 @@
       var bits = [];
       if (state.briefed) {
         var a = TU.agent(state.briefed);
-        if (a) bits.push('Briefing <b>' + esc(a.name) + '</b> — ' + esc(a.title.toLowerCase()) + '.');
+        if (a) bits.push('Briefing <b>' + esc(a.name) + '</b>, ' + esc(a.title.toLowerCase()) + '.');
       }
       if (state.picked.length) {
         bits.push('Areas: <b>' + state.picked.map(TU.name).map(esc).join('</b>, <b>') + '</b>.');

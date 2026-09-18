@@ -40,7 +40,7 @@
       { who: "Engineering", q: "How do we match an SSO login to an existing account, and what happens when the emails don't match?", why: "Account linking is where most of the effort and most of the bugs live." },
       { who: "Engineering", q: "Do we build it or buy it?", why: "The gap is roughly a month of engineering, plus ongoing maintenance per identity provider." },
       { who: "Security", q: "What is the break-glass path if a customer's identity provider goes down?", why: "Someone has to be able to get in, and it can't be a backdoor." },
-      { who: "Sales", q: "Which identity providers do the deals in our pipeline actually use?", why: "Tells you whether to start with SAML, OIDC or one specific provider." },
+      { who: "Sales", q: "Which identity providers do the deals in our pipeline use?", why: "Tells you whether to start with SAML, OIDC or one specific provider." },
       { who: "Support", q: "Who helps a customer's IT admin when setup fails?", why: "SSO setup is one of the most common first-week enterprise tickets." }
     ],
     related: ["scim", "rbac", "audit-logs"]
@@ -86,7 +86,7 @@
       { label: "Every permission change must be audited", add: [1, 2] }
     ],
     questions: [
-      { who: "Product", q: "Which roles do customers actually need on day one?", why: "Starting from real requests beats designing a perfect model nobody asked for." },
+      { who: "Product", q: "Which roles do customers need on day one?", why: "Starting from real requests beats designing a perfect model nobody asked for." },
       { who: "Product", q: "Can customers create custom roles, or only choose from ours?", why: "Custom roles roughly double the scope." },
       { who: "Engineering", q: "Where do permission checks live today: backend, frontend, background jobs?", why: "If they're scattered, the inventory is the project." },
       { who: "Engineering", q: "Do we need access scoped to specific resources, or only global roles?", why: "Scoping is the expensive half, and hard to retrofit." },
@@ -115,7 +115,7 @@
       { who: "Engineering", q: "How many places in the code assume a user belongs to exactly one workspace?", why: "That assumption is the migration." },
       { who: "Engineering", q: "What does tenant isolation mean for us: rows, schemas or databases?", why: "Each step up costs more and is harder to change later." },
       { who: "Security", q: "Can a parent-org admin see data inside child orgs?", why: "Customers will ask, and the answer has legal consequences." },
-      { who: "Sales", q: "Which prospect has the hierarchy, and what does it actually look like?", why: "Designing against a real org chart beats a hypothetical one." }
+      { who: "Sales", q: "Which prospect has the hierarchy, and what does it look like?", why: "Designing against a real org chart beats a hypothetical one." }
     ],
     related: ["rbac", "admin-console", "single-tenant"]
   },
@@ -359,7 +359,7 @@
       { label: "Mid-term upgrades need proration", add: [1, 2], buyAdd: [0, 1] }
     ],
     questions: [
-      { who: "Finance", q: "Which contract terms do we actually sell today?", why: "Model the real ones first, not every possible one." },
+      { who: "Finance", q: "Which contract terms do we sell today?", why: "Model the real ones first, not every possible one." },
       { who: "Finance", q: "Who edits invoices by hand, and how often?", why: "Manual edits show exactly where the model is missing something." },
       { who: "Sales", q: "What can sales change in an order form without approval?", why: "Every exception becomes a billing edge case." },
       { who: "Engineering", q: "How does a signed contract switch on features in the product?", why: "Billing and entitlements drift apart without a link." },
@@ -508,7 +508,7 @@
       { label: "Service credits calculated and applied automatically", add: [1, 2] }
     ],
     questions: [
-      { who: "Engineering", q: "What has our availability actually been, measured from the customer's side?", why: "Never sign a number you haven't measured." },
+      { who: "Engineering", q: "What has our availability been, measured from the customer's side?", why: "Never sign a number you haven't measured." },
       { who: "Finance", q: "What would the proposed credits have cost us over the last year?", why: "Replaying real history shows the true exposure." },
       { who: "Support", q: "Who responds to a severity-one issue at 3am?", why: "Response times need a staffed rota, not a promise." },
       { who: "Product", q: "What counts as downtime: a full outage, degraded service, or one feature failing?", why: "Definitions decide whether you owe credits." },
@@ -522,7 +522,7 @@
     aliases: ["enterprise onboarding", "onboarding", "implementation", "customer implementation", "migration",
       "data migration", "bulk import", "import users", "rollout", "time to value", "professional services",
       "customer success plan", "go live", "go-live", "training"],
-    what: "Enterprise onboarding is everything between a signed contract and thousands of people actually using the product: migrating data from the tool you're replacing, importing users in bulk, configuring SSO and roles, training admins and rolling out in phases. It usually runs as a project with milestones on both sides, and is sometimes sold as professional services.",
+    what: "Enterprise onboarding is everything between a signed contract and thousands of people using the product: migrating data from the tool you're replacing, importing users in bulk, configuring SSO and roles, training admins and rolling out in phases. It usually runs as a project with milestones on both sides, and is sometimes sold as professional services.",
     why: "Large accounts that stall after signing don't renew. Whether a customer sees value is decided in roughly the first sixty days.",
     build: { weeks: [4, 8], scope: "Bulk import and migration tooling, an implementation playbook and adoption tracking." },
     buy: null,
@@ -862,7 +862,7 @@
       "llm latency",
       "model monitoring"
     ],
-    what: "LLM observability records what an AI feature actually did in production: the prompt, the retrieved context, the model's response, any tool calls, latency, token cost and user feedback, all linked together as one trace. It's how teams debug a bad answer, notice quality drifting and explain a surprising bill.",
+    what: "LLM observability records what an AI feature did in production: the prompt, the retrieved context, the model's response, any tool calls, latency, token cost and user feedback, all linked together as one trace. It's how teams debug a bad answer, notice quality drifting and explain a surprising bill.",
     why: "Enterprise customers expect a bad AI answer to be investigated like any other incident. They also ask what gets logged, because prompts usually contain their data.",
     build: {
       weeks: [3, 6],
